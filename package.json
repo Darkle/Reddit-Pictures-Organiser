@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "ack-reload": "^3.0.3",
     "express": "^4.17.1",
+    "instant": "^1.11.0",
     "internal-ip": "^5.0.0",
     "liquidjs": "^9.7.0"
   },
   "devDependencies": {
     "browser-sync": "^2.26.7",
+    "chokidar-cli": "^2.1.0",
     "concurrently": "^5.1.0",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2",
@@ -17,10 +20,10 @@
   },
   "scripts": {
     "start": "NODE_ENV=production node backend/index.js",
-    "dev": "concurrently npm:bs-start npm:frontend-watch",
-    "backend-watch": "nodemon --watch backend backend/index.js",
-    "bs-start": "browser-sync start --no-open --port 8888 --proxy 192.168.1.2:8887",
-    "frontend-watch": "chokidar \"**/*.css\" -c \"browser-sync reload --port 8888\"",
+    "dev": "concurrently npm:dev-*",
+    "dev-backend-watch": "nodemon --watch backend backend/index.js",
+    "dev-bs-start": "browser-sync start --no-open --port 8888 --proxy 192.168.1.2:8887",
+    "dev-frontend-watch": "chokidar \"frontend/**/*.{css,js}\" \"backend/**/*.liquid\" -c \"browser-sync reload --port 8888\" --debounce 0",
     "postinstall": "snowpack",
     "minify": "minify --recursive --output frontend frontend --match=\\.js --match=\\.css"
   },
