@@ -1,0 +1,31 @@
+{
+  "name": "rpo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "live-server": "^1.2.1",
+    "nodemon": "^2.0.2",
+    "snowpack": "^1.2.0"
+  },
+  "scripts": {
+    "backend-watch": "nodemon --watch backend",
+    "frontend-watch": "live-server --watch=frontend --port=8888 --host=192.168.1.8 --no-browser --open=frontend/html/ --proxy=",
+    "postinstall": "snowpack",
+    "minify": "minify --recursive --output frontend frontend"
+  },
+  "browserslist": "last 3 Chrome version, last 3 firefox version",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darkle/RPO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Darkle/RPO/issues"
+  },
+  "homepage": "https://github.com/Darkle/RPO#readme"
+}
