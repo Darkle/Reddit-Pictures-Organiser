@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "liquidjs": "./liquidjs.js?rev=19c59d69ee"
+  }
+}

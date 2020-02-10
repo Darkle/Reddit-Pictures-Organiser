@@ -3,19 +3,26 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.17.1",
+    "internal-ip": "^5.0.0",
+    "liquidjs": "^9.7.0"
+  },
   "devDependencies": {
-    "@adonisjs/cli": "^4.0.12",
+    "browser-sync": "^2.26.7",
+    "concurrently": "^5.1.0",
     "eslint": "^6.8.0",
-    "live-server": "^1.2.1",
     "nodemon": "^2.0.2",
     "snowpack": "^1.2.0"
   },
   "scripts": {
+    "start": "NODE_ENV=production node backend/index.js",
+    "dev": "concurrently npm:bs-start npm:frontend-watch",
     "backend-watch": "nodemon --watch backend backend/index.js",
-    "frontend-watch": "live-server --watch=frontend --port=8888 --host=192.168.1.8 --no-browser --open=frontend/html/ --proxy=http://192.168.1.8:8887",
+    "bs-start": "browser-sync start --no-open --port 8888 --proxy 192.168.1.2:8887",
+    "frontend-watch": "chokidar \"**/*.css\" -c \"browser-sync reload --port 8888\"",
     "postinstall": "snowpack",
-    "minify": "minify --recursive --output frontend frontend"
+    "minify": "minify --recursive --output frontend frontend --match=\\.js --match=\\.css"
   },
   "browserslist": "last 3 Chrome version, last 3 firefox version",
   "repository": {
