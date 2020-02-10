@@ -1,18 +1,19 @@
 {
-  "name": "Reddit Pictures Organiser",
+  "name": "reddit-pictures-organiser",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@adonisjs/cli": "^4.0.12",
     "eslint": "^6.8.0",
     "live-server": "^1.2.1",
     "nodemon": "^2.0.2",
     "snowpack": "^1.2.0"
   },
   "scripts": {
-    "backend-watch": "nodemon --watch backend",
-    "frontend-watch": "live-server --watch=frontend --port=8888 --host=192.168.1.8 --no-browser --open=frontend/html/ --proxy=",
+    "backend-watch": "nodemon --watch backend backend/index.js",
+    "frontend-watch": "live-server --watch=frontend --port=8888 --host=192.168.1.8 --no-browser --open=frontend/html/ --proxy=http://192.168.1.8:8887",
     "postinstall": "snowpack",
     "minify": "minify --recursive --output frontend frontend"
   },
