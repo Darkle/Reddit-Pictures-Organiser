@@ -3,29 +3,32 @@
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "ack-reload": "^3.0.3",
-    "express": "^4.17.1",
-    "instant": "^1.11.0",
-    "internal-ip": "^5.0.0",
-    "liquidjs": "^9.7.0"
-  },
-  "devDependencies": {
-    "browser-sync": "^2.26.7",
-    "chokidar-cli": "^2.1.0",
-    "concurrently": "^5.1.0",
-    "eslint": "^6.8.0",
-    "nodemon": "^2.0.2",
-    "snowpack": "^1.2.0"
-  },
   "scripts": {
     "start": "NODE_ENV=production node backend/index.js",
-    "dev": "concurrently npm:dev-*",
-    "dev-backend-watch": "nodemon --watch backend backend/index.js",
-    "dev-bs-start": "browser-sync start --no-open --port 8888 --proxy 192.168.1.2:8887",
-    "dev-frontend-watch": "chokidar \"frontend/**/*.{css,js}\" \"backend/**/*.liquid\" -c \"browser-sync reload --port 8888\" --debounce 0",
-    "postinstall": "snowpack",
-    "minify": "minify --recursive --output frontend frontend --match=\\.js --match=\\.css"
+    "dev": "nodemon --watch backend backend/index.js",
+    "prepare": "snowpack --include \"frontend/**/*.js\" --dest frontend/js/web_modules",
+    "build": "run-s lint test minify-** size-check",
+    "lint": "eslint frontend/**/*.js backend/**/*.js",
+    "minify-vendor-js": "snowpack --include \"frontend/**/*.js\" --optimize --clean --dest frontend/js/web_modules",
+    "minify-frontend-js-css": "minify --recursive --output frontend frontend --match=\\.js --match=\\.css",
+    "size-check": "bundlesize -f \"frontend/js/web_modules/*.js\" -s 20kB",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "htm": "^3.0.3",
+    "instant": "^1.11.0",
+    "internal-ip": "^5.0.0",
+    "liquidjs": "^9.7.0",
+    "preact": "^10.3.1"
+  },
+  "devDependencies": {
+    "bundlesize": "^0.18.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "snowpack": "^1.2.0"
   },
   "browserslist": "last 3 Chrome version, last 3 firefox version",
   "repository": {
