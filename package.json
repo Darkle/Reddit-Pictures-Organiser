@@ -1,5 +1,5 @@
 {
-  "name": "rpo",
+  "name": "Reddit Pictures Organiser",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -19,13 +19,13 @@
   "browserslist": "last 3 Chrome version, last 3 firefox version",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Darkle/RPO.git"
+    "url": "git+https://github.com/Darkle/Reddit-Pictures-Organiser.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Darkle/RPO/issues"
+    "url": "https://github.com/Darkle/Reddit-Pictures-Organiser/issues"
   },
-  "homepage": "https://github.com/Darkle/RPO#readme"
+  "homepage": "https://github.com/Darkle/Reddit-Pictures-Organiser#readme"
 }
