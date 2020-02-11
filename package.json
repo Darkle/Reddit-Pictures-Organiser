@@ -19,8 +19,7 @@
     "htm": "^3.0.3",
     "instant": "^1.11.0",
     "internal-ip": "^5.0.0",
-    "liquidjs": "^9.7.0",
-    "preact": "^10.3.1"
+    "liquidjs": "^9.7.0"
   },
   "devDependencies": {
     "bundlesize": "^0.18.0",

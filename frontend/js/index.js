@@ -1,12 +1,13 @@
-console.log('asd')
-console.log('22')
+// @ts-ignore
+import { h, app } from 'https://unpkg.com/hyperapp@2.0.4/src/index.js'
 
-import { h, render } from './web_modules/preact.js';
-import htm from './web_modules/htm.js';
-const html = htm.bind(h);
-// Create your main app component
-function SomePreactComponent() {
-  return html`<h1 style="color: red">Hello, World!</h1>`;
-}
-// Inject your application into the an element with the id `app`.
-render(html`<${SomePreactComponent} />`, document.getElementById('app'));
+app({
+  init: 0,
+  view: state =>
+    h("div", {}, [
+      h("h1", {}, state),
+      h("button", { onclick: state => state - 1 }, "subtract"),
+      h("button", { onclick: state => state + 1 }, "add")
+    ]),
+  node: document.getElementById("app")
+})
