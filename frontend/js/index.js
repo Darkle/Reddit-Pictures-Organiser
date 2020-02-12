@@ -1,13 +1,9 @@
 // @ts-ignore
-import { h, app } from 'https://unpkg.com/hyperapp@2.0.4/src/index.js'
+if (module.hot) module.hot.accept()
+import React from "react"
+import ReactDOM from "react-dom"
+import "../css/index.css"
 
-app({
-  init: 0,
-  view: state =>
-    h("div", {}, [
-      h("h1", {}, state),
-      h("button", { onclick: state => state - 1 }, "subtract"),
-      h("button", { onclick: state => state + 1 }, "add")
-    ]),
-  node: document.getElementById("app")
-})
+
+var mountNode = document.getElementById("app")
+ReactDOM.render(<h1>Hello</h1>, mountNode)

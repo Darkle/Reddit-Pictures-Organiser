@@ -4,32 +4,50 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node backend/index.js",
-    "dev": "nodemon --watch backend backend/index.js",
-    "prepare": "snowpack --include \"frontend/**/*.js\" --dest frontend/js/web_modules",
-    "build": "run-s lint test minify-** size-check",
-    "lint": "eslint frontend/**/*.js backend/**/*.js",
-    "minify-vendor-js": "snowpack --include \"frontend/**/*.js\" --optimize --clean --dest frontend/js/web_modules",
-    "minify-frontend-js-css": "minify --recursive --output frontend frontend --match=\\.js --match=\\.css",
-    "size-check": "bundlesize -f \"frontend/js/web_modules/*.js\" -s 20kB",
-    "test": "jest"
+    "copy-assets": "cpy frontend/assets/**/* dist/assets",
+    "dev": "run-s copy-assets dev-watch",
+    "dev-watch": "concurrently npm:dev-watch-*",
+    "dev-watch-parcel": "delay 2 && cross-env NODE_ENV=development parcel watch frontend/js/index.js --out-dir dist/bundles",
+    "dev-watch-server": "cross-env NODE_ENV=development nodemon --watch backend --ext js,liquid backend/index.js",
+    "prod": "run-s prod-**",
+    "prod-parcel-build": "cross-env NODE_ENV=production parcel build frontend/js/index.js --out-dir dist/bundles --no-source-maps",
+    "prod-show-report": "cpy dist/bundles/report.html ./ && trash dist/bundles/report.html && open-cli ./report.html",
+    "prod-test": "jest",
+    "prod-lint": "eslint frontend/**/*.js backend/**/*.js"
+  },
+  "watchreload": {
+    "files": "backend/**/*"
   },
   "dependencies": {
+    "cross-env": "^7.0.0",
     "express": "^4.17.1",
-    "htm": "^3.0.3",
-    "instant": "^1.11.0",
     "internal-ip": "^5.0.0",
-    "liquidjs": "^9.7.0"
+    "liquidjs": "^9.7.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "bundlesize": "^0.18.0",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "babel-plugin-inline-replace-variables": "^1.3.1",
+    "babel-plugin-macros": "^2.8.0",
+    "concurrently": "^5.1.0",
+    "cpy-cli": "^3.0.0",
+    "delay-cli": "^1.1.0",
     "eslint": "^6.8.0",
     "jest": "^25.1.0",
+    "ms.macro": "^2.0.0",
     "nodemon": "^2.0.2",
     "npm-run-all": "^4.1.5",
-    "snowpack": "^1.2.0"
+    "open-cli": "^5.0.0",
+    "param.macro": "^3.2.1",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
+    "parcel-plugin-nuke-dist": "^1.0.1",
+    "parcel-plugin-watch-reload": "0.0.2",
+    "trash-cli": "^3.0.0"
   },
-  "browserslist": "last 3 Chrome version, last 3 firefox version",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Darkle/Reddit-Pictures-Organiser.git"
