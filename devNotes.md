@@ -1,3 +1,4 @@
+
 ###### Setup details:
 * Backend uses expressjs for the server
 * The express view engine used is [liquid](https://github.com/harttle/liquidjs/wiki/Use-with-Expressjs)
@@ -6,14 +7,21 @@
   * Parcel also reloads the page on frontend change
   * Parcel also minifies on build
 * Using [jest](https://jestjs.io/) for tests
-* The `run-s` in the package.json script is just a shortcut for the `npm-run-all` program. It runs the scripts in serial (one after the other).
+* [concurrently](https://github.com/kimmobrunfeldt/concurrently) allows us to run all the dev scripts at once in parallel with one command.
+* The `run-s` in the package.json script is just a shortcut for the [npm-run-all](https://github.com/mysticatea/npm-run-all) program. It runs the npm prod scripts in serial (one after the other).
 * We are using the following babel plugins, presets and macros:
   * `@babel/preset-env` https://babeljs.io/docs/en/babel-preset-env
   * `@babel/preset-react` https://babeljs.io/docs/en/babel-preset-react
+  * `@babel/preset-flow` https://babeljs.io/docs/en/babel-preset-flow to strip out the flow types
   * `inline-replace-variables` to replace the `ISDEV` variable with whether or not `process.env.NODE_ENV !== 'production'` : https://github.com/wssgcg1213/babel-plugin-inline-replace-variables
   * `param.macro`  https://github.com/citycide/param.macro
   * `ms.macro` https://github.com/knpwrs/ms.macro#readme
-* The `watchreload` key in package.json is for [parcel-plugin-watch-reload](https://github.com/hirasso/parcel-plugin-watch-reload), it allows us to reload the page on server change too.
+* We are using [flow](https://flow.org) for type checking on frontend and backend
+  * It is set up in the eslint config and also as a npm script to check on build
+  * For some reason this file (/node_modules/@parcel/watcher/test/tmp/config.json) breaks flow as it is not proper json, so we have set flow to ignore it in the `.flowconfig`
+  * Parceljs automatically strips the flow typings out
+  * The `dev-watch-server-babel` npm script runs babel to strip out the flow typings of the backend code. That's why we have the backend/src-js folder and the backend/lib-js folder.
+    * This script also uses the `--no-babelrc` so it doesnt use the frontend babel config.
 
 
 ###### Compromises:

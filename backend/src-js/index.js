@@ -10,10 +10,10 @@ const engine = new Liquid()
 const app = express()
 const ipv4address = internalIp.v4.sync()
 
-const distDir = path.resolve(__dirname, '..', 'dist')
+const distDir = path.resolve(__dirname, '..', '..', 'dist')
 
 app.engine('liquid', engine.express())
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.resolve(__dirname, '..', 'views'))
 app.set('view engine', 'liquid')
 
 app.use(express.static(distDir))

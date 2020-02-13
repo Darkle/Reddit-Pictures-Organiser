@@ -7,19 +7,19 @@
     "copy-assets": "cpy frontend/assets/**/* dist/assets",
     "dev": "run-s copy-assets dev-watch",
     "dev-watch": "concurrently npm:dev-watch-*",
-    "dev-watch-parcel": "delay 2 && cross-env NODE_ENV=development parcel watch frontend/js/index.js --out-dir dist/bundles",
-    "dev-watch-server": "cross-env NODE_ENV=development nodemon --watch backend --ext js,liquid backend/index.js",
+    "dev-watch-parcel": "cross-env NODE_ENV=development parcel watch frontend/js/index.js --out-dir dist/bundles",
+    "dev-watch-server-babel": "delay 7 && cross-env NODE_ENV=development babel backend/src-js/ -d backend/lib-js/ --no-babelrc --presets=@babel/preset-flow --watch",
+    "dev-watch-server-nodemon": "delay 8 && cross-env NODE_ENV=development nodemon --watch backend --ext js,liquid backend/lib-js/index.js",
     "prod": "run-s prod-**",
+    "prod-server-build": "cross-env NODE_ENV=production babel backend/src-js/ -d backend/lib-js/ --no-babelrc --presets=@babel/preset-flow",
     "prod-parcel-build": "cross-env NODE_ENV=production parcel build frontend/js/index.js --out-dir dist/bundles --no-source-maps --detailed-report",
     "prod-show-report": "cpy dist/bundles/report.html ./ && trash dist/bundles/report.html && open-cli ./report.html",
     "prod-type-check": "flow",
     "prod-lint": "eslint frontend/**/*.js backend/**/*.js",
     "prod-test": "jest"
   },
-  "watchreload": {
-    "files": "backend/**/*"
-  },
   "dependencies": {
+    "@babel/preset-flow": "^7.8.3",
     "cross-env": "^7.0.0",
     "express": "^4.17.1",
     "internal-ip": "^5.0.0",
@@ -29,6 +29,7 @@
     "unstated-next": "^1.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
@@ -52,7 +53,6 @@
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-bundle-visualiser": "^1.2.0",
     "parcel-plugin-nuke-dist": "^1.0.1",
-    "parcel-plugin-watch-reload": "0.0.2",
     "trash-cli": "^3.0.0"
   },
   "repository": {
