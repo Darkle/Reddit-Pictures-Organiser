@@ -1,5 +1,6 @@
 module.exports = {
   presets: [
+    '@babel/preset-flow',
     [
       '@babel/preset-env',
       {
@@ -16,6 +17,6 @@ module.exports = {
       {
         ISDEV: process.env.NODE_ENV !== 'production'
       }
-    ]    
+    ]
   ]
 }

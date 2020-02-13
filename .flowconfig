@@ -1,0 +1,17 @@
+[ignore]
+.*/node_modules/@parcel/watcher/test/tmp/config.json
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+suppress_comment= \\(.\\|\n\\)*\\@flow-ignore-line
+esproposal.class_instance_fields=enable
+esproposal.class_static_fields=enable
+esproposal.optional_chaining=enable
+esproposal.nullish_coalescing=enable
+[strict]
+
+[declarations]

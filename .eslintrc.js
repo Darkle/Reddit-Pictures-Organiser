@@ -1,5 +1,6 @@
 module.exports = {
-  parserOptions: {
+  parser: 'babel-eslint',
+    parserOptions: {
     ecmaVersion: 2020,
     sourceType: "module",
     ecmaFeatures: {
@@ -10,6 +11,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:flowtype/recommended',
     'plugin:react/all'
   ],
   globals: {
@@ -25,6 +27,7 @@ module.exports = {
   settings: {
   },
   plugins: [
+    "flowtype",
     "react",
     "react-hooks"
   ],
