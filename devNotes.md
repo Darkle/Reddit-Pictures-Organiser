@@ -20,12 +20,13 @@
   * It is set up in the eslint config and also as a npm script to check on build
   * For some reason this file (/node_modules/@parcel/watcher/test/tmp/config.json) breaks flow as it is not proper json, so we have set flow to ignore it in the `.flowconfig`
   * Parceljs automatically strips the flow typings out
-  * The `dev-watch-server-babel` npm script runs babel to strip out the flow typings of the backend code. That's why we have the backend/src-js folder and the backend/lib-js folder.
-    * This script also uses the `--no-babelrc` so it doesnt use the frontend babel config.
+  * In dev, the `dev-watch-server` npm script runs [babel-node](https://babeljs.io/docs/en/babel-node) via nodemon to strip out the flow typings of the backend code in dev.
+  * In prod, we the `prod-server-build` npm script that just uses babel to strip it out and outputs it to a `backend/lib-js`. That's why we have the backend/src-js folder and the backend/lib-js folder, so we can keep the same folder structure.
+  * Both scripts use the `--no-babelrc` so it doesnt use the frontend babel config.
 
 
 ###### Compromises:
-* We forgo cache busting via hashing for js as there doesnt seem to be a way to tell parcel to do that if its not handling the html file. 
+* We forgo cache busting via hashing for js as there doesnt seem to be a way to tell parcel to do that if its not handling the html file.
   * Although it is still possible to do it on the server via the [ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag)
 
 

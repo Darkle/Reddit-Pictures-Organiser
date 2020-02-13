@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node backend/lib-js/index.js",
     "install-flow-types": "flow-typed install",
     "copy-assets": "cpy frontend/assets/**/* dist/assets",
     "dev": "run-s copy-assets dev-watch",
     "dev-watch": "concurrently npm:dev-watch-*",
     "dev-watch-parcel": "cross-env NODE_ENV=development parcel watch frontend/js/index.js --out-dir dist/bundles",
-    "dev-watch-server-babel": "delay 7 && cross-env NODE_ENV=development babel backend/src-js/ -d backend/lib-js/ --no-babelrc --presets=@babel/preset-flow --watch",
-    "dev-watch-server-nodemon": "delay 8 && cross-env NODE_ENV=development nodemon --watch backend --ext js,liquid backend/lib-js/index.js",
+    "dev-watch-server": "delay 7 && cross-env NODE_ENV=development nodemon --exec \"babel-node --no-babelrc --presets=@babel/preset-flow\" --watch backend --ext js,liquid backend/src-js/index.js",
     "prod": "run-s prod-**",
     "prod-server-build": "cross-env NODE_ENV=production babel backend/src-js/ -d backend/lib-js/ --no-babelrc --presets=@babel/preset-flow",
     "prod-parcel-build": "cross-env NODE_ENV=production parcel build frontend/js/index.js --out-dir dist/bundles --no-source-maps --detailed-report",
@@ -20,7 +20,6 @@
     "prod-test": "jest"
   },
   "dependencies": {
-    "@babel/preset-flow": "^7.8.3",
     "cross-env": "^7.0.0",
     "express": "^4.17.1",
     "internal-ip": "^5.0.0",
@@ -32,7 +31,9 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "@babel/preset-flow": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
     "babel-eslint": "^10.0.3",
     "babel-plugin-inline-replace-variables": "^1.3.1",
