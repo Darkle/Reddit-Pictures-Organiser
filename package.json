@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install-flow-types": "flow-typed install",
     "copy-assets": "cpy frontend/assets/**/* dist/assets",
     "dev": "run-s copy-assets dev-watch",
     "dev-watch": "concurrently npm:dev-watch-*",
@@ -44,6 +45,7 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.3.0",
     "flow-bin": "^0.118.0",
+    "flow-typed": "^2.6.2",
     "jest": "^25.1.0",
     "ms.macro": "^2.0.0",
     "nodemon": "^2.0.2",
