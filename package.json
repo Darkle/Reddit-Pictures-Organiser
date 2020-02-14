@@ -14,10 +14,11 @@
     "prod": "run-s prod-**",
     "prod-server-build": "cross-env NODE_ENV=production babel backend/src-js/ -d backend/lib-js/ --no-babelrc --presets=@babel/preset-flow",
     "prod-parcel-build": "cross-env NODE_ENV=production parcel build frontend/js/index.js --out-dir dist/bundles --no-source-maps --detailed-report",
-    "prod-show-report": "cpy dist/bundles/report.html ./ && trash dist/bundles/report.html && open-cli ./report.html",
     "prod-type-check": "flow",
-    "prod-lint": "eslint frontend/**/*.js backend/**/*.js",
-    "prod-test": "jest"
+    "prod-lint": "eslint frontend/**/*.js backend/**/*.js --ignore-pattern backend/lib-js/**/*",
+    "prod-test": "jest",
+    "prod-bundle-report": "cpy dist/bundles/report.html ./reports && trash dist/bundles/report.html && open-cli ./reports/report.html",
+    "prod-flow-coverage": "flow-coverage-report -i 'backend/**/*.js' -i 'frontend/**/*.js' -t html --output-dir reports --exclude-glob backend/lib-js/**/* || true && open-cli ./reports/index.html"
   },
   "dependencies": {
     "cross-env": "^7.0.0",
@@ -35,6 +36,7 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-flow": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
+    "@cumulusds/flow-coverage-report": "0.0.3",
     "babel-eslint": "^10.0.3",
     "babel-plugin-inline-replace-variables": "^1.3.1",
     "babel-plugin-macros": "^2.8.0",

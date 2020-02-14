@@ -2,7 +2,7 @@ module.exports = {
   parser: 'babel-eslint',
     parserOptions: {
     ecmaVersion: 2020,
-    sourceType: "module",
+    sourceType: 'module',
     ecmaFeatures: {
       globalReturn: true,
       impliedStrict: true,
@@ -25,11 +25,14 @@ module.exports = {
     greasemonkey: true,
   },
   settings: {
+    react:{
+      version: 'detect'
+    }
   },
   plugins: [
-    "flowtype",
-    "react",
-    "react-hooks"
+    'flowtype',
+    'react',
+    'react-hooks'
   ],
   rules: {
     'array-callback-return': 'error',
@@ -37,6 +40,33 @@ module.exports = {
     'complexity': ['error', 4],
     'consistent-return': 'error',
     'eqeqeq': 'error',
+    'flowtype/no-dupe-keys': 'error',
+    'flowtype/no-types-missing-file-annotation': 'error',
+    'flowtype/no-primitive-constructor-types': 'error',
+    'flowtype/require-exact-type': [
+      'error',
+      'always'
+    ],
+    'flowtype/require-parameter-type': [
+        'error',
+        {
+          'excludeArrowFunctions': true
+        }
+    ],
+    'flowtype/require-readonly-react-props': 'error',
+    'flowtype/require-return-type': [
+        'error',
+        'always',
+        {
+          'excludeArrowFunctions': true
+        }
+    ],
+    'flowtype/require-valid-file-annotation': [
+      'error',
+      'always'
+    ],
+    'flowtype/space-after-type-colon': 'off',
+    'flowtype/spread-exact-type': 'error',
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
     'max-depth': ['error', 3],
@@ -77,7 +107,7 @@ module.exports = {
         max: 1,
       }
     ],
-    'no-multi-spaces': ["error", { ignoreEOLComments: false }],
+    'no-multi-spaces': ['error', { ignoreEOLComments: false }],
     'no-new-require': 'error',
     'no-octal-escape': 'error',
     'no-param-reassign': 'error',
@@ -93,7 +123,7 @@ module.exports = {
     'no-undefined': 'error',
     'no-undef-init': 'error',
     'no-unneeded-ternary': 'error',
-    'no-unused-vars': ['error', {'args': 'after-used', "argsIgnorePattern": "_" }],
+    'no-unused-vars': ['error', {'args': 'after-used', 'argsIgnorePattern': '_' }],
     'no-use-before-define': 'error',
     'no-useless-constructor': 'error',
     'no-useless-computed-key': 'error',
@@ -142,19 +172,19 @@ module.exports = {
     ],
     'radix': 'error',
     'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx', '.lsc', '.lsx'] }],
-    'react/jsx-indent': "off",
-    'react/jsx-no-literals': "off",
-    'react/jsx-one-expression-per-line': "off",
-    'react/jsx-curly-newline': "off",
-    'react/jsx-indent-props': "off",
-    'react/jsx-sort-props': "off",
-    'react/jsx-max-props-per-line': [1, { "maximum": 2 }],
-    'react/jsx-max-depth': [1, { "max": 4 }],
-    'react/jsx-no-bind': [1, { "allowArrowFunctions": true, 'allowFunctions': true }],
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react/no-did-update-set-state": "error",
-    "react/no-unknown-property": "off",
+    'react/jsx-indent': 'off',
+    'react/jsx-no-literals': 'off',
+    'react/jsx-one-expression-per-line': 'off',
+    'react/jsx-curly-newline': 'off',
+    'react/jsx-indent-props': 'off',
+    'react/jsx-sort-props': 'off',
+    'react/jsx-max-props-per-line': [1, { 'maximum': 2 }],
+    'react/jsx-max-depth': [1, { 'max': 4 }],
+    'react/jsx-no-bind': [1, { 'allowArrowFunctions': true, 'allowFunctions': true }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'error',
+    'react/no-did-update-set-state': 'error',
+    'react/no-unknown-property': 'off',
     'require-atomic-updates': 'error',
     'require-unicode-regexp': 'error',
     'rest-spread-spacing': ['error', 'never'],

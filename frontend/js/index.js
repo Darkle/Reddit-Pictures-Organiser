@@ -8,13 +8,11 @@ import '../css/index.css'
 const mountNode = document.getElementById('app')
 
 mountNode && render(<h1>Hello</h1>, mountNode)
+const fn = (arr: Array<string | number>) => {
+  // arr.push(123) NOTE! Array<string> passed in and after this it would also include numbers if allowed
+  return arr
+}
 
-type Point2d = {|
-  x: number,
-  y: number
-|};
-const myPoint: Point2d = {
-  X: 1,
-  y: 2
-};
-console.log(myPoint.x, myPoint.y)
+const arr: Array<string> = ['abc']
+
+fn(arr)
