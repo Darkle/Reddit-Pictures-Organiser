@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "snowpack --include \"frontend/**/*.js\" --dest frontend/js/web_modules",
+    "dev": "reload --watch-dir frontend --dir frontend --port 8888",
     "build": "run-s lint test minify-** size-check",
     "lint": "eslint frontend/**/*.js backend/**/*.js",
     "test": "jest",
@@ -13,13 +14,16 @@
     "size-check": "bundlesize -f \"frontend/**/*.js\" -s 20kB"
   },
   "dependencies": {
-    "sinuous": "^0.24.2"
+    "localforage": "^1.7.3",
+    "statezero": "^0.5.5",
+    "yo-yo": "^1.4.1"
   },
   "devDependencies": {
     "bundlesize": "^0.18.0",
     "eslint": "^6.8.0",
     "jest": "^25.1.0",
     "npm-run-all": "^4.1.5",
+    "reload": "^3.0.4",
     "snowpack": "^1.2.0"
   },
   "browserslist": "last 3 Chrome version, Firefox ESR",
