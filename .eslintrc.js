@@ -42,6 +42,7 @@ module.exports = {
     'eqeqeq': 'error',
     'flowtype/no-dupe-keys': 'error',
     'flowtype/no-types-missing-file-annotation': 'error',
+    'flowtype/no-mutable-array': 'error',
     'flowtype/no-primitive-constructor-types': 'error',
     'flowtype/require-exact-type': [
       'error',

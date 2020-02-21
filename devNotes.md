@@ -6,7 +6,6 @@
 * [Parcel](https://parceljs.org) for bundling
   * Parcel also reloads the page on frontend change
   * Parcel also minifies on build
-* Using [jest](https://jestjs.io/) for tests
 * [concurrently](https://github.com/kimmobrunfeldt/concurrently) allows us to run all the dev scripts at once in parallel with one command.
 * The `run-s` in the package.json script is just a shortcut for the [npm-run-all](https://github.com/mysticatea/npm-run-all) program. It runs the npm prod scripts in serial (one after the other).
 * We are using the following babel plugins, presets and macros:
@@ -23,6 +22,9 @@
   * In dev, the `dev-watch-server` npm script runs [babel-node](https://babeljs.io/docs/en/babel-node) via nodemon to strip out the flow typings of the backend code in dev.
   * In prod, we the `prod-server-build` npm script that just uses babel to strip it out and outputs it to a `backend/lib-js`. That's why we have the backend/src-js folder and the backend/lib-js folder, so we can keep the same folder structure.
   * Both scripts use the `--no-babelrc` so it doesnt use the frontend babel config.
+* Using [jest](https://jestjs.io/) for tests
+* We have a js bundle report generated on prod build that opens in the browser
+* We have a flow coverage report generated on prod build that opens in the browser
 
 
 ###### Compromises:
