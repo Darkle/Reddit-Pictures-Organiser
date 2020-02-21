@@ -1,6 +1,5 @@
 module.exports = {
-  parser: 'babel-eslint',
-    parserOptions: {
+  parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
@@ -10,9 +9,7 @@ module.exports = {
     }
   },
   extends: [
-    'eslint:recommended',
-    'plugin:flowtype/recommended',
-    'plugin:react/all'
+    'eslint:recommended'
   ],
   globals: {
 
@@ -25,14 +22,8 @@ module.exports = {
     greasemonkey: true,
   },
   settings: {
-    react:{
-      version: 'detect'
-    }
   },
   plugins: [
-    'flowtype',
-    'react',
-    'react-hooks'
   ],
   rules: {
     'array-callback-return': 'error',
@@ -40,34 +31,6 @@ module.exports = {
     'complexity': ['error', 4],
     'consistent-return': 'error',
     'eqeqeq': 'error',
-    'flowtype/no-dupe-keys': 'error',
-    'flowtype/no-types-missing-file-annotation': 'error',
-    'flowtype/no-mutable-array': 'error',
-    'flowtype/no-primitive-constructor-types': 'error',
-    'flowtype/require-exact-type': [
-      'error',
-      'always'
-    ],
-    'flowtype/require-parameter-type': [
-        'error',
-        {
-          'excludeArrowFunctions': true
-        }
-    ],
-    'flowtype/require-readonly-react-props': 'error',
-    'flowtype/require-return-type': [
-        'error',
-        'always',
-        {
-          'excludeArrowFunctions': true
-        }
-    ],
-    'flowtype/require-valid-file-annotation': [
-      'error',
-      'always'
-    ],
-    'flowtype/space-after-type-colon': 'off',
-    'flowtype/spread-exact-type': 'error',
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
     'max-depth': ['error', 3],
@@ -100,6 +63,7 @@ module.exports = {
         ignoreArrayIndexes: true,
         enforceConst: true,
         detectObjects: true,
+        ignore: [0, 1]
       }
     ],
     'no-multiple-empty-lines': [
@@ -172,20 +136,6 @@ module.exports = {
       }
     ],
     'radix': 'error',
-    'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx', '.lsc', '.lsx'] }],
-    'react/jsx-indent': 'off',
-    'react/jsx-no-literals': 'off',
-    'react/jsx-one-expression-per-line': 'off',
-    'react/jsx-curly-newline': 'off',
-    'react/jsx-indent-props': 'off',
-    'react/jsx-sort-props': 'off',
-    'react/jsx-max-props-per-line': [1, { 'maximum': 2 }],
-    'react/jsx-max-depth': [1, { 'max': 4 }],
-    'react/jsx-no-bind': [1, { 'allowArrowFunctions': true, 'allowFunctions': true }],
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'error',
-    'react/no-did-update-set-state': 'error',
-    'react/no-unknown-property': 'off',
     'require-atomic-updates': 'error',
     'require-unicode-regexp': 'error',
     'rest-spread-spacing': ['error', 'never'],

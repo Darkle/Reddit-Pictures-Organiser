@@ -1,18 +1,25 @@
-// @flow
-// flow-ignore-next-line-all-rules
-if (module.hot) module.hot.accept()
-import React from 'react'
-import { render } from 'react-dom'
-import '../css/index.css'
+import { observable, html } from './web_modules/sinuous.js'
 
-const mountNode = document.getElementById('app')
+const oneSecondInMS = 1000
+const seconds = observable(0)
+const Timer = props => {
+  // Create an obervable with number `0`.
 
-mountNode && render(<h1>Hello</h1>, mountNode)
-const fn = (arr: $ReadOnlyArray<string | number>) => {
-  // arr.push(123) NOTE! Array<string> passed in and after this it would also include numbers if allowed
-  return arr
+  function tick() {
+    // Get the current value and increment the value with 1.
+    seconds(seconds() + 1)
+  }
+  setInterval(tick, oneSecondInMS)
+
+  // Creates the view of this component.
+  return html`
+    <div>${props.unit}: ${seconds}</div>
+  `
 }
 
-const arr: $ReadOnlyArray<string> = ['abc']
-
-fn(arr)
+document.querySelector('#app').append(
+  // Use the component and pass some props.
+  html`
+    <${Timer} unit="Seconds" />
+  `
+)
