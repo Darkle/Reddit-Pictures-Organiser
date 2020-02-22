@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "snowpack --include \"frontend/**/*.js\" --dest frontend/js/web_modules",
-    "dev": "reload --watch-dir frontend --dir frontend --port 8888",
+    "prepare": "snowpack --include \"js/**/*.js\" --dest js/web_modules",
+    "dev": "reload --watch-dir js --dir js --port 8888",
     "build": "run-s lint test minify-** size-check",
-    "lint": "eslint frontend/**/*.js backend/**/*.js",
+    "lint": "eslint js/**/*.js",
     "test": "jest",
-    "minify-vendor-js": "snowpack --include \"frontend/**/*.js\" --optimize --clean --dest frontend/js/web_modules",
-    "minify-frontend-js-css": "minify --recursive --output frontend frontend --match=\\.js --match=\\.css",
-    "size-check": "bundlesize -f \"frontend/**/*.js\" -s 20kB"
+    "minify-vendor-js": "snowpack --include \"js/web_modules/**/*.js\" --optimize --clean --dest js/web_modules",
+    "minify-frontend-js-css": "minify --recursive --output js js --match=\\.js --match=\\.css",
+    "size-check": "bundlesize -f \"js/**/*.js\" -s 20kB"
   },
   "dependencies": {
     "localforage": "^1.7.3",
