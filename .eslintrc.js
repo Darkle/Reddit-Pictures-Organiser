@@ -1,4 +1,5 @@
 module.exports = {
+  parser: "babel-eslint",
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
@@ -89,7 +90,7 @@ module.exports = {
     'no-undef-init': 'error',
     'no-unneeded-ternary': 'error',
     'no-unused-vars': ['error', {'args': 'after-used', 'argsIgnorePattern': '_' }],
-    'no-use-before-define': 'error',
+    'no-use-before-define': ["error", { "functions": false}],
     'no-useless-constructor': 'error',
     'no-useless-computed-key': 'error',
     'no-unused-expressions': [
