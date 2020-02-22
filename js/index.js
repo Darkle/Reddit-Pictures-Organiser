@@ -22,3 +22,4 @@ const el = list([
 ])
 
 document.querySelector('#app').appendChild(el)
+console.log('asd')
