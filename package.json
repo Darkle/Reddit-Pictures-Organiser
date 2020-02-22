@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "localforage": "^1.7.3",
-    "statezero": "^0.5.5",
+    "nanoevents": "^4.0.0",
     "yo-yo": "^1.4.1"
   },
   "devDependencies": {

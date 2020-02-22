@@ -1,11 +1,13 @@
 import yo from './web_modules/yo-yo.js'
 import localforage from './web_modules/localforage.js'
-import { action, subscribe, setState } from './web_modules/statezero.js'
+import createNanoEvents from './web_modules/nanoevents.js'
 
 localforage.config({
   name: 'Reddit Pictures Organiser'
 })
 localforage.setItem('key', 'valueww').catch(err => console.error(err))
+
+const emitter = createNanoEvents()
 
 // folders state structure
 /*
@@ -22,63 +24,74 @@ folders : {
 */
 // and to get all folders, just us Object.keys(folders)
 // to get folder images would just be folders['folder 1'].images
+var el = list([
+  'grizzly',
+  'polar',
+  'brown'
+])
 
-setState('folders', foldersArrayWeGotFromLocalForage)
+function list (items) {
+  return yo`<ul>
+    ${items.map(function (item) {
+      return yo`<li>${item}</li>`
+    })}
+  </ul>`
+}
 
-const addFolder = action(({ commit, state }, newFolder) => {
+document.body.appendChild(el)
+
+const state = {
+  folders : {
+    'folder 1':{
+      // foldersArrayWeGotFromLocalForage
+      'https://reddit post url' : {
+
+      },
+      'https://reddit post url 2' : {
+
+      },
+    }
+  },
+  subreddits: [ //subsArrayWeGotFromLocalForage
+    'foo',
+    'bar',
+  ],
+  favouriteSubreddits: [ //faveSubsArrayWeGotFromLocalForage
+    'foo',
+    'bar',
+  ]
+}
+
+emitter.on('add-folder', newFolder => {
   state.folders[newFolder] = {}
-  commit(state)
 })
 
-const removeFolder = action(({ commit, state }, folderToRemove) => {
-  delete state.folders[folderToRemove]
-  commit(state)
+emitter.on('remove-folder', folderToRemove => {
+ delete state.folders[folderToRemove]
 })
 
-const addImageToFolder = action(({ commit, state }, folder, image) => {
+emitter.on('add-image-to-folder', (folder, image) => {
   const imageRedditPostUrl = image.thing
   state.folders[folder][imageRedditPostUrl] = image
-  commit(state)
 })
 
-const removeImageFromFolder = action(({ commit, state }, folder, imageToRemove) => {
+emitter.on('remove-image-from-folder', (folder, imageToRemove) => {
   const imageRedditPostUrl = imageToRemove.thing
   delete state.folders[folder][imageRedditPostUrl]
-  commit(state)
 })
 
-// subreddits structure
-// [
-//   'sub1',
-//   'sub2'
-// ]
-
-setState('subreddits', subsArrayWeGotFromLocalForage)
-
-const addSubreddit = action(({ commit, state }, newSub) => {
+emitter.on('add-subreddit', newSub => {
   state.subreddits.push(newSub)
-  commit(state)
 })
 
-const removeSubreddit = action(({ commit, state }, subToRemove) => {
-  //state.subreddits.push(newSub) omit sub
-  commit(state)
+emitter.on('remove-subreddit', subToRemove => {
+  state.subreddits = state.subreddits.filter(sub => sub !== subToRemove)
 })
 
-// favouriteSubreddits structure
-// [
-//   'sub1',
-//   'sub2'
-// ]
-
-setState('favouriteSubreddits', faveSubsArrayWeGotFromLocalForage)
-
-const addFavSubreddit = action(({ commit, state }, newFavSub) => {
-  state.subreddits.push(newSub)
-  commit(state)
+emitter.on('add-favourite-subreddit', newSub => {
+  state.favouriteSubreddits.push(newSub)
 })
 
-const removeFavSubreddit = action(({ commit, state }, subToRemove) => {
-  //state.subreddits.push(newSub) omit sub
-  commit(state)
+emitter.on('remove-favourite-subreddit', subToRemove => {
+  state.favouriteSubreddits = state.favouriteSubreddits.filter(sub => sub !== subToRemove)
 })
