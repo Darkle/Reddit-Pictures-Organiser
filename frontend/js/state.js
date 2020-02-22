@@ -1,4 +1,4 @@
-import createNanoEvents from './web_modules/nanoevents.js'
+import createNanoEvents from 'web_modules/nanoevents.js'
 
 const emitter = createNanoEvents()
 

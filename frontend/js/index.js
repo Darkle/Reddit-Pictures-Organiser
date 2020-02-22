@@ -1,5 +1,5 @@
-import html from './web_modules/yo-yo.js'
-import localforage from './web_modules/localforage.js'
+import html from 'web_modules/yo-yo.js'
+import localforage from 'web_modules/localforage.js'
 
 import {emitter} from './state.js'
 
@@ -22,4 +22,3 @@ const el = list([
 ])
 
 document.querySelector('#app').appendChild(el)
-console.log('foo')
