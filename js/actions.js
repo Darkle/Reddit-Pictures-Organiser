@@ -7,13 +7,15 @@ import {log} from './logger.js'
 const emitter = createNanoEvents()
 
 emitter.on('add-folder', newFolder => {
-  appState.folders[newFolder] = {}
+  const folder = newFolder.toLowerCase()
+  appState.folders[folder] = {}
   localforage.setItem('folders', appState.folders).catch(log)
 })
 
 emitter.on('remove-folder', folderToRemove => {
- delete appState.folders[folderToRemove]
- localforage.setItem('folders', appState.folders).catch(log)
+  const folder = folderToRemove.toLowerCase()
+  delete appState.folders[folder]
+  localforage.setItem('folders', appState.folders).catch(log)
 })
 
 emitter.on('add-image-to-folder', (folder, image) => {
@@ -46,12 +48,12 @@ emitter.on('add-favourite-subreddit', newSub => {
   const sub = newSub.toLowerCase()
   if(appState.favouriteSubreddits.includes(sub)) return
   appState.favouriteSubreddits.push(sub)
-  localforage.setItem('favouriteSubreddits', appState.subreddits).catch(log)
+  localforage.setItem('favouriteSubreddits', appState.favouriteSubreddits).catch(log)
 })
 
 emitter.on('remove-favourite-subreddit', subToRemove => {
   appState.favouriteSubreddits = appState.favouriteSubreddits.filter(sub => sub !== subToRemove)
-  localforage.setItem('favouriteSubreddits', appState.subreddits).catch(log)
+  localforage.setItem('favouriteSubreddits', appState.favouriteSubreddits).catch(log)
 })
 /*****
   We dont bother storing fetched-subreddit-images to localforage, its fine being ephemeral

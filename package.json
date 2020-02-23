@@ -16,10 +16,7 @@
   "dependencies": {
     "localforage": "^1.7.3",
     "nanoevents": "^4.0.0",
-    "nanohtml": "^1.9.0",
-    "nanomorph": "^5.4.0",
     "page": "^1.11.5",
-    "snabbx": "^1.2.1",
     "yo-yo": "^1.4.1"
   },
   "devDependencies": {

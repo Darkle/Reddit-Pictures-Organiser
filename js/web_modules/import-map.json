@@ -3,7 +3,6 @@
     "localforage": "./localforage.js",
     "nanoevents": "./nanoevents.js",
     "page": "./page.js",
-    "snabbx": "./snabbx.js",
     "yo-yo": "./yo-yo.js"
   }
 }

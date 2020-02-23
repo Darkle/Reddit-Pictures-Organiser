@@ -31,6 +31,7 @@ Change color of stuff to #F49A87 when click/tap
   padding: 10px;
   display: flex;
   align-items: center;
+  text-transform: capitalize;
 }
 
 .homepage .subreddit .favouriteStar{

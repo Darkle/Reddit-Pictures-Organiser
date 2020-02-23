@@ -1,12 +1,13 @@
-import {html, render} from '../web_modules/snabbx.js'
+import html from '../web_modules/yo-yo.js'
 import page from '../web_modules/page.js'
 
 import {appState} from '../appState.js'
 import { $ } from '../utils.js'
 
 function loadHomePage() {
+  console.log('home apge loading')
   document.title = 'RPO'
-  render($('#app'), homePage())
+  html.update($('#app'), homePage())
 }
 
 function homePage(){
@@ -22,6 +23,7 @@ function homePage(){
 }
 
 function listOfSubreddits(items) {
+  if(!items?.length) return html`No Images Found`
   return items.map(subName =>
     html`
       <div class="subreddit" onmouseup=${ () => page(`/sub/${subName}`) }>
@@ -32,7 +34,6 @@ function listOfSubreddits(items) {
 }
 
 function showStarIfFavouritedSub(subName) {
-  console.log(appState.favouriteSubreddits)
   const subIsAFavourite = appState.favouriteSubreddits.includes(subName)
   if(!subIsAFavourite) return ''
 
@@ -47,7 +48,7 @@ function showStarIfFavouritedSub(subName) {
     `
 }
 /*****
-  Subs sorted favourites first and both sets are sorted a-z
+  Subs sorted favourites first and both sets are sorted
 *****/
 function sortSubs({subreddits, favouriteSubreddits}) {
   const sortedNonfavSubs = subreddits.filter(sub => !favouriteSubreddits.includes(sub)).sort()

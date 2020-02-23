@@ -38,7 +38,8 @@ function processImages(images) {
 function filterImages(images) {
   return images.filter(({data: image}) => { // eslint-disable-line complexity
     if(image.stickied) return false
-
+    // reddit cross-posts start with '/'
+    if(image.url.startsWith('/')) return false
     const {hostname:imageDomain, pathname} = new URL(image.url)
     
     if(imageDomain === 'imgur.com' && notImgurGallery(pathname)) return true
