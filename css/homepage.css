@@ -28,39 +28,12 @@ Change color of stuff to #F49A87 when click/tap
   flex-grow: 1;
   color: #fff4e8;
   border: 1px solid #737373;
-  overflow: hidden;
-  width: 100px;
-  text-overflow: ellipsis;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
   display: flex;
   align-items: center;
 }
-/*.homepage .subreddit:after{
-    content:'';
-    position: absolute;
-    left:300px;
-    margin-left: -40px;
-    width: 40px;
-    height:100%;
-    top:0;
-    background:linear-gradient(to right, rgba(240, 244, 245, 0), rgba(240, 244, 245, 1));
-}*/
-.homepage .subreddit span{
-  margin-right: 10px;
 
-  margin-top: -2px;
+.homepage .subreddit .favouriteStar{
+  margin-right: 4px;
 }
 
-.homepage .overflowTextHider:after{
-  content: '';
-  position: absolute;
-  /* left: 300px; */
-  margin-left: -21px;
-  width: 20px;
-  height: 40px;
-  /* top: 0; */
-  background: linear-gradient(to right, rgba(240, 244, 245, 0), rgba(240, 244, 245, 1));
-}

@@ -1,0 +1,16 @@
+.subredditPage{
+  display: flex;
+  flex-wrap: wrap;
+}
+.subredditPage .thumbnail-container{
+  width: 100px;
+  height: 100px;
+  margin: 1px;
+  overflow: hidden;
+  flex-grow: 1;
+  justify-content: center;
+  display: flex;
+}
+.subredditPage .thumbnail{
+  object-fit: cover;
+}

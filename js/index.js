@@ -1,71 +1,36 @@
-import html from './web_modules/yo-yo.js'
-import localforage from './web_modules/localforage.js'
+import page from './web_modules/page.js'
 
-import {emitter} from './state.js'
+import { appState } from './appState.js'
+import {init as initDb} from './db.js'
+import {log} from './logger.js'
+import {loadHomePage} from './views/homePage.js'
+import {loadSubredditPage} from './views/subredditPage.js'
+import {loadImageViewer} from './imageViewer.js'
 
-localforage.config({
-  name: 'Reddit Pictures Organiser'
-})
+//we need a router for back/forwards
 
-// localforage.getItem('subreddits').then(subs => {
-//   if(!subs?.length){
-//     // show management thing
-//   }
-//   else{
-//     // show frontpage subs grid
-//   }
-// }).catch(myLogger)
+initDb().then(initRouter).catch(log)
 
-const subs = [
-'Aww',
-'Cats',
-'Puppies',
-'Cute',
-'RedPandas',
-'AwwGifs',
-'Foxes',
-'HardcoreAww',
-'Rabbits',
-'CatGifs',
-'CatsStandingUp',
-'DogPictures',
-'Pics',
-'Photography',
-'Earth',
-'Space',
-'GIFs',
-'HDR',
-'Abandoned',
-'Future',
-'Food',
-'Animals',
-'Maps',
-'Art',
-]
-
-function listOfSubreddits(items) {
-  return items.map((subName, index) =>
-     html`
-     <div class="subreddit">
-     ${index < 14 ? html`<span>🌟</span>` : ''}
-      <div>${subName}</div>
-    </div>
-  `)
-}
-//<div onmouseup=${ () => emitter.emit('add-subreddit', item) }>${item}</div>
-
-function homePage(items){
-  return html`
-    <main class="homepage">
-      <div class="manageWrapper">
-        <div class="folders">Folders</div>
-        <div class="manage">Manage</div>
-      </div>
-      ${listOfSubreddits(items)}
-    </main>
-  `
+function initRouter(){ // eslint-disable-line max-lines-per-function
+  page('/', loadHomePage)
+  page('/sub/:subreddit', loadSubredditPage)
+  page.exit('/sub/:subreddit', () => {
+    appState.viewingSubredditPage = false
+  })
+  page('/sub/imageviewer/:subreddit', loadImageViewer)
+  page('/folders', () => {
+    document.title = `RPO - Folders`
+  })
+  page('/manage', () => {
+    document.title = `RPO - Manage Subs`
+  })
+  page('*', () => {
+    log('log error here for 404')
+    // redirect back to home page
+    page('/')
+  })
+  page({
+    hashbang: true
+  })
 }
 
-const el = homePage(subs)
-
-document.querySelector('#app').appendChild(el)

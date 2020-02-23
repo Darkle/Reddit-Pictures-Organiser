@@ -1,4 +1,4 @@
-import { c as createCommonjsModule, a as commonjsGlobal, b as commonjsRequire } from './common/_commonjsHelpers-af34bf1c.js';
+import { c as createCommonjsModule, a as commonjsGlobal, b as commonjsRequire } from './common/_commonjsHelpers-a1c50d10.js';
 
 var localforage = createCommonjsModule(function (module, exports) {
 /*!

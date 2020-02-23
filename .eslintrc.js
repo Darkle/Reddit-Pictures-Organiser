@@ -85,7 +85,7 @@ module.exports = {
     'no-shadow': 'error',
     'no-self-compare': 'error',
     'no-throw-literal': 'error',
-    'no-trailing-spaces': 'error',
+    'no-trailing-spaces': 'off',
     'no-undefined': 'error',
     'no-undef-init': 'error',
     'no-unneeded-ternary': 'error',
