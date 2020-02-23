@@ -2,7 +2,9 @@
   "imports": {
     "localforage": "./localforage.js",
     "nanoevents": "./nanoevents.js",
+    "navigo": "./navigo.js",
     "page": "./page.js",
+    "silkrouter": "./silkrouter.js",
     "yo-yo": "./yo-yo.js"
   }
 }
