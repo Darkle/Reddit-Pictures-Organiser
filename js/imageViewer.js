@@ -1,4 +1,4 @@
-import page from './web_modules/page.js'
+// import page from './web_modules/page.js'
 
 import {appState} from './appState.js'
 
@@ -8,12 +8,12 @@ function loadImageViewer({params:{subreddit}}) {
   We dont have the images stored if the user reloads the page to the image viewer,
   so load the subreddit page
   *****/
-  if(!appState.fetchedSubredditImages.length) {
-    page(`/sub/${subreddit}`)
-  }
-  else{
-    imageViewer()
-  }
+  // if(!appState.fetchedSubredditImages.length) {
+  //   page(`/sub/${subreddit}`)
+  // }
+  // else{
+  //   imageViewer()
+  // }
 }
 
 function imageViewer(params) {

@@ -65,7 +65,9 @@ emitter.on('remove-stored-fetched-subreddit-images', () => {
   appState.fetchedSubredditImages = []
 })
 /*****
-  
+  When we grab the subreddit images, we filter out some images and then store the filtered
+  ones in state. We need to store the last unfiltered image so that we dont start the next
+  fetch pagination from an earlier image post id.
 *****/
 emitter.on('store-last-fetched-subreddit-image', image => {
   appState.lastFetchedSubredditImage = image

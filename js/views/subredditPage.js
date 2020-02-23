@@ -9,8 +9,8 @@ import {$} from '../utils.js'
 function loadSubredditPage({params:{subreddit}}) {
   document.title = `RPO - ${subreddit}`
   /*****
-    appState.viewingSubredditPage is so we can cancel any pending fetch 
-    and renders if we are still doing that and the user navigates away.
+    appState.viewingSubredditPage is so we can cancel any pending 'fetch
+    and renders' that are still queued when the user navigates away.
   *****/
   appState.viewingSubredditPage = true
   // remove the old stored sub images
