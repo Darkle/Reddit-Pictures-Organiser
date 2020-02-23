@@ -14,15 +14,9 @@
     "size-check": "bundlesize -f \"js/**/*.js\" -s 20kB"
   },
   "dependencies": {
-    "easyrouter": "^2.0.2",
-    "kief": "^1.0.4",
     "localforage": "^1.7.3",
     "nanoevents": "^4.0.0",
-    "navaid": "^1.0.5",
     "navigo": "^7.1.2",
-    "page": "^1.11.5",
-    "silkrouter": "^3.5.3",
-    "vanilla-ui-router": "^1.2.2",
     "yo-yo": "^1.4.1"
   },
   "devDependencies": {

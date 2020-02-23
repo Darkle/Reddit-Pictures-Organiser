@@ -14,8 +14,8 @@ function homePage(){
  return html`
    <main id="app" class="homepage">
      <div class="manageWrapper">
-       <div class="folders" onmouseup=${ () => page(`/folders`) }>Folders</a>
-       <div class="manage" onmouseup=${ () => page(`/manage`) }>Manage</a>
+       <div class="folders" onmouseup=${ () => page('/folders') }>Folders</a>
+       <div class="manage" onmouseup=${ () => page('/manage') }>Manage</a>
      </div>
      ${listOfSubreddits(sortSubs(appState))}
    </main>
@@ -26,7 +26,7 @@ function listOfSubreddits(items) {
   if(!items?.length) return html`No Images Found`
   return items.map(subName =>
     html`
-      <div class="subreddit" onmouseup=${ () => page(`/sub/${subName}`) }>
+      <div class="subreddit" onmouseup=${ () => page('/sub/${subName}') }>
       ${showStarIfFavouritedSub(subName)}
       <div>${subName}</div>
       </div>

@@ -4,10 +4,10 @@
 const appState = {
   folders : {
     'folder 1':{
-      'https://reddit post url' : {
+      'imagePostIdHere' : {
 
       },
-      'https://reddit post url 2' : {
+      'imagePostIdHere2' : {
 
       },
     }
