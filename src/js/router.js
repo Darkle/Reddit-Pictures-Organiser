@@ -1,5 +1,4 @@
-// @flow
-import Navigo from 'navigo'
+import Navigo from './web_modules/navigo.js'
 
 import {loadHomePage} from './views/homePage.js'
 import {loadSubredditPage} from './views/subredditPage.js'

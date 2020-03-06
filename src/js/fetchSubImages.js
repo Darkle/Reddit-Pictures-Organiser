@@ -1,4 +1,3 @@
-//@flow
 import { emitter } from './actions.js'
 import { pipe } from './utils.js'
 import { appState } from './appState.js'

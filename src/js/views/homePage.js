@@ -1,7 +1,6 @@
-//@flow
-import { h, patch } from 'superfine'
+import { h, patch } from '../web_modules/superfine'
 
-import {appState} from '../appState.js'
+import {appStore} from '../store/store.js'
 import { $, setPageTitle } from '../utils.js'
 import { router } from '../router.js'
 
@@ -11,25 +10,25 @@ const homePage = state =>
     h('div', {class: 'folders', onmouseup: () => router?.navigate('/folders') }, 'Folders'),
     h('div', { class: 'manage', onmouseup: () => router?.navigate('/manage') }, 'Manage'),
    ]),
-   ...listOfSubreddits(sortSubs(state))
+   ...listOfSubreddits(state, sortSubs(state))
  ])
 
 function loadHomePage() {
   setPageTitle('RPO')
-  patch($('#app'), homePage(appState))
+  patch($('#app'), homePage(appStore))
 }
 
-function listOfSubreddits(subs:$ReadOnlyArray<string>):any {
+function listOfSubreddits(state, subs) {
   return !subs?.length ? [h(`No Images Found`)] : subs.map(subName =>
     h('div', {class: 'subreddit', onmouseup: () => router?.navigate('/sub/${subName}')}, [
-      showStarIfFavouritedSub(subName),
+      showStarIfFavouritedSub(state, subName),
       h('div', subName)
     ])
   )
 }
 
-function showStarIfFavouritedSub(subName:string):any {
-  const subIsAFavourite = appState.favouriteSubreddits?.includes(subName)
+function showStarIfFavouritedSub(state, subName) {
+  const subIsAFavourite = state.favouriteSubreddits?.includes(subName)
   return !subIsAFavourite ? h('') : h('svg', {
     xmlns:'http://www.w3.org/2000/svg',
     width:'16',
@@ -45,23 +44,15 @@ function showStarIfFavouritedSub(subName:string):any {
   ])
 }
 
-type Subreddits = $ReadOnlyArray<string>
 /*****
   Subs sorted favourites first and both sets are sorted
 *****/
-function sortSubs({favouriteSubreddits, subreddits}: {favouriteSubreddits?: Subreddits, subreddits?: Subreddits}):Subreddits { // eslint-disable-line complexity
-  if(emptySubList(favouriteSubreddits) && emptySubList(subreddits)) return []
-  if(emptySubList(favouriteSubreddits)) return subreddits.sort()
-  if(emptySubList(subreddits)) return favouriteSubreddits.sort()
-  const sortedNonfavSubs = subreddits.filter(sub => !favouriteSubreddits?.includes(sub)).sort()
-  const sortedFavSubs = favouriteSubreddits.sort()
+function sortSubs({favouriteSubreddits, subreddits}) { // eslint-disable-line complexity
+  const favSubs = favouriteSubreddits?.length ? favouriteSubreddits : []
+  const nonFavSubs = subreddits?.length ? subreddits : []
+  const sortedNonfavSubs = nonFavSubs.filter(sub => !favSubs?.includes(sub)).sort()
+  const sortedFavSubs = [...favSubs].sort()
   return [...sortedFavSubs, ...sortedNonfavSubs ]
-}
-
-function emptySubList(subs){
-  if(!subs) return true
-  if(!subs.length) return true
-  return false
 }
 
 export {

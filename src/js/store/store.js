@@ -1,7 +1,8 @@
-//@flow
+import {store} from './web_modules/store.js'
+
 // and to get all folders, just us Object.keys(folders)
 // to get folder images would just be folders['folder 1'].images
-const appState = {
+const appStore = store ({
   folders : {
     'folder 1':{
       'imagePostIdHere' : {
@@ -18,8 +19,8 @@ const appState = {
   ],
   fetchedSubredditImages: [],
   lastFetchedSubredditImage: null
-}
+})
 
 export {
-  appState
+  appStore
 }

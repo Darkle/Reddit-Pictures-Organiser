@@ -11,7 +11,6 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:flowtype/recommended',
     'plugin:functional/all',
   ],
   globals: {
@@ -27,8 +26,7 @@ module.exports = {
   settings: {
   },
   plugins: [
-    'flowtype',
-    'functional'
+    'functional',
   ],
   rules: {
     'array-callback-return': 'error',
@@ -36,34 +34,6 @@ module.exports = {
     'complexity': ['error', 4],
     'consistent-return': 'error',
     'eqeqeq': 'error',
-    'flowtype/no-dupe-keys': 'error',
-    'flowtype/no-types-missing-file-annotation': 'error',
-    'flowtype/no-mutable-array': 'error',
-    'flowtype/no-primitive-constructor-types': 'error',
-    'flowtype/require-exact-type': [
-      'error',
-      'always'
-    ],
-    'flowtype/require-parameter-type': [
-        'error',
-        {
-          'excludeArrowFunctions': true
-        }
-    ],
-    'flowtype/require-readonly-react-props': 'error',
-    'flowtype/require-return-type': [
-        'error',
-        'always',
-        {
-          'excludeArrowFunctions': true
-        }
-    ],
-    'flowtype/require-valid-file-annotation': [
-      'error',
-      'always'
-    ],
-    'flowtype/space-after-type-colon': 'off',
-    'flowtype/spread-exact-type': 'error',
     'functional/no-expression-statement': 'off',
     'functional/functional-parameters': 'off',    
     'guard-for-in': 'error',
@@ -124,7 +94,7 @@ module.exports = {
     'no-undef-init': 'error',
     'no-unneeded-ternary': 'error',
     'no-unused-vars': ['error', {'args': 'after-used', 'argsIgnorePattern': '_' }],
-    'no-use-before-define': ["error", { "functions": false}],
+    'no-use-before-define': ['error', { 'functions': false}],
     'no-useless-constructor': 'error',
     'no-useless-computed-key': 'error',
     'no-unused-expressions': [

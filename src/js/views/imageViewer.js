@@ -1,4 +1,3 @@
-//@flow
 import {appState} from '../appState.js'
 import { setPageTitle } from '../utils.js'
 

@@ -1,13 +1,12 @@
-// @flow
-import {init as initDb} from './db.js'
-import {log} from './logger.js'
-import { initRouter } from './router.js'
+// import {init as initDb} from './db.js'
+// import {log} from './logger.js'
+// import { initRouter } from './router.js'
 
-if(!window.location.hash.includes('#')){
-  window.location.hash = '!/home'
-}    
+// if(!window.location.hash.includes('#')){
+//   window.location.hash = '!/home'
+// }
 
-initDb().then(initRouter).catch(log)
+// initDb().then(initRouter).catch(log)
 
 // import {emitter} from './actions.js'
 // emitter.emit('add-folder', 'folder 1')
@@ -41,4 +40,32 @@ initDb().then(initRouter).catch(log)
 // emitter.emit('add-favourite-subreddit', 'Abandoned')
 // emitter.emit('add-favourite-subreddit', 'Animals')
 // emitter.emit('add-favourite-subreddit', 'Cats')
+// @type greet :: String -> String
+function greet(person) {
+  return "Hello, " + person;
+}
 
+var user = true;
+
+greet(user);
+
+// @type times10 :: Number -> Number
+function times10(x) {
+return x * 10;
+}
+
+times10('Hello, world!');
+
+// @type reducer :: {count: Number} -> {type: String} -> {count: Number}
+function reducer(state, action) {
+switch (action.type) {
+  case 'INCREMENT':
+    return {count: state.count + 1};
+  case 'DECREMENT':
+    return {count: state.count - 1};
+  default:
+    return state;
+}
+}
+
+reducer({count: 0}, {type: 1});

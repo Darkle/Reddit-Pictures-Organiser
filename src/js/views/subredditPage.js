@@ -1,5 +1,4 @@
-// @flow
-import html from 'yo-yo'
+import { h, patch } from '../web_modules/superfine'
 
 import {emitter} from '../actions.js'
 import {appState} from '../appState.js'
@@ -30,29 +29,23 @@ function loadSubredditPage({params:{subreddit}}) {
     .then(renderSubPage)
     .catch(log)
 }
+
+const subredditPage = state => h('main', {id: 'app', class: 'subredditPage'}, [
+  !state.fetchedSubredditImages.length ? h('div', {class: 'subLoadingNotifier'}, 'Loading Images...')
+    : state.fetchedSubredditImages.map(image =>
+        h('div', {class: 'thumbnail-container'}, [
+          h('img', {class: 'thumbnail', src: image.thumbnail, 'data-id': image.id})
+        ])
+      )
+  ])
+
 /*****
-  We are throwing here if a fetch is sent and received, but the user navigates away, we want to stop
-  any more fetch requests and html updates.
+We are throwing here if a fetch is sent and received, but the user navigates away, we want to stop
+any more fetch requests and html updates.
 *****/
 function renderSubPage(){
-  if(!appState.viewingSubredditPage) Promise.reject(new Error('change this to be from my error class'))
-  return html.update($('#app'), subredditPage())
-}
-
-function subredditPage(){
-  console.log(appState.fetchedSubredditImages.length)
-  return html`
-   <main id="app" class="subredditPage">
-    ${ !appState.fetchedSubredditImages.length ?
-      html`<div class="subLoadingNotifier">Loading Images...</div>` :
-        appState.fetchedSubredditImages.map(image => {
-          return html`<div class="thumbnail-container">
-            <img class="thumbnail" src="${image.thumbnail}" data-id="${image.id}" />
-          </div>
-        `})
-    }
-   </main>
-  `
+  return !appState.viewingSubredditPage ? new Error('change this to be from my error class')
+    : patch($('#app'), subredditPage(appState))
 }
 
 export {
