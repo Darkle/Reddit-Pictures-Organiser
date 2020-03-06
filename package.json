@@ -16,7 +16,6 @@
     "prod-bundle-report": "cpy dist/js/report.html ./reports && trash dist/bundles/report.html && open-cli ./reports/report.html"
   },
   "dependencies": {
-    "just-safe-get": "^2.0.0",
     "localforage": "^1.7.3",
     "main.css": "^2.0.0",
     "nanoevents": "^4.0.0",

@@ -1,5 +1,3 @@
-import safeGet from 'just-safe-get'
-
 import { emitter } from './actions.js'
 import { pipe, notOnSubredditPage } from './utils.js'
 import { appState } from './appState.js'
