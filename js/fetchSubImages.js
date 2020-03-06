@@ -1,10 +1,10 @@
 import { emitter } from './actions.js'
-import { pipe } from './utils.js'
+import { pipe, notOnSubredditPage } from './utils.js'
 import { appState } from './appState.js'
 
 function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-function
-  
-  if(!appState.viewingSubredditPage) Promise.reject(new Error('change this to be from my error class'))
+
+  if(notOnSubredditPage()) throw new Error('change this to be from my error class')
 
   return fetch(generateFetchUrl(subreddit))
     .then(resp => resp.json())
@@ -19,14 +19,14 @@ function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-functi
 
       emitter.emit('store-last-fetched-subreddit-image', images[images.length - 1])
       emitter.emit('store-fetched-subreddit-images', processedImages)
-      
+
       return processedImages
     })
 }
 
 function generateFetchUrl(subreddit) {
   const {lastFetchedSubredditImage} = appState
-  const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.data.id}` : ''  
+  const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.data.id}` : ''
 
   return `https://www.reddit.com/r/${subreddit}/.json?limit=100&count=100${pagination}`
 }
@@ -37,14 +37,14 @@ function processImages(images) {
 
 function filterImages(images) {
   return images.filter(({data: image}) => { // eslint-disable-line complexity
-    if(image.stickied) return false
     // reddit cross-posts start with '/'
-    if(image.url.startsWith('/')) return false
+    if(image.stickied || image.url.startsWith('/')) return false
+
     const {hostname:imageDomain, pathname} = new URL(image.url)
-    
-    if(imageDomain === 'imgur.com' && notImgurGallery(pathname)) return true
+
+    if(imageDomain.endsWith('imgur.com') && notImgurGallery(pathname)) return true
     if(imageDomain === 'i.redd.it') return true
-    
+
     return false
   })
 }

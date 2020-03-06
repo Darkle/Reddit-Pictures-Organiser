@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "localforage": "./localforage.js",
+    "nanoevents": "./nanoevents.js",
+    "navigo": "./navigo.js",
+    "yo-yo": "./yo-yo.js"
+  }
+}
