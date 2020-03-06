@@ -17,7 +17,7 @@ function initRouter(){ // eslint-disable-line max-lines-per-function
     .on(() => {
       //TODO: set current hash route in store??
       console.log('empty navigo func')
-      console.log(router?.getLinkPath())
+      console.log(router.getLinkPath())
     })
     .on('/home', loadHomePage)
     .on('/sub/:subreddit', loadSubredditPage)

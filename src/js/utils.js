@@ -16,7 +16,7 @@ const $$ = q => Array.from(document.querySelectorAll(q))
 const $ = document.querySelector.bind(document)
 
 const notOnSubredditPage = () => {
-  const url = router?.lastRouteResolved()?.url
+  const {url} = router.lastRouteResolved()
   return !(url?.startsWith('/sub/') && url?.split('/').length === 3)
 }
 
