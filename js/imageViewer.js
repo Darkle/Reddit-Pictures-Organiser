@@ -1,6 +1,6 @@
 // import page from './web_modules/page.js'
 
-// import {appState} from './appState.js'
+import {appState} from './appState.js'
 
 function loadImageViewer({params:{subreddit}}) {
   document.title = `RPO - ${subreddit} Images`
@@ -16,9 +16,9 @@ function loadImageViewer({params:{subreddit}}) {
   // }
 }
 
-// function imageViewer(params) {
+function imageViewer(params) {
   
-// }
+}
 
 export {
   loadImageViewer

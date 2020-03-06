@@ -1,10 +1,11 @@
 import html from '../web_modules/yo-yo.js'
+import page from '../web_modules/page.js'
 
 import {appState} from '../appState.js'
 import { $ } from '../utils.js'
-import { router } from '../router.js'
 
 function loadHomePage() {
+  console.log('home apge loading')
   document.title = 'RPO'
   html.update($('#app'), homePage())
 }
@@ -13,8 +14,8 @@ function homePage(){
  return html`
    <main id="app" class="homepage">
      <div class="manageWrapper">
-       <div class="folders" onmouseup=${ () => router.navigate('/folders') }>Folders</a>
-       <div class="manage" onmouseup=${ () => router.navigate('/manage') }>Manage</a>
+       <div class="folders" onmouseup=${ () => page('/folders') }>Folders</a>
+       <div class="manage" onmouseup=${ () => page('/manage') }>Manage</a>
      </div>
      ${listOfSubreddits(sortSubs(appState))}
    </main>
@@ -25,7 +26,7 @@ function listOfSubreddits(items) {
   if(!items?.length) return html`No Images Found`
   return items.map(subName =>
     html`
-      <div class="subreddit" onmouseup=${ () => router.navigate(`/sub/${subName}`) }>
+      <div class="subreddit" onmouseup=${ () => page('/sub/${subName}') }>
       ${showStarIfFavouritedSub(subName)}
       <div>${subName}</div>
       </div>
