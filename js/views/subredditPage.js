@@ -1,4 +1,4 @@
-import html from 'yo-yo'
+import html from '../web_modules/yo-yo.js'
 
 import {emitter} from '../actions.js'
 import {appState} from '../appState.js'

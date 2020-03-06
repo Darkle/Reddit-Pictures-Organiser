@@ -1,4 +1,4 @@
-import localforage from 'localforage'
+import localforage from './web_modules/localforage.js'
 
 import {appState} from './appState.js'
 
