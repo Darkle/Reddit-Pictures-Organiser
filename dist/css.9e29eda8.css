@@ -1,0 +1,82 @@
+body{
+  background-color: #595959;
+  font-family: 'Open Sans';
+  margin: 0;
+}
+
+.homepage{
+  display: flex;
+  flex-wrap: wrap;
+}
+.homepage .manageWrapper{
+  display: flex;
+  border: 2px solid #737373;
+  width: 100%;
+  margin-bottom: 10px;
+}
+/*
+Change color of stuff to #F49A87 when click/tap
+*/
+.homepage .manageWrapper .folders{
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff4e8;
+  text-align: center;
+  border-right: 2px solid #737373;
+}
+.homepage .manageWrapper .manage{
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff4e8;
+  text-align: center;
+}
+.homepage .subreddit{
+  flex-grow: 1;
+  color: #fff4e8;
+  border: 1px solid #737373;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+}
+
+.homepage .subreddit .favouriteStar{
+  margin-right: 4px;
+}
+
+
+.subredditPage{
+  display: flex;
+  flex-wrap: wrap;
+}
+.subredditPage .thumbnail-container{
+  width: 100px;
+  height: 100px;
+  margin: 1px;
+  overflow: hidden;
+  flex-grow: 1;
+  justify-content: center;
+  display: flex;
+}
+.subredditPage .thumbnail{
+  object-fit: cover;
+}
+
+.subredditPage .subLoadingNotifier{
+  color: #fff4e8;
+  width: 100%;
+  text-align: center;
+  margin-top: 60px;
+  opacity: 0.5;  
+}
+
+
+
+
+
+
+
+
+
+
+/*# sourceMappingURL=/css.9e29eda8.css.map */

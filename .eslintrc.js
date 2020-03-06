@@ -10,7 +10,8 @@ module.exports = {
     }
   },
   extends: [
-    'eslint:recommended'
+    'eslint:recommended',
+    'plugin:functional/all',
   ],
   globals: {
 
@@ -25,6 +26,7 @@ module.exports = {
   settings: {
   },
   plugins: [
+    'functional'
   ],
   rules: {
     'array-callback-return': 'error',
@@ -32,6 +34,8 @@ module.exports = {
     'complexity': ['error', 4],
     'consistent-return': 'error',
     'eqeqeq': 'error',
+    'functional/no-expression-statement': 'off',
+    'functional/functional-parameters': 'off',
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
     'max-depth': ['error', 3],

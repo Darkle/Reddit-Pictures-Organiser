@@ -1,4 +1,4 @@
-import html from '../web_modules/yo-yo.js'
+import html from 'yo-yo'
 
 import {appState} from '../appState.js'
 import { $ } from '../utils.js'

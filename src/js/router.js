@@ -1,4 +1,4 @@
-import Navigo from './web_modules/navigo.js'
+import Navigo from 'navigo'
 
 import {loadHomePage} from './views/homePage.js'
 import {loadSubredditPage} from './views/subredditPage.js'
