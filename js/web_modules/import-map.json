@@ -1,8 +1,0 @@
-{
-  "imports": {
-    "localforage": "./localforage.js",
-    "navigo": "./navigo.js",
-    "store": "./store.js",
-    "superfine": "./superfine.js"
-  }
-}

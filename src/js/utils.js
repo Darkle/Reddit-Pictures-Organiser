@@ -10,8 +10,7 @@ const range = (start, end) => Array.from({length: (end - start)}, (v, k) => k + 
 /*****
 rangeIncEnd: includes end number - useful if you actually want the numbers in the range instead of just the index range
 *****/
-const rangeIncEnd = (start, end) => Array.from({length: ((end - start) + 1)}, (v, k) => k + start) // eslint-disable-line no-magic-numbers
-
+const rangeIncEnd = (start, end) => Array.from({length: ((end - start) + 1)}, (v, k) => k + start) 
 
 const $$ = q => Array.from(document.querySelectorAll(q))
 const $ = document.querySelector.bind(document)
@@ -21,10 +20,9 @@ const notOnSubredditPage = () => {
   return !(url?.startsWith('/sub/') && url?.split('/').length === 3)
 }
 
-const setPageTitle = (title:string):void => {
+const setPageTitle = (title) => {
   document.title = title // eslint-disable-line functional/immutable-data
 }
-
 
 export{
   noop,
