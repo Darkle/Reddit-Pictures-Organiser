@@ -1,5 +1,6 @@
-import createNanoEvents from './web_modules/nanoevents.js'
-import localforage from './web_modules/localforage.js'
+//@flow
+import createNanoEvents from 'nanoevents'
+import localforage from 'localforage'
 
 import {appState} from './appState.js'
 import {log} from './logger.js'

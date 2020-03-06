@@ -1,13 +1,14 @@
-import html from '../web_modules/yo-yo.js'
+// @flow
+import html from 'yo-yo'
 
 import {emitter} from '../actions.js'
 import {appState} from '../appState.js'
 import {fetchSubImages} from '../fetchSubImages.js'
 import {log} from '../logger.js'
-import {$} from '../utils.js'
+import {$, setPageTitle} from '../utils.js'
 
 function loadSubredditPage({params:{subreddit}}) {
-  document.title = `RPO - ${subreddit}`
+  setPageTitle(`RPO - ${subreddit}`)
   /*****
     appState.viewingSubredditPage is so we can cancel any pending 'fetch
     and renders' that are still queued when the user navigates away.
@@ -42,14 +43,14 @@ function subredditPage(){
   console.log(appState.fetchedSubredditImages.length)
   return html`
    <main id="app" class="subredditPage">
-    ${ !appState.fetchedSubredditImages.length ? 
-      html`<div class="subLoadingNotifier">Loading Images...</div>` : 
+    ${ !appState.fetchedSubredditImages.length ?
+      html`<div class="subLoadingNotifier">Loading Images...</div>` :
         appState.fetchedSubredditImages.map(image => {
           return html`<div class="thumbnail-container">
             <img class="thumbnail" src="${image.thumbnail}" data-id="${image.id}" />
           </div>
         `})
-    }   
+    }
    </main>
   `
 }

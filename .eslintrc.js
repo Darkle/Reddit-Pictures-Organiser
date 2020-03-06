@@ -1,6 +1,6 @@
 module.exports = {
-  parser: "babel-eslint",
-  parserOptions: {
+  parser: 'babel-eslint',
+    parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
@@ -10,7 +10,9 @@ module.exports = {
     }
   },
   extends: [
-    'eslint:recommended'
+    'eslint:recommended',
+    'plugin:flowtype/recommended',
+    'plugin:functional/all',
   ],
   globals: {
 
@@ -25,6 +27,8 @@ module.exports = {
   settings: {
   },
   plugins: [
+    'flowtype',
+    'functional'
   ],
   rules: {
     'array-callback-return': 'error',
@@ -32,6 +36,36 @@ module.exports = {
     'complexity': ['error', 4],
     'consistent-return': 'error',
     'eqeqeq': 'error',
+    'flowtype/no-dupe-keys': 'error',
+    'flowtype/no-types-missing-file-annotation': 'error',
+    'flowtype/no-mutable-array': 'error',
+    'flowtype/no-primitive-constructor-types': 'error',
+    'flowtype/require-exact-type': [
+      'error',
+      'always'
+    ],
+    'flowtype/require-parameter-type': [
+        'error',
+        {
+          'excludeArrowFunctions': true
+        }
+    ],
+    'flowtype/require-readonly-react-props': 'error',
+    'flowtype/require-return-type': [
+        'error',
+        'always',
+        {
+          'excludeArrowFunctions': true
+        }
+    ],
+    'flowtype/require-valid-file-annotation': [
+      'error',
+      'always'
+    ],
+    'flowtype/space-after-type-colon': 'off',
+    'flowtype/spread-exact-type': 'error',
+    'functional/no-expression-statement': 'off',
+    'functional/functional-parameters': 'off',    
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
     'max-depth': ['error', 3],
@@ -64,7 +98,7 @@ module.exports = {
         ignoreArrayIndexes: true,
         enforceConst: true,
         detectObjects: true,
-        ignore: [0, 1]
+        ignore: [0, 1, 2, 3]
       }
     ],
     'no-multiple-empty-lines': [
@@ -113,7 +147,6 @@ module.exports = {
     'no-with': 'error',
     'no-whitespace-before-property': 'error',
     'nonblock-statement-body-position': ['error', 'beside'],
-    'object-property-newline': 'error',
     'object-shorthand': 'error',
     'operator-assignment': ['error', 'never'],
     'prefer-const': 'error',

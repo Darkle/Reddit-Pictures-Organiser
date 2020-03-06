@@ -1,9 +1,9 @@
-// import page from './web_modules/page.js'
-
-import {appState} from './appState.js'
+//@flow
+import {appState} from '../appState.js'
+import { setPageTitle } from '../utils.js'
 
 function loadImageViewer({params:{subreddit}}) {
-  document.title = `RPO - ${subreddit} Images`
+  setPageTitle(`RPO - ${subreddit} Images`)
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
   so load the subreddit page
