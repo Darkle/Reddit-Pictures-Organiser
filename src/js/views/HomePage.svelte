@@ -1,4 +1,6 @@
+<script>
 import html from 'yo-yo'
+import safeGet from 'just-safe-get'
 
 import {appState} from '../appState.js'
 import { $ } from '../utils.js'
@@ -9,20 +11,8 @@ function loadHomePage() {
   html.update($('#app'), homePage())
 }
 
-function homePage(){
- return html`
-   <main id="app" class="homepage">
-     <div class="manageWrapper">
-       <div class="folders" onmouseup=${ () => router.navigate('/folders') }>Folders</a>
-       <div class="manage" onmouseup=${ () => router.navigate('/manage') }>Manage</a>
-     </div>
-     ${listOfSubreddits(sortSubs(appState))}
-   </main>
- `
-}
-
 function listOfSubreddits(items) {
-  if(!items?.length) return html`No Images Found`
+  if(!safeGet(items, 'length')) return html`No Images Found`
   return items.map(subName =>
     html`
       <div class="subreddit" onmouseup=${ () => router.navigate(`/sub/${subName}`) }>
@@ -55,6 +45,12 @@ function sortSubs({subreddits, favouriteSubreddits}) {
   return [...sortedFavSubs, ...sortedNonfavSubs ]
 }
 
-export {
-  loadHomePage
-}
+</script>
+
+<main id="app" class="homepage">
+  <div class="manageWrapper">
+    <div class="folders" on:click={ router.navigate('/folders') }>Folders</div>
+    <div class="manage" on:click={ router.navigate('/manage') }>Manage</div>
+  </div>
+  ${listOfSubreddits(sortSubs(appState))}
+</main>

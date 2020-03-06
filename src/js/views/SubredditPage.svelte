@@ -5,11 +5,10 @@ import {appState} from '../appState.js'
 import {fetchSubImages} from '../fetchSubImages.js'
 import {log} from '../logger.js'
 import {$, notOnSubredditPage} from '../utils.js'
-import { router } from '../router.js'
+
 function loadSubredditPage({subreddit}) {
   console.log(subreddit)
   document.title = `RPO - ${subreddit}`
-  console.log(router.lastRouteResolved()?.url)
   // remove the old stored sub images
   emitter.emit('remove-stored-fetched-subreddit-images')
   emitter.emit('remove-last-fetched-subreddit-image')

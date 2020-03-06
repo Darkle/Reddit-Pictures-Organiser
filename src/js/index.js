@@ -1,6 +1,9 @@
 import {init as initDb} from './db.js'
 import {log} from './logger.js'
 import { initRouter } from './router.js'
+import { $ } from './utils.js'
+
+import App from './App.svelte'
 
 if(!window.location.hash.includes('#')){
   window.location.hash = '!/home'
@@ -8,7 +11,9 @@ if(!window.location.hash.includes('#')){
 
 initDb().then(initRouter).catch(log)
 
-
+const app = new App({
+	target: $('#app')
+})
 
 // import {emitter} from './actions.js'
 // emitter.emit('add-folder', 'folder 1')
