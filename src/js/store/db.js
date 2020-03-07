@@ -1,6 +1,6 @@
-import localforage from './web_modules/localforage.js'
+import localforage from '../web_modules/localforage.js'
 
-import {appState} from './appState.js'
+import {store} from './store.js'
 
 localforage.config({
   name: 'Reddit Pictures Organiser'
@@ -8,7 +8,7 @@ localforage.config({
 
 function init(){
   return localforage.iterate((value, key) => {
-    appState[key] = value
+    store[key] = JSON.parse(value)
   })
 }
 export {

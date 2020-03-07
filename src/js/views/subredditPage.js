@@ -1,21 +1,15 @@
-import { h, patch } from '../web_modules/superfine'
+import { h, patch } from '../web_modules/superfine.js'
 
-import {emitter} from '../actions.js'
-import {appState} from '../appState.js'
+import {store} from '../store/store.js'
 import {fetchSubImages} from '../fetchSubImages.js'
 import {log} from '../logger.js'
-import {$, setPageTitle} from '../utils.js'
+import {$, setPageTitle, notOnSubredditPage} from '../utils.js'
 
-function loadSubredditPage({params:{subreddit}}) {
+function loadSubredditPage({subreddit}) {
   setPageTitle(`RPO - ${subreddit}`)
-  /*****
-    appState.viewingSubredditPage is so we can cancel any pending 'fetch
-    and renders' that are still queued when the user navigates away.
-  *****/
-  appState.viewingSubredditPage = true
   // remove the old stored sub images
-  emitter.emit('remove-stored-fetched-subreddit-images')
-  emitter.emit('remove-last-fetched-subreddit-image')
+  store.removeStoredFetchedSubredditImages()
+  store.removeLastFetchedSubredditImage()
 
   renderSubPage()
 
@@ -44,8 +38,8 @@ We are throwing here if a fetch is sent and received, but the user navigates awa
 any more fetch requests and html updates.
 *****/
 function renderSubPage(){
-  return !appState.viewingSubredditPage ? new Error('change this to be from my error class')
-    : patch($('#app'), subredditPage(appState))
+  return notOnSubredditPage() ? Promise.reject(new Error('change this to be from my error class'))
+    : patch($('#app'), subredditPage(store))
 }
 
 export {

@@ -1,4 +1,4 @@
-import {appState} from '../appState.js'
+import {store} from '../store/store.js'
 import { setPageTitle } from '../utils.js'
 
 function loadImageViewer({params:{subreddit}}) {
@@ -7,7 +7,7 @@ function loadImageViewer({params:{subreddit}}) {
   We dont have the images stored if the user reloads the page to the image viewer,
   so load the subreddit page
   *****/
-  // if(!appState.fetchedSubredditImages.length) {
+  // if(!store.fetchedSubredditImages.length) {
   //   page(`/sub/${subreddit}`)
   // }
   // else{

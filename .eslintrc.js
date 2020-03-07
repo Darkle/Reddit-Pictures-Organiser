@@ -36,6 +36,7 @@ module.exports = {
     'eqeqeq': 'error',
     'functional/no-expression-statement': 'off',
     'functional/functional-parameters': 'off',    
+    'functional/no-promise-reject': 'off',    
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
     'max-depth': ['error', 3],

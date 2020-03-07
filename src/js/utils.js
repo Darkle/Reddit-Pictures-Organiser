@@ -1,4 +1,5 @@
 import {router} from './router.js'
+import { store } from './store/store.js'
 
 const noop = () => {}
 const identity = (param) => param
@@ -24,6 +25,8 @@ const setPageTitle = (title) => {
   document.title = title // eslint-disable-line functional/immutable-data
 }
 
+const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
+
 export{
   noop,
   identity,
@@ -37,4 +40,5 @@ export{
   $,
   notOnSubredditPage,
   setPageTitle,
+  noSubsStored,
 }

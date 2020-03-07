@@ -1,31 +1,29 @@
-import { emitter } from './actions.js'
-import { pipe } from './utils.js'
-import { appState } from './appState.js'
+import { pipe, notOnSubredditPage } from './utils.js'
+import { store } from './store/store.js'
 
 function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-function
 
-  if(!appState.viewingSubredditPage) throw new Error('change this to be from my error class')
+  return notOnSubredditPage() ? 
+    Promise.reject(new Error('change this to be from my error class'))
+    : fetch(generateFetchUrl(subreddit))
+        .then(resp => resp.json())
+        .then(resp => {
+          const images = resp?.data?.children ?? []
+          const processedImages = processImages(images)
 
-  return fetch(generateFetchUrl(subreddit))
-    .then(resp => resp.json())
-    .then(resp => {
-      const images = resp?.data?.children ?? []
-      const processedImages = processImages(images)
+          if(!images.length){
+            store.removeLastFetchedSubredditImage()
+            return Promise.reject(new Error('change this to be from my error class'))
+          }
+          store.storeLastFetchedSubredditImage(images[images.length - 1])
+          store.storeFetchedSubredditImages(processedImages)
 
-      if(!images.length){
-        emitter.emit('remove-last-fetched-subreddit-image')
-        return Promise.reject(new Error('change this to be from my error class'))
-      }
-
-      emitter.emit('store-last-fetched-subreddit-image', images[images.length - 1])
-      emitter.emit('store-fetched-subreddit-images', processedImages)
-
-      return processedImages
-    })
+          return processedImages
+        })
 }
 
 function generateFetchUrl(subreddit) {
-  const {lastFetchedSubredditImage} = appState
+  const {lastFetchedSubredditImage} = store
   const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.data.id}` : ''
 
   return `https://www.reddit.com/r/${subreddit}/.json?limit=100&count=100${pagination}`
@@ -36,7 +34,7 @@ function processImages(images) {
 }
 
 function filterImages(images) {
-  return images.filter(({data: image}) => {
+  return images.filter(({data: image}) => { // eslint-disable-line complexity
     // reddit cross-posts start with '/'
     if(image.stickied || image.url.startsWith('/')) return false
 
