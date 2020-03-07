@@ -36,8 +36,8 @@ We are throwing here if a fetch is sent and received, but the user navigates awa
 any more fetch requests and html updates.
 *****/
 function renderSubPage(){
-  return notOnSubredditPage() ? Promise.reject(new Error('change this to be from my error class'))
-    : patch($('#app'), subredditPage(store))
+  if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
+  return patch($('#app'), subredditPage(store))
 }
 
 export {

@@ -2,27 +2,26 @@ import { pipe, notOnSubredditPage } from './utils.js'
 import { store } from './store/store.js'
 
 function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-function
+  if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
+  
+  return fetch(generateFetchUrl(subreddit))
+    .then(resp => resp.json())
+    .then(resp => {
+      const images = resp?.data?.children ?? []
+      const processedImages = processImages(images)
 
-  return notOnSubredditPage() ? 
-    Promise.reject(new Error('change this to be from my error class'))
-    : fetch(generateFetchUrl(subreddit))
-        .then(resp => resp.json())
-        .then(resp => {
-          const images = resp?.data?.children ?? []
-          const processedImages = processImages(images)
+      if(!images.length) return Promise.reject(new Error('change this to be from my error class'))
 
-          if(!images.length) return Promise.reject(new Error('change this to be from my error class'))
+      store.storeFetchedSubredditImages(processedImages)
 
-          store.storeFetchedSubredditImages(processedImages)
-
-          return processedImages
-        })
+      return processedImages
+    })
 }
 
 function generateFetchUrl(subreddit) {
   const lastFetchedSubredditImage = store.fetchedSubredditImages[store.fetchedSubredditImages.length - 1]
   const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.id}` : ''
-  
+
   return `https://www.reddit.com/r/${subreddit}/.json?limit=100&count=100${pagination}`
 }
 
