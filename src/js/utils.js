@@ -27,13 +27,6 @@ const setPageTitle = (title) => {
 
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 
-const removeTempStoredSubImages = () => {
-  const {url} = router.lastRouteResolved()
-  // Dont remove temp stored images if on sub page or on image viewer page.
-  if(url.startsWith('/sub/')) return 
-  store.removeStoredFetchedSubredditImages()
-}
-
 export{
   noop,
   identity,
@@ -48,5 +41,4 @@ export{
   notOnSubredditPage,
   setPageTitle,
   noSubsStored,
-  removeTempStoredSubImages,
 }

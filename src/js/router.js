@@ -3,7 +3,7 @@ import Navigo from './web_modules/navigo.js'
 import {loadHomePage} from './views/homePage.js'
 import {loadSubredditPage} from './views/subredditPage.js'
 import {loadImageViewer} from './views/imageViewer.js'
-import { setPageTitle, removeTempStoredSubImages } from './utils.js'
+import { setPageTitle } from './utils.js'
 
 let router = null
 
@@ -20,16 +20,11 @@ function initRouter(){ // eslint-disable-line max-lines-per-function
       console.log(router.getLinkPath())
     })
     .on('/home', loadHomePage)
-    .on('/sub/:subreddit', 
-      loadSubredditPage,
-      {leave: removeTempStoredSubImages }
-    )
+    .on('/sub/:subreddit', loadSubredditPage)
     .on('/sub/:subreddit/imageviewer', ({params:{subreddit}}) => {
       console.log(`/sub/${subreddit}`)
       loadImageViewer()
-    },
-      {leave: removeTempStoredSubImages }
-    )
+    })
     .on('/manage', ({params:{subreddit}}) => {
       setPageTitle(`RPO - Manage Subs`)
     })

@@ -20,7 +20,6 @@ const store = createStore ({
   favouriteSubreddits: [
   ],
   fetchedSubredditImages: [],
-  lastFetchedSubredditImage: null,
   // Actions
   /* eslint-disable functional/immutable-data */
   addFolder: newFolder => {

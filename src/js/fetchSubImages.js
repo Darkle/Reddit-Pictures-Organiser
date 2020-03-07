@@ -1,7 +1,7 @@
 import { pipe, notOnSubredditPage } from './utils.js'
 import { store } from './store/store.js'
 
-function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-function
+function fetchSubImages(subreddit) {
   if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
   
   return fetch(generateFetchUrl(subreddit))
