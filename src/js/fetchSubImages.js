@@ -11,11 +11,8 @@ function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-functi
           const images = resp?.data?.children ?? []
           const processedImages = processImages(images)
 
-          if(!images.length){
-            store.removeLastFetchedSubredditImage()
-            return Promise.reject(new Error('change this to be from my error class'))
-          }
-          store.storeLastFetchedSubredditImage(images[images.length - 1])
+          if(!images.length) return Promise.reject(new Error('change this to be from my error class'))
+
           store.storeFetchedSubredditImages(processedImages)
 
           return processedImages
@@ -23,9 +20,9 @@ function fetchSubImages(subreddit) { // eslint-disable-line max-lines-per-functi
 }
 
 function generateFetchUrl(subreddit) {
-  const {lastFetchedSubredditImage} = store
-  const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.data.id}` : ''
-
+  const lastFetchedSubredditImage = store.fetchedSubredditImages[store.fetchedSubredditImages.length - 1]
+  const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.id}` : ''
+  
   return `https://www.reddit.com/r/${subreddit}/.json?limit=100&count=100${pagination}`
 }
 

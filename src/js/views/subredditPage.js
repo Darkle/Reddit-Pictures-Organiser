@@ -9,11 +9,12 @@ function loadSubredditPage({subreddit}) {
   setPageTitle(`RPO - ${subreddit}`)
   // remove the old stored sub images
   store.removeStoredFetchedSubredditImages()
-  store.removeLastFetchedSubredditImage()
 
   renderSubPage()
 
   fetchSubImages(subreddit)
+    .then(renderSubPage)
+    .then(() => fetchSubImages(subreddit))
     .then(renderSubPage)
     .then(() => fetchSubImages(subreddit))
     .then(renderSubPage)

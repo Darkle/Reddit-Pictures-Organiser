@@ -74,17 +74,6 @@ const store = createStore ({
   removeStoredFetchedSubredditImages: () => {
     store.fetchedSubredditImages = []
   },
-  /*****
-    When we grab the subreddit images, we filter out some images and then store the filtered
-    ones in state. We need to store the last unfiltered image so that we dont start the next
-    fetch pagination from an earlier image post id.
-  *****/
-  storeLastFetchedSubredditImage: image => {
-    store.lastFetchedSubredditImage = image
-  },
-  removeLastFetchedSubredditImage: () => {
-    store.lastFetchedSubredditImage = null
-  }    
 })
 
 function saveToLocalForage(key, value) {
