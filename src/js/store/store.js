@@ -26,47 +26,47 @@ const store = createStore ({
   addFolder: newFolder => {
     const folder = newFolder.toLowerCase()
     store.folders[folder] = {}
-    localforage.setItem('folders', JSON.stringify(store.folders)).catch(log)
+    saveToLocalForage('folders', store.folders)
   },  
   removeFolder: folderToRemove => {
     const folder = folderToRemove.toLowerCase()
     delete store.folders[folder]
-    localforage.setItem('folders', JSON.stringify(store.folders)).catch(log)
+    saveToLocalForage('folders', store.folders)
   },  
   addImageToFolder: (folder, image) => {
-    const imageRedditPostUrl = image.thing
+    const redditImagePostUrl = image.thing //TODO:
     // check if already there as sometimes there will be the same post in different feeds
-    if(!store.folders[folder][imageRedditPostUrl]) return
-    store.folders[folder][imageRedditPostUrl] = image
-    localforage.setItem('folders', JSON.stringify(store.folders)).catch(log)
+    if(!store.folders[folder][redditImagePostUrl]) return
+    store.folders[folder][redditImagePostUrl] = image
+    saveToLocalForage('folders', store.folders)
   },  
   removeImageFromFolder: (folder, imageToRemove) => {
-    const imageRedditPostUrl = imageToRemove.thing
-    delete store.folders[folder][imageRedditPostUrl]
-    localforage.setItem('folders', JSON.stringify(store.folders)).catch(log)
+    const redditImagePostUrl = imageToRemove.thing //TODO:
+    delete store.folders[folder][redditImagePostUrl]
+    saveToLocalForage('folders', store.folders)
   },  
   addSubreddit: newSub => {
     const sub = newSub.toLowerCase()
     if(store.subreddits.includes(sub)) return
     store.subreddits.push(sub)
-    localforage.setItem('subreddits', JSON.stringify(store.subreddits)).catch(log)
+    saveToLocalForage('subreddits', store.subreddits)
   },  
   removeSubreddit: subToRemove => {
     store.subreddits = store.subreddits.filter(sub => sub !== subToRemove)
-    localforage.setItem('subreddits', JSON.stringify(store.subreddits)).catch(log)
+    saveToLocalForage('subreddits', store.subreddits)
   },  
   addFavouriteSubreddit: newSub => {
     const sub = newSub.toLowerCase()
     if(store.favouriteSubreddits.includes(sub)) return
     store.favouriteSubreddits.push(sub)
-    localforage.setItem('favouriteSubreddits', JSON.stringify(store.favouriteSubreddits)).catch(log)
+    saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   removeFavouriteSubreddit: subToRemove => {
     store.favouriteSubreddits = store.favouriteSubreddits.filter(sub => sub !== subToRemove)
-    localforage.setItem('favouriteSubreddits', JSON.stringify(store.favouriteSubreddits)).catch(log)
+    saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   /*****
-    We dont bother storing fetched-subreddit-images to localforage, its fine being ephemeral
+    We dont bother storing fetched-subreddit-images to localforage. Its fine being ephemeral.
   *****/
   storeFetchedSubredditImages: images => {
     store.fetchedSubredditImages = store.fetchedSubredditImages.concat(images)
@@ -86,6 +86,10 @@ const store = createStore ({
     store.lastFetchedSubredditImage = null
   }    
 })
+
+function saveToLocalForage(key, value) {
+  localforage.setItem(key, JSON.stringify(value)).catch(log)
+}
 
 export {
   store
