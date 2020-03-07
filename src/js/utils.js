@@ -18,7 +18,7 @@ const $ = document.querySelector.bind(document)
 
 const notOnSubredditPage = () => {
   const {url} = router.lastRouteResolved()
-  return !(url?.startsWith('/sub/') && url?.split('/').length === 3)
+  return !(url.startsWith('/sub/') && url.split('/').length === 3)
 }
 
 const setPageTitle = (title) => {
@@ -26,6 +26,13 @@ const setPageTitle = (title) => {
 }
 
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
+
+const removeTempStoredSubImages = () => {
+  const {url} = router.lastRouteResolved()
+  // Dont remove temp stored images if on sub page or on image viewer page.
+  if(url.startsWith('/sub/')) return 
+  store.removeStoredFetchedSubredditImages()
+}
 
 export{
   noop,
@@ -41,4 +48,5 @@ export{
   notOnSubredditPage,
   setPageTitle,
   noSubsStored,
+  removeTempStoredSubImages,
 }
