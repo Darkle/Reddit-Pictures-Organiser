@@ -7,9 +7,7 @@ import {$, setPageTitle, notOnSubredditPage} from '../utils.js'
 
 function loadSubredditPage({subreddit}) {
   setPageTitle(`RPO - ${subreddit}`)
-  // remove the old stored sub images
   store.removeStoredFetchedSubredditImages()
-
   renderSubPage()
 
   fetchSubImages(subreddit)
