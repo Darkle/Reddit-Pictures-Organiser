@@ -1,6 +1,6 @@
 import localforage from '../web_modules/localforage.js'
 
-import {store} from './store.js'
+import {store} from './store.lsc'
 
 localforage.config({
   name: 'Reddit Pictures Organiser'
