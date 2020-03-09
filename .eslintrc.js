@@ -1,6 +1,7 @@
 module.exports = {
-    parser: '@lightscript/eslint-plugin',
+  parser: 'babel-eslint',
     parserOptions: {
+    ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
       globalReturn: true,
@@ -10,7 +11,6 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:@lightscript/recommended',
     'plugin:functional/all',
   ],
   globals: {
@@ -19,23 +19,22 @@ module.exports = {
   env: {
     node: true,
     browser: true,
-    es6: true,
+    es2020: true,
     webextensions: true,
     greasemonkey: true,
   },
   settings: {
   },
   plugins: [
-    '@lightscript/eslint-plugin',
     'functional',
   ],
   rules: {
-    '@lightscript/no-unnecessary-comma': 'off',
     'array-callback-return': 'error',
     'callback-return': 'error',
     'complexity': ['error', 4],
+    'consistent-return': 'error',
     'eqeqeq': 'error',
-    'functional/no-conditional-statement': 'off',
+    'functional/no-conditional-statement': ['error', {allowReturningBranches: true}],
     'functional/no-expression-statement': 'off',
     'functional/functional-parameters': 'off',    
     'functional/no-promise-reject': 'off',    
@@ -100,7 +99,6 @@ module.exports = {
     'no-use-before-define': ['error', { 'functions': false}],
     'no-useless-constructor': 'error',
     'no-useless-computed-key': 'error',
-    'no-unreachable': 'off',
     'no-unused-expressions': [
       'error',
       {
@@ -151,6 +149,9 @@ module.exports = {
     'semi': [
       'error',
       'never',
+      {
+        beforeStatementContinuationChars: 'always'
+      }
     ],
     'space-infix-ops': 'error',
     'space-in-parens': ['error', 'never'],

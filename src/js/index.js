@@ -1,8 +1,10 @@
-import {init as initDb} from './store/db.lsc'
-import {log} from './logger.lsc'
-import { initRouter } from './router.lsc'
+import {init as initDb} from './store/db.js'
+import {log} from './logger.js'
+import { initRouter } from './router.js'
 
-if !window.location.hash.includes('#'): window.location.hash = '!/home'
+if(!window.location.hash.includes('#')){
+  window.location.hash = '!/home'
+}
 
 initDb().then(initRouter).catch(log)
 

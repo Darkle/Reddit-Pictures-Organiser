@@ -1,7 +1,7 @@
-import {store} from '../store/store.lsc'
-import { setPageTitle } from '../utils.lsc'
+import {store} from '../store/store.js'
+import { setPageTitle } from '../utils.js'
 
-loadImageViewer({params:{subreddit}}) ->
+function loadImageViewer({params:{subreddit}}) {
   setPageTitle(`RPO - ${subreddit} Images`)
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
@@ -13,6 +13,11 @@ loadImageViewer({params:{subreddit}}) ->
   // else{
   //   imageViewer()
   // }
+}
+
+function imageViewer(params) {
+  
+}
 
 export {
   loadImageViewer

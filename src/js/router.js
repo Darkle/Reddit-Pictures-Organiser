@@ -1,17 +1,17 @@
 import Navigo from './web_modules/navigo.js'
 
-import {loadHomePage} from './views/homePage.lsc'
-import {loadSubredditPage} from './views/subredditPage.lsc'
-import {loadImageViewer} from './views/imageViewer.lsc'
-import { setPageTitle } from './utils.lsc'
+import {loadHomePage} from './views/homePage.js'
+import {loadSubredditPage} from './views/subredditPage.js'
+import {loadImageViewer} from './views/imageViewer.js'
+import { setPageTitle } from './utils.js'
 
 let router = null
 
-initRouter() -> // eslint-disable-line max-lines-per-function
+function initRouter(){ // eslint-disable-line max-lines-per-function
   const root = null
   const useHash = true // Defaults to: false
   const hash = '#!' // Defaults to: '#'
-  now router = new Navigo(root, useHash, hash)
+  router = new Navigo(root, useHash, hash)
 
   router
     .on(() => {
@@ -36,6 +36,7 @@ initRouter() -> // eslint-disable-line max-lines-per-function
       router.navigate('/home')
     })
     .resolve()  
+}
 
 export {
   initRouter,

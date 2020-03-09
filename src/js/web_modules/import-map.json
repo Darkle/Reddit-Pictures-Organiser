@@ -2,7 +2,6 @@
   "imports": {
     "localforage": "./localforage.js",
     "navigo": "./navigo.js",
-    "p-times": "./p-times.js",
     "store": "./store.js",
     "superfine": "./superfine.js"
   }

@@ -1,10 +1,10 @@
 import {store as createStore} from '../web_modules/store.js'
 import localforage from '../web_modules/localforage.js'
 
-import {log} from '../logger.lsc'
+import {log} from '../logger.js'
 // and to get all folders, just us Object.keys(folders)
 // to get folder images would just be folders['folder 1'].images
-store = createStore ({
+const store = createStore ({
   folders : {
     'folder 1':{
       'imagePostIdHere' : {
@@ -23,30 +23,30 @@ store = createStore ({
   // Actions
   /* eslint-disable functional/immutable-data */
   addFolder: newFolder => {
-    folder = newFolder.toLowerCase()
+    const folder = newFolder.toLowerCase()
     store.folders[folder] = {}
     saveToLocalForage('folders', store.folders)
   },  
   removeFolder: folderToRemove => {
-    folder = folderToRemove.toLowerCase()
+    const folder = folderToRemove.toLowerCase()
     delete store.folders[folder]
     saveToLocalForage('folders', store.folders)
   },  
   addImageToFolder: (folder, image) => {
-    redditImagePostUrl = image.thing //TODO:
+    const redditImagePostUrl = image.thing //TODO:
     // check if already there as sometimes there will be the same post in different feeds
-    if !store.folders[folder][redditImagePostUrl]: return
+    if(!store.folders[folder][redditImagePostUrl]) return
     store.folders[folder][redditImagePostUrl] = image
     saveToLocalForage('folders', store.folders)
   },  
   removeImageFromFolder: (folder, imageToRemove) => {
-    redditImagePostUrl = imageToRemove.thing //TODO:
+    const redditImagePostUrl = imageToRemove.thing //TODO:
     delete store.folders[folder][redditImagePostUrl]
     saveToLocalForage('folders', store.folders)
   },  
   addSubreddit: newSub => {
-    sub = newSub.toLowerCase()
-    if store.subreddits.includes(sub): return
+    const sub = newSub.toLowerCase()
+    if(store.subreddits.includes(sub)) return
     store.subreddits.push(sub)
     saveToLocalForage('subreddits', store.subreddits)
   },  
@@ -55,8 +55,8 @@ store = createStore ({
     saveToLocalForage('subreddits', store.subreddits)
   },  
   addFavouriteSubreddit: newSub => {
-    sub = newSub.toLowerCase()
-    if store.favouriteSubreddits.includes(sub): return
+    const sub = newSub.toLowerCase()
+    if(store.favouriteSubreddits.includes(sub)) return
     store.favouriteSubreddits.push(sub)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  

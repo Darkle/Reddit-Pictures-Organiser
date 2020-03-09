@@ -1,7 +1,8 @@
 // log to console, rollbar, and also show a toast/notification of the error
 
-log(s) ->
+function log(s){
   console.error(s)
+}
 
 export {
   log
