@@ -3,7 +3,7 @@ import { store } from './store/store.js'
 
 function fetchSubImages({subreddit, lastImgFetched}) {
   if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
-  
+
   return fetch(generateFetchUrl(subreddit, lastImgFetched))
     .then(resp => resp.json())
     .then(resp => {

@@ -1,5 +1,6 @@
 {
   "imports": {
+    "htm": "./htm.js",
     "localforage": "./localforage.js",
     "navigo": "./navigo.js",
     "store": "./store.js",

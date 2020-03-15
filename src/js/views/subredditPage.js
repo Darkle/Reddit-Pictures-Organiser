@@ -1,9 +1,12 @@
 import { h, patch } from '../web_modules/superfine.js'
+import htm from '../web_modules/htm.js'
 
 import {store} from '../store/store.js'
 import {fetchSubImages} from '../fetchSubImages.js'
 import {log} from '../logger.js'
 import {$, setPageTitle, notOnSubredditPage} from '../utils.js'
+
+const html = htm.bind(h)
 
 function loadSubredditPage({subreddit}) {
   setPageTitle(`RPO - ${subreddit}`)
@@ -26,24 +29,34 @@ function getImagesAndUpdatePage({subreddit, lastImgFetched = null}){
   })
 }
 
-const loadingDom = h('main', {id: 'app', class: 'subredditPage'}, [
- h('div', {class: 'subLoadingNotifier'}, 'Loading Images...')
-])
-const noImagesDom = h('main', {id: 'app', class: 'subredditPage'}, [
-  h('div', {class: 'subLoadingNotifier'}, 'No Images Found')
-])
+const loadingDom = html`
+  <main id="app" class="subredditPage">
+    <div class="subLoadingNotifier">Loading Images...</div>
+  </main>
+`
+const noImagesDom = html`
+  <main id="app" class="subredditPage">
+    <div class="subLoadingNotifier">No Images Found</div>
+  </main>
+`
+// Sometimes the thumnail property is 'spoiler'
+const getThumbnailSrc = ({thumbnail, src}) => thumbnail.startsWith('http') ? thumbnail : src
 
 function subredditPage(state, initialRender = false) {
   if(initialRender) return loadingDom
   if(!state.fetchedSubredditImages.length) return noImagesDom
   
-  return h('main', {id: 'app', class: 'subredditPage'}, [
-    state.fetchedSubredditImages.map(image =>
-      h('div', {class: 'thumbnail-container'}, [
-        h('img', {class: 'thumbnail', src: image.thumbnail, 'data-id': image.id})
-      ])
-    )
-  ])  
+  return html`
+    <main id="app" class="subredditPage">
+      ${state.fetchedSubredditImages.map(image => 
+        html`
+          <div class="thumbnail-container">
+            <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"></img>
+          </div>
+        `  
+      )}
+    </main>    
+  `
 }
 
 /*****
