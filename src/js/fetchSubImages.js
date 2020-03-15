@@ -1,10 +1,10 @@
 import { pipe, notOnSubredditPage } from './utils.js'
 import { store } from './store/store.js'
 
-function fetchSubImages(subreddit) {
+function fetchSubImages({subreddit, lastImgFetched}) {
   if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
   
-  return fetch(generateFetchUrl(subreddit))
+  return fetch(generateFetchUrl(subreddit, lastImgFetched))
     .then(resp => resp.json())
     .then(resp => {
       const images = resp?.data?.children ?? []
@@ -14,14 +14,14 @@ function fetchSubImages(subreddit) {
 
       store.storeFetchedSubredditImages(processedImages)
 
-      return processedImages
+      const lastImageFetched = images[images.length - 1]
+
+      return lastImageFetched
     })
 }
 
-function generateFetchUrl(subreddit) {
-  const lastFetchedSubredditImage = store.fetchedSubredditImages[store.fetchedSubredditImages.length - 1]
-  const pagination = lastFetchedSubredditImage ? `&after=t3_${lastFetchedSubredditImage.id}` : ''
-
+function generateFetchUrl(subreddit, lastImgFetched) {
+  const pagination = lastImgFetched ? `&after=t3_${lastImgFetched.data.id}` : ''
   return `https://www.reddit.com/r/${subreddit}/.json?limit=100&count=100${pagination}`
 }
 
@@ -51,9 +51,9 @@ function transformImageLinks(images) {
       convert it to https://i.imgur.com/foo.jpg
     *****/
     if(imageUrl.hostname.startsWith('imgur.com') && notImgurGallery(imageUrl.pathname)){
-      imageUrl.pathname = imageUrl.pathname + '.jpg'
-      imageUrl.hostname = 'i.' + imageUrl.hostname
-      image.url = imageUrl.href
+      imageUrl.pathname = imageUrl.pathname + '.jpg' // eslint-disable-line functional/immutable-data
+      imageUrl.hostname = 'i.' + imageUrl.hostname // eslint-disable-line functional/immutable-data
+      image.url = imageUrl.href // eslint-disable-line functional/immutable-data
       return image
     }
     return image

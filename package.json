@@ -10,7 +10,7 @@
     "eslint": "eslint src/js/**/*.js",
     "test": "jest",
     "copy-to-dist": "ncp src dist",
-    "minify-vendor-js": "snowpack --include \"dist/js/web_modules/**/*.js\" --optimize --clean --dest dist/js/web_modules",
+    "minify-vendor-js": "snowpack --include \"src/js/**/*.js\" --optimize --clean --dest dist/js/web_modules",
     "minify-js-css-html": "minify --recursive --output dist dist",
     "size-check": "bundlesize -f \"dist/js/**/*.js\" -s 20kB"
   },
