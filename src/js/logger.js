@@ -11,10 +11,10 @@ const logger = {
   },
   debug(...args){
     if(window.location.port === '') return
+
     console.info(
       `%c${getOriginalCallingFunctionDetails()} :`, 
-      'color: #AAAAAA;', 
-      '\n', 
+      'color: #AAAAAA;', '\n', 
       ...args
     ) 
   }  
