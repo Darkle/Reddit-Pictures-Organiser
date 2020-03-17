@@ -12,17 +12,6 @@ const range = (start, end) => Array.from({length: (end - start)}, (v, k) => k + 
 rangeIncEnd: includes end number - useful if you actually want the numbers in the range instead of just the index range
 *****/
 const rangeIncEnd = (start, end) => Array.from({length: ((end - start) + 1)}, (v, k) => k + start) 
-
-const $$ = q => Array.from(document.querySelectorAll(q))
-const $ = document.querySelector.bind(document)
-const notOnSubredditPage = () => {
-  const {url} = router.lastRouteResolved()
-  return !(url.startsWith('/sub/') && url.split('/').length === 3)
-}
-const setPageTitle = (title) => {
-  document.title = title // eslint-disable-line functional/immutable-data
-}
-const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 // https://github.com/DrBoolean/Practically-Functional/blob/master/either.js
 const Right = x => ({
   chain: f => f(x),
@@ -53,8 +42,19 @@ const Either = {
   Left,
   tryCatch,
   fromNullable,
-  of: Right
+  of: Right,
 }
+
+const $$ = q => Array.from(document.querySelectorAll(q))
+const $ = document.querySelector.bind(document)
+const notOnSubredditPage = () => {
+  const {url} = router.lastRouteResolved()
+  return !(url.startsWith('/sub/') && url.split('/').length === 3)
+}
+const setPageTitle = (title) => {
+  document.title = title // eslint-disable-line functional/immutable-data
+}
+const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 
 export{
   noop,

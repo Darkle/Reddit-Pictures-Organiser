@@ -2,38 +2,29 @@ import Navigo from './web_modules/navigo.js'
 
 import {loadHomePage} from './views/homePage.js'
 import {loadSubredditPage} from './views/subredditPage.js'
+import {loadManagePage} from './views/managePage.js'
+import {loadFoldersPage} from './views/foldersPage.js'
 import {loadImageViewer} from './views/imageViewer.js'
-import { setPageTitle } from './utils.js'
+import { noSubsStored } from './utils.js'
+import { logger } from './logger.js'
 
 let router = null // eslint-disable-line functional/no-let
+const root = null
+const useHash = true 
+const hash = '#!'
 
 function initRouter(){ // eslint-disable-line max-lines-per-function
-  const root = null
-  const useHash = true 
-  const hash = '#!'
   router = new Navigo(root, useHash, hash)
-
   router
-    .on(() => {
-      //TODO: set current hash route in store??
-      console.log('empty navigo func')
-      console.log(router.getLinkPath())
-    })
-    .on('/home', loadHomePage)
+      // Show them the manage page to add new subs if they are new.
+    .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
     .on('/sub/:subreddit', loadSubredditPage)
-    .on('/sub/:subreddit/imageviewer', ({params:{subreddit}}) => {
-      console.log(`/sub/${subreddit}`)
-      loadImageViewer()
-    })
-    .on('/manage', ({params:{subreddit}}) => {
-      setPageTitle(`RPO - Manage Subs`)
-    })
-    .on('/folders', ({params:{subreddit}}) => {
-      setPageTitle(`RPO - Folders`)
-    })
+    .on('/sub/:subreddit/imageviewer', loadImageViewer)
+    .on('/manage', loadManagePage)
+    .on('/folders', loadFoldersPage)
     .notFound(() => {
-      console.error('Page not found. Redirecting to /home')
-      router.navigate('/home')
+      logger.error('Page not found. Redirecting to home page')
+      router.navigate('/')
     })
     .resolve()  
 }

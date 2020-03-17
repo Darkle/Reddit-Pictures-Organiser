@@ -1,0 +1,8 @@
+
+function loadFoldersPage(){
+
+}
+
+export {
+  loadFoldersPage
+}

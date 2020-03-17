@@ -34,7 +34,6 @@ function processImages(images) {
 }
 
 function filterImages(images) {
-  logger.debug('asd')
   return images.filter(({data: image}) => { // eslint-disable-line complexity
     // reddit cross-posts start with '/'
     if(image.stickied || image.url.startsWith('/')) return false

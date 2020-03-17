@@ -19,13 +19,8 @@ const homePage = state =>
   `
 
 function loadHomePage() {
-  /*****
-    Show them the manage page to add new subs if they are new.
-  *****/
-  noSubsStored() ?
-    router.navigate('/manage') :
-      setPageTitle('RPO')
-      patch($('#app'), homePage(store))
+  setPageTitle('RPO')
+  patch($('#app'), homePage(store))
 }
 
 function listOfSubreddits(state, subs) {
