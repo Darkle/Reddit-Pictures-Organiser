@@ -1,11 +1,16 @@
 /* eslint-disable functional/no-class */
 
-//Note: firefox doesnt have Error.captureStackTrace, so use Error.?captureStackTrace
-
-class UserNavigatedAway extends Error {
-  name = 'UserNavigatedAway'
+class ApplicationError extends Error {
+  get name(){
+    return this.constructor.name // eslint-disable-line functional/no-this-expression
+  }
 }
+class PromiseCanceller extends ApplicationError {}
+class UserNavigatedAway extends PromiseCanceller {}
+class NoMoreImagesToFetch extends PromiseCanceller {}
 
 export {
-  UserNavigatedAway
+  UserNavigatedAway,
+  NoMoreImagesToFetch,
+  PromiseCanceller,
 }

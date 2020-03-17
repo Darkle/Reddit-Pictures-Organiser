@@ -25,7 +25,10 @@ function loadSubredditPage({subreddit}) {
 
 function getImagesAndUpdatePage({subreddit, lastImgFetched = null}){
   return fetchSubImages({subreddit, lastImgFetched}).then(latestLastImgFetched => {
-    patchSubPage()
+    if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
+
+    patch($('#app'), subredditPage(store))
+    
     return ({subreddit, lastImgFetched: latestLastImgFetched})
   })
 }
@@ -58,15 +61,6 @@ function subredditPage(state, initialRender = false) {
       )}
     </main>    
   `
-}
-
-/*****
-We are throwing here if a fetch is sent and received, but the user navigates away, as we want to stop
-any more fetch requests and html updates.
-*****/
-function patchSubPage(){
-  if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
-  return patch($('#app'), subredditPage(store))
 }
 
 export {

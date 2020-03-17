@@ -1,7 +1,7 @@
 import { pipe, notOnSubredditPage } from './utils.js'
 import { store } from './store/store.js'
 import { logger } from './logger.js'
-import { UserNavigatedAway } from './Errors.js'
+import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
 
 function fetchSubImages({subreddit, lastImgFetched}) {
   if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
@@ -15,7 +15,7 @@ function fetchSubImages({subreddit, lastImgFetched}) {
       const processedImages = processImages(images)
       logger.debug(processedImages)
 
-      if(!images.length) return Promise.reject(new Error('change this to be from my error class'))
+      if(!images.length) return Promise.reject(new NoMoreImagesToFetch())
 
       store.storeFetchedSubredditImages(processedImages)
       const lastImageFetched = images[images.length - 1]
@@ -34,6 +34,7 @@ function processImages(images) {
 }
 
 function filterImages(images) {
+  logger.debug('asd')
   return images.filter(({data: image}) => { // eslint-disable-line complexity
     // reddit cross-posts start with '/'
     if(image.stickied || image.url.startsWith('/')) return false
