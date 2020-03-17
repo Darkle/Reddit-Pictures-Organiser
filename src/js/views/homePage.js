@@ -46,7 +46,7 @@ function showStarIfFavouritedSub(state, subName) {
 }
 
 /*****
-  Subs sorted favourites first and both sets are sorted
+  Subs sorted favourites first and then both sets are sorted
 *****/
 function sortSubs({favouriteSubreddits, subreddits}) {
   const favSubs = favouriteSubreddits?.length ? favouriteSubreddits : []

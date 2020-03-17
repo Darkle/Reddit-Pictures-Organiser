@@ -5,7 +5,6 @@ import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
 
 function fetchSubImages({subreddit, lastImgFetched}) {
   if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
-
   logger.debug(generateFetchUrl(subreddit, lastImgFetched))
 
   return fetch(generateFetchUrl(subreddit, lastImgFetched))
