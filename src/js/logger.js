@@ -11,15 +11,18 @@ const logger = {
   },
   debug(...args){
     if(window.location.port === '') return
-    console.info(getOriginalCallingFunctionDetails(), 'color: #AAAAAA;', '\n', ...args) 
+    console.info(
+      `%c${getOriginalCallingFunctionDetails()} :`, 
+      'color: #AAAAAA;', 
+      '\n', 
+      ...args
+    ) 
   }  
 }
 
 //https://stackoverflow.com/a/57023880/2785644
 function getOriginalCallingFunctionDetails(){
-  const tempError = new Error()
-  const stackLineOfCallingFunction = tempError.stack.split('\n')[3].trim().slice(3)
-  return `%c${stackLineOfCallingFunction} :`
+  return (new Error()).stack.split('\n')[3].trim().slice(3)
 }
 
 export {
