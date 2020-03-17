@@ -11,23 +11,15 @@ const logger = {
   },
   debug(...args){
     if(window.location.port === '') return
-    console.info(getOriginalCallingFunctionName(), 'color: #AAAAAA;',...args) 
+    console.info(getOriginalCallingFunctionName(), 'color: #AAAAAA;', '\n', ...args) 
   }  
 }
 
 //https://stackoverflow.com/a/57023880/2785644
 function getOriginalCallingFunctionName(){
   const tempError = new Error()
-  console.log('tempError.stack', tempError.stack)
-  const stackLineOfCallingFunction = tempError.stack.split('\n')[3].trim()
-  const lineNumber = stackLineOfCallingFunction.split(':').slice(-2).shift()
-  const callingFuncName = stackLineOfCallingFunction.split(' ')[1]
-  const lastForwardSlash = stackLineOfCallingFunction.lastIndexOf('/')
-  const fileName = stackLineOfCallingFunction.slice(lastForwardSlash + 1, -1).split(':')[0]
-  if(callingFuncName.startsWith('http')){
-    console.log('final thing: ', `${callingFuncName} `)
-  }
-  return `%c${callingFuncName} (${fileName}:${lineNumber})`
+  const stackLineOfCallingFunction = tempError.stack.split('\n')[3].trim().slice(3)
+  return `%c${stackLineOfCallingFunction} :`
 }
 
 export {
