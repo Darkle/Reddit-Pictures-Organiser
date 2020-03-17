@@ -1,19 +1,23 @@
 import { pipe, notOnSubredditPage } from './utils.js'
 import { store } from './store/store.js'
+import { logger } from './logger.js'
+import { UserNavigatedAway } from './Errors.js'
 
 function fetchSubImages({subreddit, lastImgFetched}) {
-  if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
+  if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
+
+  logger.debug(generateFetchUrl(subreddit, lastImgFetched))
 
   return fetch(generateFetchUrl(subreddit, lastImgFetched))
     .then(resp => resp.json())
     .then(resp => {
       const images = resp?.data?.children ?? []
       const processedImages = processImages(images)
+      logger.debug(processedImages)
 
       if(!images.length) return Promise.reject(new Error('change this to be from my error class'))
 
       store.storeFetchedSubredditImages(processedImages)
-
       const lastImageFetched = images[images.length - 1]
 
       return lastImageFetched

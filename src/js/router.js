@@ -5,12 +5,12 @@ import {loadSubredditPage} from './views/subredditPage.js'
 import {loadImageViewer} from './views/imageViewer.js'
 import { setPageTitle } from './utils.js'
 
-let router = null
+let router = null // eslint-disable-line functional/no-let
 
 function initRouter(){ // eslint-disable-line max-lines-per-function
   const root = null
-  const useHash = true // Defaults to: false
-  const hash = '#!' // Defaults to: '#'
+  const useHash = true 
+  const hash = '#!'
   router = new Navigo(root, useHash, hash)
 
   router

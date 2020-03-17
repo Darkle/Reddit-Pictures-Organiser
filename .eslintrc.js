@@ -37,6 +37,7 @@ module.exports = {
     'functional/no-conditional-statement': ['error', {allowReturningBranches: true}],
     'functional/no-expression-statement': 'off',
     'functional/functional-parameters': 'off',    
+    'functional/immutable-data': ['error', {ignoreImmediateMutation: true}],    
     'functional/no-promise-reject': 'off',    
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
@@ -70,7 +71,7 @@ module.exports = {
         ignoreArrayIndexes: true,
         enforceConst: true,
         detectObjects: true,
-        ignore: [0, 1, 2, 3]
+        ignore: [-1, 0, 1, 2, 3]
       }
     ],
     'no-multiple-empty-lines': [

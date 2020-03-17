@@ -1,7 +1,7 @@
 import {store as createStore} from '../web_modules/store.js'
 import localforage from '../web_modules/localforage.js'
 
-import {log} from '../logger.js'
+import {logger} from '../logger.js'
 // and to get all folders, just us Object.keys(folders)
 // to get folder images would just be folders['folder 1'].images
 const store = createStore ({
@@ -76,7 +76,7 @@ const store = createStore ({
 })
 
 function saveToLocalForage(key, value) {
-  localforage.setItem(key, JSON.stringify(value)).catch(log)
+  localforage.setItem(key, JSON.stringify(value)).catch(logger.error)
 }
 
 export {

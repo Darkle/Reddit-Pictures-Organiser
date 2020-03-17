@@ -47,7 +47,7 @@ const svgFavIcon = html`
 
 function showStarIfFavouritedSub(state, subName) {
   const subIsAFavourite = state.favouriteSubreddits?.includes(subName)
-  return !subIsAFavourite ? null : svgFavIcon
+  return subIsAFavourite ? svgFavIcon : null
 }
 
 /*****

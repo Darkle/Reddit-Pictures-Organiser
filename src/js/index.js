@@ -1,12 +1,12 @@
 import {init as initDb} from './store/db.js'
-import {log} from './logger.js'
+import {logger} from './logger.js'
 import { initRouter } from './router.js'
 
 if(!window.location.hash.includes('#')){
   window.location.hash = '!/home'
 }
 
-initDb().then(initRouter).catch(log)
+initDb().then(initRouter).catch(logger.error)
 
 // initDb().then(() => {
 //   console.log('asd')
@@ -42,4 +42,4 @@ initDb().then(initRouter).catch(log)
 //   store.addFavouriteSubreddit('Abandoned')
 //   store.addFavouriteSubreddit('Animals')
 //   store.addFavouriteSubreddit('Cats') 
-// }).catch(log)
+// }).catch(logger.error)

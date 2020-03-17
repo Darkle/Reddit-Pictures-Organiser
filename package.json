@@ -18,7 +18,6 @@
     "htm": "^3.0.3",
     "localforage": "^1.7.3",
     "navigo": "^7.1.2",
-    "plain-object-is-empty": "^1.0.0",
     "store": "npm:@fabiospampinato/store@^1.1.1",
     "superfine": "^7.0.0"
   },

@@ -3,8 +3,9 @@ import htm from '../web_modules/htm.js'
 
 import {store} from '../store/store.js'
 import {fetchSubImages} from '../fetchSubImages.js'
-import {log} from '../logger.js'
+import {logger} from '../logger.js'
 import {$, setPageTitle, notOnSubredditPage} from '../utils.js'
+import { UserNavigatedAway } from '../Errors.js'
 
 const html = htm.bind(h)
 
@@ -19,7 +20,7 @@ function loadSubredditPage({subreddit}) {
     .then(getImagesAndUpdatePage)
     .then(getImagesAndUpdatePage)
     .then(getImagesAndUpdatePage)
-    .catch(log)
+    .catch(logger.error)
 }
 
 function getImagesAndUpdatePage({subreddit, lastImgFetched = null}){
@@ -64,7 +65,7 @@ We are throwing here if a fetch is sent and received, but the user navigates awa
 any more fetch requests and html updates.
 *****/
 function patchSubPage(){
-  if(notOnSubredditPage()) return Promise.reject(new Error('change this to be from my error class'))
+  if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
   return patch($('#app'), subredditPage(store))
 }
 
