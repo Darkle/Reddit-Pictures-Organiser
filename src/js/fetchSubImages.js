@@ -1,4 +1,4 @@
-import { pipe, notOnSubredditPage } from './utils.js'
+import { pipe, notOnSubredditPage, Fetcher } from './utils.js'
 import { store } from './store/store.js'
 import { logger } from './logger.js'
 import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
@@ -7,8 +7,7 @@ function fetchSubImages({subreddit, lastImgFetched}) {
   if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
   logger.debug(generateFetchUrl(subreddit, lastImgFetched))
 
-  return fetch(generateFetchUrl(subreddit, lastImgFetched))
-    .then(resp => resp.json())
+  return Fetcher.getJSON(generateFetchUrl(subreddit, lastImgFetched))
     .then(resp => {
       const images = resp?.data?.children ?? []
       const processedImages = processImages(images)

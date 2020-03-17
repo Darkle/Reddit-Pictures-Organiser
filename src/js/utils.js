@@ -1,5 +1,6 @@
 import {router} from './router.js'
 import { store } from './store/store.js'
+import { FetchError } from './Errors.js'
 
 const noop = () => {}
 const identity = (param) => param
@@ -56,6 +57,19 @@ const setPageTitle = (title) => {
 }
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 
+const checkFetchResponseStatus = response => 
+  response.ok ? response : 
+    Promise.reject(new FetchError(response.statusText, response))
+
+const parseJSON = res => res.json()
+
+const Fetcher = {
+  getJSON: (path, params) => 
+    fetch(path, params)
+      .then(checkFetchResponseStatus)
+      .then(parseJSON)
+}
+
 export{
   noop,
   identity,
@@ -71,4 +85,5 @@ export{
   setPageTitle,
   noSubsStored,
   Either,
+  Fetcher,
 }
