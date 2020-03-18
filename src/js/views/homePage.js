@@ -2,7 +2,7 @@ import { h, patch } from '../web_modules/superfine.js'
 import htm from '../web_modules/htm.js'
 
 import {store} from '../store/store.js'
-import { $, setPageTitle, noSubsStored } from '../utils.js'
+import { $, setPageTitle } from '../utils.js'
 import { router } from '../router.js'
 
 const html = htm.bind(h)

@@ -8,13 +8,12 @@ import {loadImageViewer} from './views/imageViewer.js'
 import { noSubsStored } from './utils.js'
 import { logger } from './logger.js'
 
-let router = null // eslint-disable-line functional/no-let
 const root = null
 const useHash = true 
 const hash = '#!'
+const router = new Navigo(root, useHash, hash)
 
 function initRouter(){
-  router = new Navigo(root, useHash, hash)
   router
       // Show them the manage page to add new subs if they are new.
     .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
