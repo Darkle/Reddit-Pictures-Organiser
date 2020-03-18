@@ -9,76 +9,106 @@ const html = htm.bind(h)
 
 function loadManagePage() {
   setPageTitle('RPO - Manage Subs')
-  patch($('#app'), managePage(store.subreddits))
+  patch($('#app'), ManagePage(store.subreddits))
 }
 
-function managePage(subreddits, showConfirmRemoveSubDialog = false){ // eslint-disable-line max-lines-per-function
+function ManagePage(subreddits, showConfirmRemoveSubDialog = false){
   return html`
     <main id="app" class="managePage">
-      <div class="manageWrapper">
-        <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
-        <div class="manage" >Manage</div>
-      </div>
+      ${Nav()}
       <div class="inputsContainer">
-        <div class="addSubInputContainer">
-          <label for="addSubredditInput">Add Subreddit</label>
-          <input type="text" id="addSubredditInput" class="addSubredditInput" 
-          onkeyup=${addSubreddit} autocomplete="off"/>
-        </div>
-        <div class="removeSubInputContainer">
-          <label for="removeSubredditInput">Remove Subreddit</label>
-          <input type="text" id="removeSubredditInput" class="removeSubredditInput" list="subredditList" autocomplete="off"
-          onchange=${onChangeSelectSubredditToRemove} onmouseup=${onMouseUpSelectSubredditToRemove} />
-          <datalist id="subredditList">
-            ${subreddits.map(subreddit => html`<option>${subreddit}</option>`)}
-          </datalist>
-          <dialog open=${showConfirmRemoveSubDialog} >
-            <label>Are you sure you want to remove the ${$('#removeSubredditInput')?.value} subreddit?</label>
-            <menu>
-              <button onmouseup=${cancelRemove}>Cancel</button>
-              <button onmouseup=${removeSubreddit}>Remove</button>
-            </menu>
-          </dialog>
-          <div class="toast subAddedToast">Subreddit Added</div>
-          <div class="toast subRemovedToast">Subreddit Removed</div>
-        </div>
+        ${AddSub()}
+        ${RemoveSub(subreddits, showConfirmRemoveSubDialog)}
       </div>  
     </main>
     `
+}
+
+function Nav(){
+  return html`
+    <div class="manageWrapper">
+      <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
+      <div class="manage" >Manage</div>
+    </div>  
+  `
+}
+
+function AddSub() {
+  return html `
+    <div class="addSubInputContainer">
+      <label for="addSubredditInput">Add Subreddit</label>
+      <input type="text" id="addSubredditInput" class="addSubredditInput" 
+      onkeyup=${addSubreddit} autocomplete="off"/>
+    </div>  
+  `
+}
+
+function RemoveSub(subreddits, showConfirmRemoveSubDialog) {
+  return html `
+    <div class="removeSubInputContainer">
+      <label for="removeSubredditInput">Remove Subreddit</label>
+      <input type="text" id="removeSubredditInput" class="removeSubredditInput" list="subredditList" autocomplete="off"
+      onchange=${onChangeSelectSubredditToRemove} onmouseup=${onMouseUpSelectSubredditToRemove} />
+      <datalist id="subredditList">
+        ${subreddits.map(subreddit => html`<option>${subreddit}</option>`)}
+      </datalist>
+      ${Dialog(showConfirmRemoveSubDialog)}
+      ${Toast()}
+    </div>  
+  `
+}
+
+function Dialog(showConfirmRemoveSubDialog){
+  return html `
+    <dialog open=${showConfirmRemoveSubDialog} >
+      <label>Are you sure you want to remove the ${$('#removeSubredditInput')?.value} subreddit?</label>
+      <menu>
+        <button onmouseup=${cancelRemove}>Cancel</button>
+        <button onmouseup=${removeSubreddit}>Remove</button>
+      </menu>
+    </dialog>  
+  `
+}
+
+function Toast(){
+  return html`
+    <div class="toast subAddedToast">Subreddit Added</div>
+    <div class="toast subRemovedToast">Subreddit Removed</div>  
+  `
 }
 
 function addSubreddit(event){
   if(event.key !== 'Enter' || inputIsEmpty(event.target)) return
   store.addSubreddit(event.target.value)
   resetInputs()
-  patch($('#app'), managePage(store.subreddits))
+  patch($('#app'), ManagePage(store.subreddits))
   toggleToast('subAddedToast')
 }
 
 function onChangeSelectSubredditToRemove(event){
   if(inputIsEmpty(event.target)) return
   const showConfirmRemoveSubDialog = true
-  patch($('#app'), managePage(store.subreddits, showConfirmRemoveSubDialog))
+  patch($('#app'), ManagePage(store.subreddits, showConfirmRemoveSubDialog))
 }
 
 function onMouseUpSelectSubredditToRemove(event){
   if(inputIsEmpty(event.target)) return  
   const showConfirmRemoveSubDialog = true
   if(event.key === 'Enter'){ // eslint-disable-line functional/no-conditional-statement
-    patch($('#app'), managePage(store.subreddits, showConfirmRemoveSubDialog))
+    patch($('#app'), ManagePage(store.subreddits, showConfirmRemoveSubDialog))
   }
 }
 
 function removeSubreddit(){
   store.removeSubreddit($('#removeSubredditInput').value)
   resetInputs()
-  patch($('#app'), managePage(store.subreddits))
+  patch($('#app'), ManagePage(store.subreddits))
   toggleToast('subRemovedToast')
 }
 
 function cancelRemove(){
   resetInputs()
-  patch($('#app'), managePage(store.subreddits))
+  patch($('#app'), ManagePage(store.subreddits))
 }
 
 function inputIsEmpty(inputElem){
