@@ -26,7 +26,6 @@ function loadSubredditPage({subreddit}) {
 function getImagesAndUpdatePage({subreddit, lastImgFetched = null}){
   return fetchSubImages({subreddit, lastImgFetched}).then(latestLastImgFetched => {
     if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
-
     patch($('#app'), subredditPage(store))
     
     return ({subreddit, lastImgFetched: latestLastImgFetched})

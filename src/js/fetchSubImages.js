@@ -12,7 +12,7 @@ function fetchSubImages({subreddit, lastImgFetched}) {
       const images = resp?.data?.children ?? []
       const processedImages = processImages(images)
       logger.debug(processedImages)
-
+      
       if(!images.length) return Promise.reject(new NoMoreImagesToFetch())
 
       store.storeFetchedSubredditImages(processedImages)

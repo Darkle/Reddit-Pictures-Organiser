@@ -1,5 +1,6 @@
 import { PromiseCanceller } from './Errors.js'
 // TODO: also log to rollbar, and also show a brief toast/notification of the error
+  /* background-color:#fabd2f; --for errors */
 
 const logger = {
   log(...args){
@@ -24,6 +25,8 @@ const logger = {
 function getOriginalCallingFunctionDetails(){
   return (new Error()).stack.split('\n')[3].trim().slice(3)
 }
+
+window.addEventListener('error', logger.error)
 
 export {
   logger
