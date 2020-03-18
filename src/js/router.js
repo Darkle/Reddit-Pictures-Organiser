@@ -13,7 +13,7 @@ const root = null
 const useHash = true 
 const hash = '#!'
 
-function initRouter(){ // eslint-disable-line max-lines-per-function
+function initRouter(){
   router = new Navigo(root, useHash, hash)
   router
       // Show them the manage page to add new subs if they are new.
