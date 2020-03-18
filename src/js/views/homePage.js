@@ -7,8 +7,8 @@ import { router } from '../router.js'
 
 const html = htm.bind(h)
 
-const homePage = state => 
-  html`
+const HomePage = state => {
+  return html`
     <main id="app" class="homePage">
       <div class="manageWrapper">
         <div class="folders" onmouseup=${ () => router.navigate('/folders')}>Folders</div>
@@ -17,14 +17,15 @@ const homePage = state =>
       ${listOfSubreddits(state, sortSubs(state))}
     </main>
   `
+}
 
 function loadHomePage() {
   setPageTitle('RPO')
-  patch($('#app'), homePage(store))
+  patch($('#app'), HomePage(store))
 }
 
 function listOfSubreddits(state, subs) {
-  return !subs?.length ? [null] : subs.map(subName =>
+  return !subs.length ? [null] : subs.map(subName =>
     html`
       <div class="subreddit" onmouseup=${() => router.navigate(`/sub/${subName}`)}>
         ${showStarIfFavouritedSub(state, subName)}

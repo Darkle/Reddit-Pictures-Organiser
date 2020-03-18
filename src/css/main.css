@@ -3,3 +3,12 @@ body{
   font-family: 'Open Sans';
   margin: 0;
 }
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
+.showFlex{
+  display: flex;
+}

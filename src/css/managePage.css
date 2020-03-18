@@ -105,7 +105,7 @@
   bottom: 30px;
   background-color:#d3869b  
 }
-.managePage .show{
+.managePage .showToast{
   visibility: visible;
   animation: toastFadeIn 0.5s, toastFadeOut 0.6s 2.5s;
 }

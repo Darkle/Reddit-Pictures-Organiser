@@ -15,7 +15,7 @@ function loadImageViewer({params:{subreddit}}) {
   // }
 }
 
-function imageViewer(params) {
+function ImageViewer(params) {
   
 }
 

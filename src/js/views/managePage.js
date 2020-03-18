@@ -93,8 +93,8 @@ function resetInputs(){
 const threeSecondsInMS = 3000
 
 function toggleToast(toastSelector){
-  $(`.${toastSelector}`).classList.toggle('show')
-  setTimeout(() => $(`.${toastSelector}`).classList.toggle('show'), threeSecondsInMS)
+  $(`.${toastSelector}`).classList.toggle('showToast')
+  setTimeout(() => $(`.${toastSelector}`).classList.toggle('showToast'), threeSecondsInMS)
 }
 
 export {

@@ -14,7 +14,7 @@ function loadSubredditPage({subreddit}) {
   store.removeStoredFetchedSubredditImages()
   
   const initialRender = true
-  patch($('#app'), subredditPage(store, initialRender))
+  patch($('#app'), SubredditPage(store, initialRender))
 
   getImagesAndUpdatePage({subreddit})
     .then(getImagesAndUpdatePage)
@@ -26,7 +26,7 @@ function loadSubredditPage({subreddit}) {
 function getImagesAndUpdatePage({subreddit, lastImgFetched = null}){
   return fetchSubImages({subreddit, lastImgFetched}).then(latestLastImgFetched => {
     if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
-    patch($('#app'), subredditPage(store))
+    patch($('#app'), SubredditPage(store))
     
     return ({subreddit, lastImgFetched: latestLastImgFetched})
   })
@@ -45,7 +45,7 @@ const noImagesDom = html`
 // Sometimes the thumnail property is 'spoiler'
 const getThumbnailSrc = ({thumbnail, src}) => thumbnail.startsWith('http') ? thumbnail : src
 
-function subredditPage(state, initialRender = false) {
+function SubredditPage(state, initialRender = false) {
   if(initialRender) return loadingDom
   if(!state.fetchedSubredditImages.length) return noImagesDom
   

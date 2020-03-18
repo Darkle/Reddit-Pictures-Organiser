@@ -9,7 +9,7 @@ function fetchSubImages({subreddit, lastImgFetched}) {
 
   return Fetcher.getJSON(generateFetchUrl(subreddit, lastImgFetched))
     .then(resp => {
-      const images = resp?.data?.children ?? []
+      const images = resp.data?.children ?? []
       const processedImages = processImages(images)
       logger.debug(processedImages)
       
