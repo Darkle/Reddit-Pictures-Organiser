@@ -26,10 +26,10 @@ function ManagePage(subreddits, showConfirmRemoveSubDialog = false){
 
 function Nav(){
   return html`
-    <div class="manageWrapper">
+    <nav class="navWrapper">
       <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
       <div class="manage" >Manage</div>
-    </div>  
+    </nav>  
   `
 }
 

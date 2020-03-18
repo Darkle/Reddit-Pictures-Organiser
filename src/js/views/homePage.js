@@ -10,10 +10,10 @@ const html = htm.bind(h)
 const HomePage = state => {
   return html`
     <main id="app" class="homePage">
-      <div class="manageWrapper">
+      <nav class="navWrapper">
         <div class="folders" onmouseup=${ () => router.navigate('/folders')}>Folders</div>
         <div class="manage" onmouseup=${ () => router.navigate('/manage')}>Manage</div>
-      </div>
+      </nav>
       ${listOfSubreddits(state, sortSubs(state))}
     </main>
   `

@@ -3,20 +3,20 @@
   flex-direction: column;
 }
 
-.managePage .manageWrapper{
+.managePage .navWrapper{
   display: flex;
   border: 2px solid #737373;
   width: 100%;
   margin-bottom: 10px;
 }
-.managePage .manageWrapper .home{
+.managePage .navWrapper .home{
   flex-grow: 1;
   padding: 10px;
   color: #fff4e8;
   text-align: center;
   border-right: 2px solid #737373;
 }
-.managePage .manageWrapper .manage{
+.managePage .navWrapper .manage{
   flex-grow: 1;
   padding: 10px;
   color: #fff4e8;
