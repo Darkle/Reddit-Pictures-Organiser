@@ -9,7 +9,7 @@ const html = htm.bind(h)
 
 const homePage = state => 
   html`
-    <main id="app" class="homepage">
+    <main id="app" class="homePage">
       <div class="manageWrapper">
         <div class="folders" onmouseup=${ () => router.navigate('/folders')}>Folders</div>
         <div class="manage" onmouseup=${ () => router.navigate('/manage')}>Manage</div>

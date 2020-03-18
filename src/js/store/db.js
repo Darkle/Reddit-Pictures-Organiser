@@ -8,7 +8,7 @@ localforage.config({
 
 function init(){
   return localforage.iterate((value, key) => {
-    store[key] = value
+    store[key] = JSON.parse(value)
   })
 }
 export {

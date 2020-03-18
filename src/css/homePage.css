@@ -1,8 +1,8 @@
-.homepage{
+.homePage{
   display: flex;
   flex-wrap: wrap;
 }
-.homepage .manageWrapper{
+.homePage .manageWrapper{
   display: flex;
   border: 2px solid #737373;
   width: 100%;
@@ -11,20 +11,20 @@
 /*
 Change color of stuff to #F49A87 when click/tap
 */
-.homepage .manageWrapper .folders{
+.homePage .manageWrapper .folders{
   flex-grow: 1;
   padding: 10px;
   color: #fff4e8;
   text-align: center;
   border-right: 2px solid #737373;
 }
-.homepage .manageWrapper .manage{
+.homePage .manageWrapper .manage{
   flex-grow: 1;
   padding: 10px;
   color: #fff4e8;
   text-align: center;
 }
-.homepage .subreddit{
+.homePage .subreddit{
   flex-grow: 1;
   color: #fff4e8;
   border: 1px solid #737373;
@@ -34,7 +34,7 @@ Change color of stuff to #F49A87 when click/tap
   text-transform: capitalize;
 }
 
-.homepage .subreddit .favouriteStar{
+.homePage .subreddit .favouriteStar{
   margin-right: 4px;
 }
 

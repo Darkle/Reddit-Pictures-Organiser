@@ -1,0 +1,99 @@
+.managePage {
+  display: flex;
+  flex-direction: column;
+}
+
+.managePage .manageWrapper{
+  display: flex;
+  border: 2px solid #737373;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.managePage .manageWrapper .home{
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff4e8;
+  text-align: center;
+  border-right: 2px solid #737373;
+}
+.managePage .manageWrapper .manage{
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff4e8;
+  text-align: center;
+  outline: 1px solid #fff4e8;
+}
+.managePage .inputsContainer {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.managePage .inputsContainer .addSubInputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.managePage .inputsContainer .addSubInputContainer label {
+  color: #fff4e8;
+  margin-bottom: 10px;
+}
+.managePage .inputsContainer .addSubInputContainer .addSubredditInput {
+  line-height: 25px;
+  padding: 6px;
+  max-width: 240px;
+  min-width: 240px;
+  border: 2px solid #737373;
+  font-size: 1rem;
+}
+.managePage .inputsContainer .removeSubInputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.managePage .inputsContainer .removeSubInputContainer label {
+  color: #fff4e8;
+  margin-bottom: 10px;
+}
+.managePage .inputsContainer .removeSubInputContainer .removeSubredditInput {
+  line-height: 25px;
+  padding: 6px;
+  max-width: 240px;
+  min-width: 240px;
+  border: 2px solid #737373;
+  font-size: 1rem;
+}
+.managePage .inputsContainer .removeSubInputContainer dialog {
+  background-color: #737373;
+  border: 2px solid #737373;
+  font-size: 1rem;
+}
+.managePage .inputsContainer .removeSubInputContainer dialog menu{
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  margin-bottom: 4px;  
+  padding: 0;
+}
+.managePage .inputsContainer .removeSubInputContainer dialog menu button{
+  display: inline-block;
+  padding: 0.35em 1.2em;
+  border: 0.1em solid 	#fff4e8;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: 	#fff4e8;
+  text-align: center;
+  background-color: #595959;
+}
+.managePage .inputsContainer .removeSubInputContainer dialog menu button:hover{
+  color:#000000;
+  background-color:#FFFFFF;
+}
+.managePage .inputsContainer .removeSubInputContainer dialog menu button:nth-of-type(1){
+  margin-right: 20px;
+}
+.managePage .inputsContainer .removeSubInputContainer dialog menu button:nth-of-type(2){
+  margin-left: 20px;
+}
