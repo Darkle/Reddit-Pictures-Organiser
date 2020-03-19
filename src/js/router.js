@@ -17,8 +17,8 @@ function initRouter(){
   router
       // Show them the manage page to add new subs if they are new.
     .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
-    .on('/sub/:subreddit', loadSubredditPage)
-    .on('/sub/:subreddit/imageviewer', loadImageViewer)
+    .on('/sub/:subreddit/:timefilter', loadSubredditPage)
+    .on('/sub/:subreddit/:timefilter/imageviewer', loadImageViewer)
     .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
     .notFound(() => {

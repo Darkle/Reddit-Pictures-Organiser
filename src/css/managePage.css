@@ -7,7 +7,7 @@
   display: flex;
   border: 2px solid #737373;
   width: 100%;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 .managePage .navWrapper .home{
   flex-grow: 1;

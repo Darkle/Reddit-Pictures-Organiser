@@ -48,9 +48,12 @@ const Either = {
 
 const $$ = q => Array.from(document.querySelectorAll(q))
 const $ = document.querySelector.bind(document)
-const notOnSubredditPage = () => {
+
+const subPageNavigatedAway = timefilter => {
   const {url} = router.lastRouteResolved()
-  return !(url.startsWith('/sub/') && url.split('/').length === 3)
+  if(!url.startsWith('/sub/')) return true
+  if(url.startsWith('/sub/') && !url.endsWith(`/${timefilter}`)) return true
+  return false
 }
 const setPageTitle = (title) => {
   document.title = title // eslint-disable-line functional/immutable-data
@@ -81,7 +84,7 @@ export{
   rangeIncEnd,
   $$,
   $,
-  notOnSubredditPage,
+  subPageNavigatedAway,
   setPageTitle,
   noSubsStored,
   Either,

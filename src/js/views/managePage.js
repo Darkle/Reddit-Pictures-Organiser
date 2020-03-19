@@ -13,7 +13,7 @@ function loadManagePage() {
 }
 
 function ManagePage(subreddits, showConfirmRemoveSubDialog = false){
-  // This page seems to need an extra div container for some reason, otherwise superfine blows up.
+  // This page seems to need an extra div container for some reason, otherwise superfine patch blows up.
   return html`
     <main id="app" class="managePage">
       <div>

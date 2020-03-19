@@ -4,12 +4,13 @@
 }
 .homePage .navWrapper{
   display: flex;
-  border: 2px solid #737373;
+  border-bottom: 2px solid #737373;
   width: 100%;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 /*
-Change color of stuff to #F49A87 when click/tap
+TODO: Change color of stuff to #F49A87 when click/tap
+TODO: Change mouse icon for hover over things
 */
 .homePage .navWrapper .folders{
   flex-grow: 1;

@@ -1,8 +1,29 @@
-.subredditPage{
+.subredditPage {
+  display: flex;
+  flex-direction: column;
+}
+.subredditPage .navWrapper{
+  display: flex;
+  border: 2px solid #737373;
+  width: 100%;
+  align-items: center;
+  /* margin-bottom: 10px; */
+}
+.subredditPage .navWrapper > *{
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff4e8;
+  text-align: center;
+  border-right: 2px solid #737373;
+}
+.subredditPage .navWrapper > *.selectedSubTimeFilter{
+  outline: 1px solid #fff4e8;
+}
+.subredditPage .subredditImagesContainer{
   display: flex;
   flex-wrap: wrap;
 }
-.subredditPage .thumbnail-container{
+.subredditPage .subredditImagesContainer .thumbnail-container{
   width: 100px;
   height: 100px;
   margin: 1px;
@@ -11,11 +32,12 @@
   justify-content: center;
   display: flex;
 }
-.subredditPage .thumbnail{
+.subredditPage .subredditImagesContainer .thumbnail{
   object-fit: cover;
+  overflow: hidden;
 }
 
-.subredditPage .subLoadingNotifier{
+.subredditPage .subredditImagesContainer .subLoadingNotifier{
   color: #fff4e8;
   width: 100%;
   text-align: center;

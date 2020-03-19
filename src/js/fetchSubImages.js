@@ -1,30 +1,40 @@
-import { pipe, notOnSubredditPage, Fetcher } from './utils.js'
+import { pipe, subPageNavigatedAway, Fetcher } from './utils.js'
 import { store } from './store/store.js'
 import { logger } from './logger.js'
 import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
 
-function fetchSubImages({subreddit, lastImgFetched}) {
-  if(notOnSubredditPage()) return Promise.reject(new UserNavigatedAway())
-  logger.debug(generateFetchUrl(subreddit, lastImgFetched))
+function fetchSubImages({subreddit, lastImgFetched = null, timefilter}) {
+  if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
+  logger.debug(generateFetchUrl(subreddit, lastImgFetched, timefilter))
 
-  return Fetcher.getJSON(generateFetchUrl(subreddit, lastImgFetched))
+  return Fetcher.getJSON(generateFetchUrl(subreddit, lastImgFetched, timefilter))
     .then(resp => {
       const images = resp.data?.children ?? []
       const processedImages = processImages(images)
       logger.debug(processedImages)
-      
+
+      if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
       if(!images.length) return Promise.reject(new NoMoreImagesToFetch())
 
       store.storeFetchedSubredditImages(processedImages)
       const lastImageFetched = images[images.length - 1]
 
-      return lastImageFetched
+      return [lastImageFetched, timefilter]
     })
 }
 
-function generateFetchUrl(subreddit, lastImgFetched) {
+/*****
+  https://www.reddit.com/r/aww/.json?limit=100&count=100
+  https://www.reddit.com/r/aww/top/.json?limit=100&t=week&count=100
+  https://www.reddit.com/r/aww/top/.json?limit=100&t=month&count=100
+  https://www.reddit.com/r/aww/top/.json?limit=100&t=year&count=100
+  https://www.reddit.com/r/aww/top/.json?limit=100&t=all&count=100
+*****/
+function generateFetchUrl(subreddit, lastImgFetched, timefilter) {
   const pagination = lastImgFetched ? `&after=t3_${lastImgFetched.data.id}` : ''
-  return `https://www.reddit.com/r/${subreddit}/.json?limit=100&count=100${pagination}`
+  const urlQueryTimeFilter = timefilter === 'latest' ? '' : `&t=${timefilter}`
+  const topPath = timefilter === 'latest' ? '' : `top/`
+  return `https://www.reddit.com/r/${subreddit}/${topPath}.json?limit=100${urlQueryTimeFilter}&count=100${pagination}`
 }
 
 function processImages(images) {

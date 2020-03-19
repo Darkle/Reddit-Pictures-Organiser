@@ -27,7 +27,7 @@ function loadHomePage() {
 function listOfSubreddits(state, subs) {
   return !subs.length ? [null] : subs.map(subName =>
     html`
-      <div class="subreddit" onmouseup=${() => router.navigate(`/sub/${subName}`)}>
+      <div class="subreddit" onmouseup=${() => router.navigate(`/sub/${subName}/latest`)}>
         ${showStarIfFavouritedSub(state, subName)}
         <div>${subName}</div>
       </div>
@@ -36,9 +36,9 @@ function listOfSubreddits(state, subs) {
 }
 
 const svgFavIcon = html`
-<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 14 16' fill='currentColor'  class='favouriteStar'>
-  <path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path>
-</svg>
+  <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 14 16' fill='currentColor'  class='favouriteStar'>
+    <path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path>
+  </svg>
 `
 
 function showStarIfFavouritedSub(state, subName) {
