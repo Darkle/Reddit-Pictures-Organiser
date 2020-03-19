@@ -19,6 +19,9 @@ function HomePage(state) {
         <div class="folders" onmouseup=${ () => router.navigate('/folders')}>Folders</div>
         <div class="manage" onmouseup=${ () => router.navigate('/manage')}>Manage</div>
       </nav>
+      <div class="subreddit" onmouseup=${() => router.navigate(`/sub/mix/latest`)}>
+        <div>Favourites Mix</div>
+      </div>      
       ${listOfSubreddits(state, sortSubs(state))}
     </main>
   `

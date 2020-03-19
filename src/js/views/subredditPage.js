@@ -16,21 +16,25 @@ function loadSubredditPage({subreddit, timefilter}) {
   store.removeStoredFetchedSubredditImages()
   
   const showLoadingPlaceholder = true
-  const subredditsToGet = subreddit === 'mix' ? store.favouriteSubreddits : [subreddit] 
-
+  
   patch($('#app'), SubredditPage({store, showLoadingPlaceholder, timefilter, subreddit}))
   
-  Promise.all(
-    subredditsToGet.map(sub => 
-      queueLimit(() =>
-        getImagesAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
-          .then(getImagesAndUpdatePage)
-          .then(getImagesAndUpdatePage)
-          .then(getImagesAndUpdatePage)
-      )
-    )  
-  )
-  .catch(logger.error)
+  initFetchAndUpdate(subreddit, timefilter)
+}
+
+function initFetchAndUpdate(subreddit, timefilter) {
+  const subredditsToGetImagesFor = subreddit === 'mix' ? store.favouriteSubreddits : [subreddit] 
+
+  const queuedSubsImagesFetchAndUpdate = subredditsToGetImagesFor.map(sub => 
+    queueLimit(() =>
+      getImagesAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
+        .then(getImagesAndUpdatePage)
+        .then(getImagesAndUpdatePage)
+        .then(getImagesAndUpdatePage)
+    )
+  )  
+
+  Promise.all(queuedSubsImagesFetchAndUpdate).catch(logger.error)  
 }
 
 function getImagesAndUpdatePage({subreddit, lastImgFetched, timefilter}){

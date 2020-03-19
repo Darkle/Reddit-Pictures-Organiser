@@ -14,13 +14,17 @@ function fetchSubImages({subreddit, lastImgFetched, timefilter}) {
       logger.debug(processedImages)
 
       if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
-      if(!images.length) return Promise.reject(new NoMoreImagesToFetch())
+      if(noMoreImagesAvailable(images, subreddit)) return Promise.reject(new NoMoreImagesToFetch())
 
       store.storeFetchedSubredditImages(processedImages)
       const lastImageFetched = images[images.length - 1]
 
       return [lastImageFetched, timefilter]
     })
+}
+
+function noMoreImagesAvailable(images, subreddit) {
+  return !images.length && subreddit !== 'mix'
 }
 
 /*****
