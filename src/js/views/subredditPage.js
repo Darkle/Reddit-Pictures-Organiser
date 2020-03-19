@@ -8,7 +8,10 @@ import {$, setPageTitle} from '../utils.js'
 import { router } from '../router.js'
 
 const html = htm.bind(h)
-
+/*****
+  Note: I've notices uBlock sometimes will block a https://b.thumbs.redditmedia.com/
+  thumbnail if it has the letters 'AD' in the url. e.g. https://b.thumbs.redditmedia.com/ADx_2s6QaC8BMBUc5KjDCZpZF0ZTjYGXXRF9vkDzpPw.jpg
+*****/
 function loadSubredditPage({subreddit, timefilter}) {
   setPageTitle(`RPO - ${subreddit}`)
   store.removeStoredFetchedSubredditImages()
@@ -16,14 +19,14 @@ function loadSubredditPage({subreddit, timefilter}) {
   const initialRender = true
   patch($('#app'), SubredditPage({store, initialRender, timefilter, subreddit}))
 
-  getImagesAndUpdatePage({subreddit, timefilter})
+  getImagesAndUpdatePage({subreddit, lastImgFetched: null, timefilter})
     // .then(getImagesAndUpdatePage)
     // .then(getImagesAndUpdatePage)
     // .then(getImagesAndUpdatePage)  
     .catch(logger.error)
 }
 
-function getImagesAndUpdatePage({subreddit, lastImgFetched = null, timefilter}){
+function getImagesAndUpdatePage({subreddit, lastImgFetched, timefilter}){
   return fetchSubImages({subreddit, lastImgFetched, timefilter})
     .then(([latestLastImgFetched, returnedTimefilter]) => {
       patch($('#app'), SubredditPage({store, timefilter: returnedTimefilter, subreddit}))
@@ -45,18 +48,18 @@ function PlaceHolder(timefilter, initialRender, subreddit){
   `
 }
 
-function SubredditPage({store, initialRender = false, timefilter, subreddit}) {
+function SubredditPage({store: state, initialRender = false, timefilter, subreddit}) {
   if(initialRender) return PlaceHolder(timefilter, initialRender, subreddit)
-  if(!store.fetchedSubredditImages.length) return PlaceHolder(timefilter, initialRender, subreddit)
+  if(!state.fetchedSubredditImages.length) return PlaceHolder(timefilter, initialRender, subreddit)
   
   return html`
     <main id="app" class="subredditPage">
       ${Nav(timefilter, subreddit)}
       <div class="subredditImagesContainer">
-        ${store.fetchedSubredditImages.map(image =>
+        ${state.fetchedSubredditImages.map(image =>
           html`
             <div class="thumbnail-container">
-              <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}" data-src="asd"></img>
+              <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"></img>
             </div>
           `
         )}
@@ -67,14 +70,17 @@ function SubredditPage({store, initialRender = false, timefilter, subreddit}) {
 
 function Nav(timefilter, subreddit){
   const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
+  const timeFilters = ['latest', 'week', 'month', 'year', 'all']
   return html`
     <nav class="navWrapper">
       <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'latest')}" onmouseup=${ () => router.navigate(`/sub/${subreddit}/latest`)}>Latest</div>
-      <div class="topWeek ${isCurrentFilter(timefilter, 'week')}" onmouseup=${ () => router.navigate(`/sub/${subreddit}/week`)}>Top Week</div>
-      <div class="topMonth ${isCurrentFilter(timefilter, 'month')}" onmouseup=${ () => router.navigate(`/sub/${subreddit}/month`)}>Top Month</div>
-      <div class="topYear ${isCurrentFilter(timefilter, 'year')}" onmouseup=${ () => router.navigate(`/sub/${subreddit}/year`)}>Top Year</div>
-      <div class="topAllTime ${isCurrentFilter(timefilter, 'subreddit')}" onmouseup=${ () => router.navigate(`/sub/${subreddit}/all`)}>Top All Time</div>
+      ${
+        timeFilters.map(filter => 
+          html`<div class="latest ${isCurrentFilter(timefilter, filter)}" 
+                  onmouseup=${ () => router.navigate(`/sub/${subreddit}/${filter}`)}>${filter}</div>
+          `
+        )
+      }
     </nav>  
     `
 }

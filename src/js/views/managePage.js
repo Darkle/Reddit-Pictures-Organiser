@@ -127,7 +127,7 @@ const threeSecondsInMS = 3000
 
 function toggleToast(toastSelector){
   $(`.${toastSelector}`).classList.toggle('showToast')
-  setTimeout(() => $(`.${toastSelector}`).classList.toggle('showToast'), threeSecondsInMS)
+  setTimeout(() => $(`.${toastSelector}`)?.classList.toggle('showToast'), threeSecondsInMS)
 }
 
 export {

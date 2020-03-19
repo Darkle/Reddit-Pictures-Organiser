@@ -3,7 +3,7 @@ import { store } from './store/store.js'
 import { logger } from './logger.js'
 import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
 
-function fetchSubImages({subreddit, lastImgFetched = null, timefilter}) {
+function fetchSubImages({subreddit, lastImgFetched, timefilter}) {
   if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
   logger.debug(generateFetchUrl(subreddit, lastImgFetched, timefilter))
 
@@ -43,11 +43,10 @@ function processImages(images) {
 
 function filterImages(images) {
   return images.filter(({data: image}) => { // eslint-disable-line complexity
+    const {hostname:imageDomain, pathname} = new URL(image.url)
     // reddit cross-posts start with '/'
     if(image.stickied || image.url.startsWith('/')) return false
-
-    const {hostname:imageDomain, pathname} = new URL(image.url)
-
+    if(isVideo(pathname)) return false
     if(imageDomain.endsWith('imgur.com') && notImgurGallery(pathname)) return true
     if(imageDomain === 'i.redd.it') return true
 
@@ -59,7 +58,7 @@ function transformImageLinks(images) {
   return images.map(({data: image}) => {
     const imageUrl = new URL(image.url)
     /*****
-      If it isnt a https://i.imgur.com/foo.jpg url and it's not a gallery,
+      If it isnt a https://i.imgur.com/foo.jpg url and it's not an imgur gallery,
       convert it to https://i.imgur.com/foo.jpg
     *****/
     if(imageUrl.hostname.startsWith('imgur.com') && notImgurGallery(imageUrl.pathname)){
@@ -72,6 +71,9 @@ function transformImageLinks(images) {
   })
 }
 
+function isVideo(pathname){
+  return pathname.endsWith('.mp4') || pathname.endsWith('.gifv')
+}
 function notImgurGallery(pathname){
   return pathname.match(/\//gu).length === 1
 }
