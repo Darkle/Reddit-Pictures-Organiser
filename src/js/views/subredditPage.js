@@ -9,8 +9,8 @@ import { router } from '../router.js'
 
 const html = htm.bind(h)
 /*****
-  Note: I've noticed uBlock sometimes will block a https://b.thumbs.redditmedia.com/
-  thumbnail if it has the letters 'AD' in the url. e.g. https://b.thumbs.redditmedia.com/ADx_2s6QaC8BMBUc5KjDCZpZF0ZTjYGXXRF9vkDzpPw.jpg
+  Note: I've noticed uBlock will sometimes block a https://b.thumbs.redditmedia.com/
+    thumbnail if it has the letters 'AD' in the url. e.g. https://b.thumbs.redditmedia.com/ADx_2s6QaC8BMBUc5KjDCZpZF0ZTjYGXXRF9vkDzpPw.jpg
 *****/
 function loadSubredditPage({subreddit, timefilter}) {
   setPageTitle(`RPO - ${subreddit}`)

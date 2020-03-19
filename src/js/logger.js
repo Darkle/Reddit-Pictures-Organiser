@@ -1,4 +1,4 @@
-import { PromiseCanceller } from './Errors.js'
+import { PromiseCanceller, FetchError } from './Errors.js'
 // TODO: also log to rollbar, and also show a brief toast/notification of the error
   /* background-color:#fabd2f; --for errors */
 
@@ -8,6 +8,11 @@ const logger = {
   },
   error(...args) {
     if(args[0] instanceof PromiseCanceller) return
+    if(args[0] instanceof FetchError){ // eslint-disable-line functional/no-conditional-statement
+      const error = args[0]
+      console.error(error.responseStatusText, error.response, error)
+      return
+    }
     console.error(...args)
   },
   debug(...args){

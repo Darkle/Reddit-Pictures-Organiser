@@ -60,10 +60,13 @@ const setPageTitle = (title) => {
 }
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 
-const checkFetchResponseStatus = response => 
-  response.ok ? response : 
-    Promise.reject(new FetchError(response.statusText, response))
-
+const checkFetchResponseStatus = response => {
+  if(response.ok) return response
+  return Promise.reject(new FetchError(
+    response.statusText?.length ? response.statusText : response.status, 
+    response
+  ))
+}
 const parseJSON = res => res.json()
 
 const Fetcher = {
