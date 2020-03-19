@@ -9,7 +9,7 @@ import { router } from '../router.js'
 
 const html = htm.bind(h)
 /*****
-  Note: I've notices uBlock sometimes will block a https://b.thumbs.redditmedia.com/
+  Note: I've noticed uBlock sometimes will block a https://b.thumbs.redditmedia.com/
   thumbnail if it has the letters 'AD' in the url. e.g. https://b.thumbs.redditmedia.com/ADx_2s6QaC8BMBUc5KjDCZpZF0ZTjYGXXRF9vkDzpPw.jpg
 *****/
 function loadSubredditPage({subreddit, timefilter}) {
@@ -35,19 +35,6 @@ function getImagesAndUpdatePage({subreddit, lastImgFetched, timefilter}){
     })
 }
 
-function PlaceHolder(timefilter, initialRender, subreddit){
-  return html`
-    <main id="app" class="subredditPage">
-      <div>
-          ${Nav(timefilter, subreddit)}
-          <div class="subredditImagesContainer">
-            <div class="subLoadingNotifier">${initialRender ? 'Loading Images...' : 'No Images Found'}</div>
-          </div>    
-      </div>
-    </main>
-  `
-}
-
 function SubredditPage({store: state, initialRender = false, timefilter, subreddit}) {
   if(initialRender) return PlaceHolder(timefilter, initialRender, subreddit)
   if(!state.fetchedSubredditImages.length) return PlaceHolder(timefilter, initialRender, subreddit)
@@ -66,6 +53,19 @@ function SubredditPage({store: state, initialRender = false, timefilter, subredd
       </div>
     </main>    
     `
+}
+
+function PlaceHolder(timefilter, initialRender, subreddit){
+  return html`
+    <main id="app" class="subredditPage">
+      <div>
+          ${Nav(timefilter, subreddit)}
+          <div class="subredditImagesContainer">
+            <div class="subLoadingNotifier">${initialRender ? 'Loading Images...' : 'No Images Found'}</div>
+          </div>    
+      </div>
+    </main>
+  `
 }
 
 function Nav(timefilter, subreddit){

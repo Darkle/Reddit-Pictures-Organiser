@@ -7,7 +7,12 @@ import { router } from '../router.js'
 
 const html = htm.bind(h)
 
-const HomePage = state => {
+function loadHomePage() {
+  setPageTitle('RPO')
+  patch($('#app'), HomePage(store))
+}
+
+function HomePage(state) {
   return html`
     <main id="app" class="homePage">
       <nav class="navWrapper">
@@ -17,11 +22,6 @@ const HomePage = state => {
       ${listOfSubreddits(state, sortSubs(state))}
     </main>
   `
-}
-
-function loadHomePage() {
-  setPageTitle('RPO')
-  patch($('#app'), HomePage(store))
 }
 
 function listOfSubreddits(state, subs) {
