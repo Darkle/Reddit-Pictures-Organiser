@@ -8,7 +8,7 @@ const logger = {
   },
   error(...args) {
     if(args[0] instanceof PromiseCanceller) return
-    if(args[0] instanceof FetchError){ // eslint-disable-line functional/no-conditional-statement
+    if(args[0] instanceof FetchError){
       const error = args[0]
       console.error(error.responseStatusText, error.response, error)
       return
