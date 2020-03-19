@@ -1,5 +1,6 @@
 import { h, patch } from '../web_modules/superfine.js'
 import htm from '../web_modules/htm.js'
+import pLimit from '../web_modules/p-limit.js'
 
 import {store} from '../store/store.js'
 import {fetchSubImages} from '../fetchSubImages.js'
@@ -8,22 +9,28 @@ import {$, setPageTitle} from '../utils.js'
 import { router } from '../router.js'
 
 const html = htm.bind(h)
-/*****
-  Note: I've noticed uBlock will sometimes block a https://b.thumbs.redditmedia.com/
-    thumbnail if it has the letters 'AD' in the url. e.g. https://b.thumbs.redditmedia.com/ADx_2s6QaC8BMBUc5KjDCZpZF0ZTjYGXXRF9vkDzpPw.jpg
-*****/
+const queueLimit = pLimit(2)
+
 function loadSubredditPage({subreddit, timefilter}) {
   setPageTitle(`RPO - ${subreddit}`)
   store.removeStoredFetchedSubredditImages()
   
-  const initialRender = true
-  patch($('#app'), SubredditPage({store, initialRender, timefilter, subreddit}))
+  const showLoadingPlaceholder = true
+  const subredditsToGet = subreddit === 'mix' ? store.favouriteSubreddits : [subreddit] 
 
-  getImagesAndUpdatePage({subreddit, lastImgFetched: null, timefilter})
-    // .then(getImagesAndUpdatePage)
-    // .then(getImagesAndUpdatePage)
-    // .then(getImagesAndUpdatePage)  
-    .catch(logger.error)
+  patch($('#app'), SubredditPage({store, showLoadingPlaceholder, timefilter, subreddit}))
+  
+  Promise.all(
+    subredditsToGet.map(sub => 
+      queueLimit(() =>
+        getImagesAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
+          .then(getImagesAndUpdatePage)
+          .then(getImagesAndUpdatePage)
+          .then(getImagesAndUpdatePage)
+      )
+    )  
+  )
+  .catch(logger.error)
 }
 
 function getImagesAndUpdatePage({subreddit, lastImgFetched, timefilter}){
@@ -35,9 +42,9 @@ function getImagesAndUpdatePage({subreddit, lastImgFetched, timefilter}){
     })
 }
 
-function SubredditPage({store: state, initialRender = false, timefilter, subreddit}) {
-  if(initialRender) return PlaceHolder(timefilter, initialRender, subreddit)
-  if(!state.fetchedSubredditImages.length) return PlaceHolder(timefilter, initialRender, subreddit)
+function SubredditPage({store: state, showLoadingPlaceholder = false, timefilter, subreddit}) {
+  if(showLoadingPlaceholder) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
+  if(!state.fetchedSubredditImages.length) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
   
   return html`
     <main id="app" class="subredditPage">
@@ -55,13 +62,13 @@ function SubredditPage({store: state, initialRender = false, timefilter, subredd
     `
 }
 
-function PlaceHolder(timefilter, initialRender, subreddit){
+function PlaceHolder(timefilter, showLoadingPlaceholder, subreddit){
   return html`
     <main id="app" class="subredditPage">
       <div>
           ${Nav(timefilter, subreddit)}
           <div class="subredditImagesContainer">
-            <div class="subLoadingNotifier">${initialRender ? 'Loading Images...' : 'No Images Found'}</div>
+            <div class="subLoadingNotifier">${showLoadingPlaceholder ? 'Loading Images...' : 'No Images Found'}</div>
           </div>    
       </div>
     </main>
