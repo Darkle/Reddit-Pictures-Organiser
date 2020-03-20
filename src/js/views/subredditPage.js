@@ -34,6 +34,10 @@ function getImagesAndUpdatePage(subreddit, timefilter) {
       initFetchAndUpdate({subreddit: sub, lastImgFetched: null, timefilter})
         .then(initFetchAndUpdate)
         .then(initFetchAndUpdate)
+        /*****
+          We need to catch here too in case on favmix page and a sub has no more images, we dont
+          want the whole promise array to fail.
+        *****/
         .then(initFetchAndUpdate).catch(logger.error)  
     )
   )  
