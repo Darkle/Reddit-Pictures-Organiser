@@ -1,12 +1,14 @@
 .subredditPage {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .subredditPage .navWrapper{
   display: flex;
-  border: 2px solid #737373;
+  border-bottom: 2px solid #737373;
   width: 100%;
   align-items: center;
+  min-width: 100vw;
   /* margin-bottom: 10px; */
 }
 .subredditPage .navWrapper > *{
@@ -43,4 +45,25 @@
   text-align: center;
   margin-top: 60px;
   opacity: 0.5;  
+}
+.subredditPage .toast{
+  border-radius: 2px;
+  position: fixed;
+  visibility: hidden;
+  padding: 16px;
+  bottom: 30px;
+  background-color:#d3869b  
+}
+.subredditPage .showToast{
+  visibility: visible;
+  animation: toastFadeIn 0.5s, toastFadeOut 0.6s 2.5s;
+}
+@keyframes toastFadeIn {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes toastFadeOut {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
 }

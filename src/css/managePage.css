@@ -5,7 +5,7 @@
 
 .managePage .navWrapper{
   display: flex;
-  border: 2px solid #737373;
+  border-bottom: 2px solid #737373;
   width: 100%;
   /* margin-bottom: 10px; */
 }
@@ -107,14 +107,14 @@
 }
 .managePage .showToast{
   visibility: visible;
-  animation: toastFadeIn 0.5s, toastFadeOut 0.6s 2.5s;
+  animation: managePageToastFadeIn 0.5s, managePageToastFadeOut 0.6s 2.5s;
 }
-@keyframes toastFadeIn {
+@keyframes managePageToastFadeIn {
   from {bottom: 0; opacity: 0;}
   to {bottom: 30px; opacity: 1;}
 }
 
-@keyframes toastFadeOut {
+@keyframes managePageToastFadeOut {
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }

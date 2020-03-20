@@ -1,4 +1,4 @@
-import { pipe, subPageNavigatedAway, Fetcher } from './utils.js'
+import { pipe, subPageNavigatedAway, Fetcher, isFavMixPage } from './utils.js'
 import { store } from './store/store.js'
 import { logger } from './logger.js'
 import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
@@ -33,7 +33,7 @@ function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-dis
 }
 
 function noMoreImagesFoundInFavMixSub(images, processedImages){
-  return window.location.hash === '#!/sub/favmix/latest' && (!images.length || !processedImages.length)
+  return isFavMixPage() && (!images.length || !processedImages.length)
 }
 
 /*****

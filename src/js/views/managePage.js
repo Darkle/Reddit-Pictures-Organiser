@@ -123,10 +123,9 @@ function resetInputs(){
   $('#removeSubredditInput').value = '' // eslint-disable-line functional/immutable-data
 }
 
-const threeSecondsInMS = 3000
-
 function toggleToast(toastSelector){
   $(`.${toastSelector}`).classList.toggle('showToast')
+  const threeSecondsInMS = 3000
   setTimeout(() => $(`.${toastSelector}`)?.classList.toggle('showToast'), threeSecondsInMS)
 }
 

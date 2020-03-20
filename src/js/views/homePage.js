@@ -2,7 +2,7 @@ import { h, patch } from '../web_modules/superfine.js'
 import htm from '../web_modules/htm.js'
 
 import {store} from '../store/store.js'
-import { $, setPageTitle } from '../utils.js'
+import { $, setPageTitle, isFavSub } from '../utils.js'
 import { router } from '../router.js'
 
 const html = htm.bind(h)
@@ -34,7 +34,7 @@ function listOfSubreddits(state, subs) {
   return !subs.length ? [null] : subs.map(subName =>
     html`
       <div class="subreddit" onmouseup=${() => router.navigate(`/sub/${subName}/latest`)}>
-        ${showStarIfFavouritedSub(state, subName)}
+        ${showStarIfFavouritedSub(subName)}
         <div>${subName}</div>
       </div>
     `
@@ -47,8 +47,8 @@ const svgFavIcon = html`
   </svg>
 `
 
-function showStarIfFavouritedSub(state, subName) {
-  const subIsAFavourite = state.favouriteSubreddits?.includes(subName)
+function showStarIfFavouritedSub(subName) {
+  const subIsAFavourite = isFavSub(subName)
   return subIsAFavourite ? svgFavIcon : null
 }
 

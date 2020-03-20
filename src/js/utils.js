@@ -59,6 +59,9 @@ const setPageTitle = (title) => {
   document.title = title // eslint-disable-line functional/immutable-data
 }
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
+const isFavSub = subreddit => store.favouriteSubreddits.includes(subreddit)
+const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1)
+const isFavMixPage = () => window.location.hash.startsWith('#!/sub/favmix/') && !window.location.hash.endsWith('/imageviewer')
 
 const checkFetchResponseStatus = response => {
   if(response.ok) return response
@@ -92,4 +95,7 @@ export{
   noSubsStored,
   Either,
   Fetcher,
+  isFavSub,
+  capitalize,
+  isFavMixPage,
 }
