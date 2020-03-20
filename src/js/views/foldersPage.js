@@ -3,7 +3,7 @@ function loadFoldersPage(){
 
 }
 
-function HomePage(){}
+function FoldersPage(){}
 
 export {
   loadFoldersPage

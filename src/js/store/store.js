@@ -24,23 +24,26 @@ const store = createStore ({
   /* eslint-disable functional/immutable-data */
   addFolder: newFolder => {
     const folder = newFolder.toLowerCase()
+    if(store.folders[folder]) return
     store.folders[folder] = {}
     saveToLocalForage('folders', store.folders)
   },  
   removeFolder: folderToRemove => {
     const folder = folderToRemove.toLowerCase()
+    if(!store.folders[folder]) return
     delete store.folders[folder]
     saveToLocalForage('folders', store.folders)
   },  
   addImageToFolder: (folder, image) => {
     const redditImagePostUrl = image.thing //TODO:
     // check if already there as sometimes there will be the same post in different feeds
-    if(!store.folders[folder][redditImagePostUrl]) return
+    if(store.folders[folder][redditImagePostUrl]) return
     store.folders[folder][redditImagePostUrl] = image
     saveToLocalForage('folders', store.folders)
   },  
   removeImageFromFolder: (folder, imageToRemove) => {
     const redditImagePostUrl = imageToRemove.thing //TODO:
+    if(!store.folders[folder][redditImagePostUrl]) return
     delete store.folders[folder][redditImagePostUrl]
     saveToLocalForage('folders', store.folders)
   },  
@@ -49,9 +52,12 @@ const store = createStore ({
     if(store.subreddits.includes(sub)) return
     store.subreddits.push(sub)
     saveToLocalForage('subreddits', store.subreddits)
-  },  
+  },
   removeSubreddit: subToRemove => {
-    store.subreddits = store.subreddits.filter(sub => sub !== subToRemove)
+    const sub = subToRemove.toLowerCase()
+    store.removeFavouriteSubreddit(sub)
+    if(!store.subreddits.includes(sub)) return
+    store.subreddits = store.subreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('subreddits', store.subreddits)
   },  
   addFavouriteSubreddit: newSub => {
@@ -61,7 +67,9 @@ const store = createStore ({
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   removeFavouriteSubreddit: subToRemove => {
-    store.favouriteSubreddits = store.favouriteSubreddits.filter(sub => sub !== subToRemove)
+    const sub = subToRemove.toLowerCase()
+    if(!store.favouriteSubreddits.includes(sub)) return 
+    store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   /*****
