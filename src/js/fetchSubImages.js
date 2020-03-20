@@ -86,7 +86,10 @@ function transformImageLinks(images) {
   })
 }
 function isValidImage(imageDomain, pathname){
-  return imageDomain === 'i.redd.it' || isImgur(imageDomain, pathname)
+  return isRedditImage(imageDomain) || isImgur(imageDomain, pathname)
+}
+function isRedditImage(imageDomain) {
+  return imageDomain === 'i.redd.it'
 }
 function isImgur(imageDomain, pathname){
   return imageDomain.endsWith('imgur.com') && notImgurGallery(pathname)
