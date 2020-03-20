@@ -71,9 +71,7 @@ const store = createStore ({
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
-  /*****
-    We dont bother storing fetched-subreddit-images to localforage. Its fine being ephemeral.
-  *****/
+  // We dont need to store this in IndexedDB
   storeFetchedSubredditImages: images => {
     if(!images.length) return
     store.fetchedSubredditImages = store.fetchedSubredditImages.concat(images)

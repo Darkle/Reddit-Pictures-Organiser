@@ -1,10 +1,10 @@
 
-function loadFoldersPage(){
+// function loadFoldersPage(){
 
-}
+// }
 
-function FoldersPage(){}
+// function FoldersPage(){}
 
-export {
-  loadFoldersPage
-}
+// export {
+//   loadFoldersPage
+// }
