@@ -60,7 +60,6 @@ const setPageTitle = (title) => {
 }
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 const isFavSub = subreddit => store.favouriteSubreddits.includes(subreddit)
-const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1)
 const isFavMixPage = () => window.location.hash.startsWith('#!/sub/favmix/') && !window.location.hash.endsWith('/imageviewer')
 
 const checkFetchResponseStatus = response => {
@@ -96,6 +95,5 @@ export{
   Either,
   Fetcher,
   isFavSub,
-  capitalize,
   isFavMixPage,
 }

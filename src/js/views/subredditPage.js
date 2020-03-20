@@ -5,7 +5,7 @@ import pLimit from '../web_modules/p-limit.js'
 import {store} from '../store/store.js'
 import {fetchSubImages} from '../fetchSubImages.js'
 import {logger} from '../logger.js'
-import {$, setPageTitle, isFavSub, capitalize, isFavMixPage} from '../utils.js'
+import {$, setPageTitle, isFavSub, isFavMixPage} from '../utils.js'
 import { router } from '../router.js'
 import { NoMoreImagesToFetch } from '../Errors.js'
 
@@ -79,8 +79,8 @@ function SubredditPage({showLoadingPlaceholder, timefilter, subreddit}) {
 
 function Toast(subreddit) {
   return html`
-    <div class="toast subFavouritedToast">${capitalize(subreddit)} Added To Favourites</div>
-    <div class="toast subUnFavouritedToast">${capitalize(subreddit)} Removed From Favourites</div>   
+    <div class="toast subFavouritedToast">${subreddit} Added To Favourites</div>
+    <div class="toast subUnFavouritedToast">${subreddit} Removed From Favourites</div>   
   `
 }
 

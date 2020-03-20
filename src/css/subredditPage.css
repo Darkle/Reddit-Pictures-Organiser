@@ -52,7 +52,8 @@
   visibility: hidden;
   padding: 16px;
   bottom: 30px;
-  background-color:#d3869b  
+  background-color:#d3869b;
+  text-transform: capitalize;
 }
 .subredditPage .showToast{
   visibility: visible;
