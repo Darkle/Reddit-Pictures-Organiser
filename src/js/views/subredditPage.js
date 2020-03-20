@@ -10,11 +10,7 @@ import { router } from '../router.js'
 import { NoMoreImagesToFetch } from '../Errors.js'
 
 const html = htm.bind(h)
-const queueLimit = pLimit(2)
-
-function updatePage({showLoadingPlaceholder = false, timefilter, subreddit}) {
-  patch($('#app'), SubredditPage({showLoadingPlaceholder, timefilter, subreddit}))
-}
+const queue = pLimit(2)
 
 function loadSubredditPage({subreddit, timefilter}) {
   setPageTitle(`RPO - ${subreddit}`)
@@ -26,11 +22,15 @@ function loadSubredditPage({subreddit, timefilter}) {
   getImagesAndUpdatePage(subreddit, timefilter)
 }
 
+function updatePage({showLoadingPlaceholder = false, timefilter, subreddit}) {
+  patch($('#app'), SubredditPage({showLoadingPlaceholder, timefilter, subreddit}))
+}
+
 function getImagesAndUpdatePage(subreddit, timefilter) {
   const subredditsToGetImagesFor = subreddit === 'favmix' ? store.favouriteSubreddits : [subreddit] 
   const queuedSubsImagesFetchAndUpdate = subredditsToGetImagesFor.map(sub => 
     // @ts-ignore
-    queueLimit(() =>
+    queue(() =>
       initFetchAndUpdate({subreddit: sub, lastImgFetched: null, timefilter})
         .then(initFetchAndUpdate)
         .then(initFetchAndUpdate)

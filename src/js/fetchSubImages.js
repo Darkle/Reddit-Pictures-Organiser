@@ -17,7 +17,7 @@ function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-dis
       logger.debug(processedImages)
       /*****
         We only reject to stop any subsequent fetches for this particular sub if its part of the favmix. We dont
-        reject when on an individual subs page though as we need subredditPage.js to update the placeholder to 
+        reject when on an individual subs page, as we need subredditPage.js to update the placeholder to 
         say 'No Images Found...'
       *****/
       if(noMoreImagesFoundInFavMixSub(images, processedImages)) {
@@ -25,7 +25,7 @@ function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-dis
       }
 
       store.storeFetchedSubredditImages(processedImages)
-      
+
       const lastImageFetched = images[images.length - 1]
 
       return [lastImageFetched, timefilter]
