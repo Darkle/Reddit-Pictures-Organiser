@@ -68,6 +68,7 @@ const store = createStore ({
     We dont bother storing fetched-subreddit-images to localforage. Its fine being ephemeral.
   *****/
   storeFetchedSubredditImages: images => {
+    if(!images.length) return
     store.fetchedSubredditImages = store.fetchedSubredditImages.concat(images)
   },
   removeStoredFetchedSubredditImages: () => {

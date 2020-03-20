@@ -3,31 +3,41 @@ import { store } from './store/store.js'
 import { logger } from './logger.js'
 import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
 
-function fetchSubImages({subreddit, lastImgFetched, timefilter}) {
+function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-disable-line max-lines-per-function
   if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
   logger.debug(generateFetchUrl(subreddit, lastImgFetched, timefilter))
 
   return Fetcher.getJSON(generateFetchUrl(subreddit, lastImgFetched, timefilter))
-    .then(resp => {
+    .then(resp => { // eslint-disable-line max-statements
+      if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
+
       const images = resp.data?.children ?? []
       const processedImages = processImages(images)
-      logger.debug(processedImages)
 
-      if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
-      if(noMoreImagesAvailable(images, subreddit)) return Promise.reject(new NoMoreImagesToFetch())
+      logger.debug(processedImages)
+      /*****
+        We only reject to stop any subsequent fetches for this particular sub if its part of the favmix. We dont
+        reject when on an individual subs page though as we need subredditPage.js to update the placeholder to 
+        say 'No Images Found...'
+      *****/
+      if(noMoreImagesFoundInFavMixSub(images, processedImages)) {
+        return Promise.reject(new NoMoreImagesToFetch())
+      }
 
       store.storeFetchedSubredditImages(processedImages)
+      
       const lastImageFetched = images[images.length - 1]
 
       return [lastImageFetched, timefilter]
     })
 }
 
-function noMoreImagesAvailable(images, subreddit) {
-  return !images.length && subreddit !== 'mix'
+function noMoreImagesFoundInFavMixSub(images, processedImages){
+  return window.location.hash === '#!/sub/favmix/latest' && (!images.length || !processedImages.length)
 }
 
 /*****
+  Examples:
   https://www.reddit.com/r/aww/.json?limit=100&count=100
   https://www.reddit.com/r/aww/top/.json?limit=100&t=week&count=100
   https://www.reddit.com/r/aww/top/.json?limit=100&t=month&count=100
@@ -47,12 +57,13 @@ function processImages(images) {
 
 function filterImages(images) {
   return images.filter(({data: image}) => { // eslint-disable-line complexity
-    const {hostname:imageDomain, pathname} = new URL(image.url)
-    // reddit cross-posts start with '/'
+    // image.url.startsWith('/') must be before we use new URL as reddit cross-posts start with '/'
     if(image.stickied || image.url.startsWith('/')) return false
+    
+    const {hostname:imageDomain, pathname} = new URL(image.url)
+    
     if(isVideo(pathname)) return false
-    if(imageDomain.endsWith('imgur.com') && notImgurGallery(pathname)) return true
-    if(imageDomain === 'i.redd.it') return true
+    if(isValidImage(imageDomain, pathname)) return true
 
     return false
   })
@@ -74,12 +85,17 @@ function transformImageLinks(images) {
     return image
   })
 }
-
-function isVideo(pathname){
-  return pathname.endsWith('.mp4') || pathname.endsWith('.gifv')
+function isValidImage(imageDomain, pathname){
+  return imageDomain === 'i.redd.it' || isImgur(imageDomain, pathname)
+}
+function isImgur(imageDomain, pathname){
+  return imageDomain.endsWith('imgur.com') && notImgurGallery(pathname)
 }
 function notImgurGallery(pathname){
   return pathname.match(/\//gu).length === 1
+}
+function isVideo(pathname){
+  return pathname.endsWith('.mp4') || pathname.endsWith('.gifv')
 }
 
 export {

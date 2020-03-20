@@ -7,54 +7,59 @@ import {fetchSubImages} from '../fetchSubImages.js'
 import {logger} from '../logger.js'
 import {$, setPageTitle} from '../utils.js'
 import { router } from '../router.js'
+import { NoMoreImagesToFetch } from '../Errors.js'
 
 const html = htm.bind(h)
 const queueLimit = pLimit(2)
+
+function updatePage({showLoadingPlaceholder = false, timefilter, subreddit}) {
+  patch($('#app'), SubredditPage({showLoadingPlaceholder, timefilter, subreddit}))
+}
 
 function loadSubredditPage({subreddit, timefilter}) {
   setPageTitle(`RPO - ${subreddit}`)
   store.removeStoredFetchedSubredditImages()
   
   const showLoadingPlaceholder = true
+  updatePage({showLoadingPlaceholder, timefilter, subreddit})
   
-  patch($('#app'), SubredditPage({store, showLoadingPlaceholder, timefilter, subreddit}))
-  
-  initFetchAndUpdate(subreddit, timefilter)
+  getImagesAndUpdatePage(subreddit, timefilter)
 }
 
-function initFetchAndUpdate(subreddit, timefilter) {
-  const subredditsToGetImagesFor = subreddit === 'mix' ? store.favouriteSubreddits : [subreddit] 
-
+function getImagesAndUpdatePage(subreddit, timefilter) {
+  const subredditsToGetImagesFor = subreddit === 'favmix' ? store.favouriteSubreddits : [subreddit] 
   const queuedSubsImagesFetchAndUpdate = subredditsToGetImagesFor.map(sub => 
+    // @ts-ignore
     queueLimit(() =>
-      getImagesAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
-        .then(getImagesAndUpdatePage)
-        .then(getImagesAndUpdatePage)
-        .then(getImagesAndUpdatePage)
+      initFetchAndUpdate({subreddit: sub, lastImgFetched: null, timefilter})
+        .then(initFetchAndUpdate)
+        .then(initFetchAndUpdate)
+        .then(initFetchAndUpdate).catch(logger.error)  
     )
   )  
-
   Promise.all(queuedSubsImagesFetchAndUpdate).catch(logger.error)  
 }
 
-function getImagesAndUpdatePage({subreddit, lastImgFetched, timefilter}){
+function initFetchAndUpdate({subreddit, lastImgFetched, timefilter}){
   return fetchSubImages({subreddit, lastImgFetched, timefilter})
     .then(([latestLastImgFetched, returnedTimefilter]) => {
-      patch($('#app'), SubredditPage({store, timefilter: returnedTimefilter, subreddit}))
-      
+      updatePage({timefilter: returnedTimefilter, subreddit})
+      // We want to show the 'No Images Found...' placeholder if we are on a subreddit thats not the favmix, 
+      if(!store.fetchedSubredditImages.length) return Promise.reject(new NoMoreImagesToFetch())
+
       return ({subreddit, lastImgFetched: latestLastImgFetched, timefilter: returnedTimefilter})
     })
 }
 
-function SubredditPage({store: state, showLoadingPlaceholder = false, timefilter, subreddit}) {
+function SubredditPage({showLoadingPlaceholder, timefilter, subreddit}) {
   if(showLoadingPlaceholder) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
-  if(!state.fetchedSubredditImages.length) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
+  if(!store.fetchedSubredditImages.length) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
   
   return html`
     <main id="app" class="subredditPage">
       ${Nav(timefilter, subreddit)}
       <div class="subredditImagesContainer">
-        ${state.fetchedSubredditImages.map(image =>
+        ${store.fetchedSubredditImages.map(image =>
           html`
             <div class="thumbnail-container">
               <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"></img>
