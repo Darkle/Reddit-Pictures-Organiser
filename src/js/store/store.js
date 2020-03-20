@@ -34,15 +34,16 @@ const store = createStore ({
     saveToLocalForage('folders', store.folders)
   },  
   addImageToFolder: (folder, image) => {
-    const redditImagePostUrl = image.thing //TODO:
-    if(store.folders[folder][redditImagePostUrl]) return
-    store.folders[folder][redditImagePostUrl] = image
+    const {permalink, thumbnail, src, url} = image
+    if(store.folders[folder][permalink]) return
+    const newImageItem = {permalink, thumbnail, src, url}
+    store.folders[folder][permalink] = newImageItem
     saveToLocalForage('folders', store.folders)
   },  
   removeImageFromFolder: (folder, imageToRemove) => {
-    const redditImagePostUrl = imageToRemove.thing //TODO:
-    if(!store.folders[folder][redditImagePostUrl]) return
-    delete store.folders[folder][redditImagePostUrl]
+    const {permalink} = imageToRemove
+    if(!store.folders[folder][permalink]) return
+    delete store.folders[folder][permalink]
     saveToLocalForage('folders', store.folders)
   },  
   addSubreddit: newSub => {
