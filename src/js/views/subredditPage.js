@@ -99,8 +99,9 @@ function PlaceHolder(timefilter, showLoadingPlaceholder, subreddit){
 
 function Nav(timefilter, subreddit){
   const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
-  const timeFilters = ['latest', 'week', 'month', 'year', 'all']
   const sub = isFavMixPage() ? 'favmix' : subreddit
+  const subFilterNavigate = event => router.navigate(`/sub/${sub}/${event.target.textContent.trim()}`)
+
   return html`
     <nav class="navWrapper">
       <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
@@ -108,13 +109,11 @@ function Nav(timefilter, subreddit){
           ${FavStar(subreddit)}
         </div>`
       }
-      ${
-        timeFilters.map(filter => 
-          html`<div class="latest ${isCurrentFilter(timefilter, filter)}" 
-                  onmouseup=${ () => router.navigate(`/sub/${sub}/${filter}`)}>${filter}</div>
-          `
-        )
-      }
+      <div class="latest ${isCurrentFilter(timefilter, 'latest')}" onmouseup=${subFilterNavigate}>latest</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'week')}" onmouseup=${subFilterNavigate}>week</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'month')}" onmouseup=${subFilterNavigate}>month</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'year')}" onmouseup=${subFilterNavigate}>year</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'all')}" onmouseup=${subFilterNavigate}>all</div>
     </nav>  
     `
 }
