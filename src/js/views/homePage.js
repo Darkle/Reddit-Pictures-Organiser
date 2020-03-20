@@ -48,8 +48,7 @@ const svgFavIcon = html`
 `
 
 function showStarIfFavouritedSub(subName) {
-  const subIsAFavourite = isFavSub(subName)
-  return subIsAFavourite ? svgFavIcon : null
+  return isFavSub(subName) ? svgFavIcon : null
 }
 
 /*****

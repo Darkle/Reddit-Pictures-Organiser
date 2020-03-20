@@ -72,10 +72,8 @@ function filterImages(images) {
 function transformImageLinks(images) {
   return images.map(({data: image}) => {
     const imageUrl = new URL(image.url)
-    /*****
-      If it isnt a https://i.imgur.com/foo.jpg url and it's not an imgur gallery,
-      convert it to https://i.imgur.com/foo.jpg
-    *****/
+    
+    // If it isnt a https://imgur.com/foo url and it's not an imgur gallery, convert it to https://i.imgur.com/foo.jpg
     if(imageUrl.hostname.startsWith('imgur.com') && notImgurGallery(imageUrl.pathname)){
       imageUrl.pathname = imageUrl.pathname + '.jpg' // eslint-disable-line functional/immutable-data
       imageUrl.hostname = 'i.' + imageUrl.hostname // eslint-disable-line functional/immutable-data
