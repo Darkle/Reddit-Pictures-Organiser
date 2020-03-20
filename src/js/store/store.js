@@ -4,6 +4,7 @@ import localforage from '../web_modules/localforage.js'
 import {logger} from '../logger.js'
 // and to get all folders, just us Object.keys(folders)
 // to get folder images would just be folders['folder 1'].images
+/* eslint-disable functional/immutable-data */
 const store = createStore ({
   folders : {
     'folder 1':{
@@ -20,8 +21,6 @@ const store = createStore ({
   favouriteSubreddits: [
   ],
   fetchedSubredditImages: [],
-  // Actions
-  /* eslint-disable functional/immutable-data */
   addFolder: newFolder => {
     const folder = newFolder.toLowerCase()
     if(store.folders[folder]) return
@@ -36,7 +35,6 @@ const store = createStore ({
   },  
   addImageToFolder: (folder, image) => {
     const redditImagePostUrl = image.thing //TODO:
-    // check if already there as sometimes there will be the same post in different feeds
     if(store.folders[folder][redditImagePostUrl]) return
     store.folders[folder][redditImagePostUrl] = image
     saveToLocalForage('folders', store.folders)
