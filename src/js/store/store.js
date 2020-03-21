@@ -2,26 +2,15 @@ import {store as createStore} from '../web_modules/store.js'
 import localforage from '../web_modules/localforage.js'
 
 import {logger} from '../logger.js'
-// and to get all folders, just us Object.keys(folders)
-// to get folder images would just be folders['folder 1'].images
 /* eslint-disable functional/immutable-data */
 const store = createStore ({
-  folders : {
-    'folder 1':{
-      'imagePostIdHere' : {
-
-      },
-      'imagePostIdHere2' : {
-
-      },
-    }
-  },
+  folders : {},
   subreddits: [
   ],
   favouriteSubreddits: [
   ],
   fetchedSubredditImages: [],
-  addFolder: newFolder => {
+  createFolder: newFolder => {
     const folder = newFolder.toLowerCase()
     if(store.folders[folder]) return
     store.folders[folder] = {}

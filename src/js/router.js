@@ -3,7 +3,7 @@ import Navigo from './web_modules/navigo.js'
 import {loadHomePage} from './views/homePage.js'
 import {loadSubredditPage} from './views/subredditPage.js'
 import {loadManagePage} from './views/managePage.js'
-// import {loadFoldersPage} from './views/foldersPage.js'
+import {loadFoldersPage} from './views/foldersPage.js'
 // import {loadFolderPage} from './views/folderPage.js'
 // import {loadImageViewer} from './views/imageViewer.js'
 import { noSubsStored } from './utils.js'
@@ -21,7 +21,7 @@ function initRouter(){
     .on('/sub/:subreddit/:timefilter', loadSubredditPage)
     // .on('/sub/:subreddit/:timefilter/imageviewer', loadImageViewer)
     .on('/manage', loadManagePage)
-    // .on('/folders', loadFoldersPage)
+    .on('/folders', loadFoldersPage)
     // .on('/folders/:folder', loadFolderPage)
     .notFound(() => {
       logger.error('Page not found. Redirecting to home page')

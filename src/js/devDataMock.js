@@ -3,9 +3,9 @@ import {store} from './store/store.js'
 /* eslint-disable */
 setTimeout(() => {
   console.log('running devDataMock')
-  store.addFolder('folder 1')
-  store.addFolder('folder 2')
-  store.addFolder('folder 3')
+  store.createFolder('folder 1')
+  store.createFolder('folder 2')
+  store.createFolder('folder 3')
   store.addSubreddit('Aww')
   store.addSubreddit('Cute')
   store.addSubreddit('Foxes')

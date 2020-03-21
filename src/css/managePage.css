@@ -65,7 +65,7 @@
 }
 .managePage .inputsContainer .removeSubInputContainer dialog {
   background-color: #737373;
-  border: 2px solid #737373;
+  border: 2px solid #d3869b;
   font-size: 1rem;
 }
 .managePage .inputsContainer .removeSubInputContainer dialog menu{
@@ -77,15 +77,16 @@
 }
 .managePage .inputsContainer .removeSubInputContainer dialog menu button{
   display: inline-block;
-  padding: 0.35em 1.2em;
-  border: 0.1em solid 	#fff4e8;
+  padding: 8px 16px;
+  border: none;
   margin: 0 0.3em 0.3em 0;
   border-radius: 0.12em;
   box-sizing: border-box;
   text-decoration: none;
-  color: 	#fff4e8;
+  color: #fff4e8;
   text-align: center;
   background-color: #595959;
+  font-size: 1em;
 }
 .managePage .inputsContainer .removeSubInputContainer dialog menu button:hover{
   color:#000000;

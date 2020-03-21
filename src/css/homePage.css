@@ -6,7 +6,7 @@
   display: flex;
   border-bottom: 2px solid #737373;
   width: 100%;
-  /* margin-bottom: 10px; */
+  margin-bottom: 5px;
 }
 /*
 TODO: Change color of stuff to #F49A87 when click/tap
@@ -33,6 +33,7 @@ TODO: Change mouse icon for hover over things
   display: flex;
   align-items: center;
   text-transform: capitalize;
+  margin: 5px;
 }
 
 .homePage .subreddit .favouriteStar{

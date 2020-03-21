@@ -67,7 +67,7 @@ function SubredditPage({showLoadingPlaceholder, timefilter, subreddit}) {
         ${store.fetchedSubredditImages.map(image =>
           html`
             <div class="thumbnail-container">
-              <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"></img>
+              <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"  data-permalink="${image.permalink}" ></img>
             </div>
           `
         )} 
@@ -88,10 +88,10 @@ function PlaceHolder(timefilter, showLoadingPlaceholder, subreddit){
   return html`
     <main id="app" class="subredditPage">
       <div>
-          ${Nav(timefilter, subreddit)}
-          <div class="subredditImagesContainer">
-            <div class="subLoadingNotifier">${showLoadingPlaceholder ? 'Loading Images...' : 'No Images Found'}</div>
-          </div>    
+        ${Nav(timefilter, subreddit)}
+        <div class="subredditImagesContainer">
+          <div class="subLoadingNotifier">${showLoadingPlaceholder ? 'Loading Images...' : 'No Images Found'}</div>
+        </div>    
       </div>
     </main>
   `
