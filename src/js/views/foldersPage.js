@@ -25,7 +25,7 @@ function FoldersPage(showDialog){
     <main id="app" class="foldersPage">
       ${Nav()}
       <div class="foldersContainer">
-        ${Object.keys(store.folders).map(folder =>
+        ${getFolders().map(folder =>
           html`<div class="folder">
               <div class="folderName">${folder}</div>
               <div class="folderImageCount">${Object.keys(folder).length}</div>
@@ -96,8 +96,13 @@ function showCreateFolderDialog(){
   updatePage(showDialog)
 }
 
+function getFolders(){
+  //reversing so newly created folders are shown at the top of the page
+  return [...Object.keys(store.folders)].reverse()
+}
+
 function noFolders(){
-  return !Object.keys(store.folders).length
+  return !getFolders().length
 }
 
 export {

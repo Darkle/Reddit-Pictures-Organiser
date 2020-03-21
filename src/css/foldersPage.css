@@ -39,16 +39,13 @@
   color: #fff4e8;
   opacity: 0.5;
 }
-/* .foldersPage .foldersPlaceholder>p{
-  max-width: 450px;
-  min-width: 450px;
-} */
 .foldersPage .foldersPlaceholder>p:nth-of-type(1){
   margin-top: 40px;
 }
 .foldersPage .foldersContainer{
   display: flex;
   flex-wrap: wrap;
+  justify-content: center
 }
 .foldersPage .folder{
   display: flex;

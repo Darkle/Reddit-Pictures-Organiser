@@ -63,18 +63,28 @@ function SubredditPage({showLoadingPlaceholder, timefilter, subreddit}) {
   return html`
     <main id="app" class="subredditPage">
       ${Nav(timefilter, subreddit)}
-      <div class="subredditImagesContainer">
-        ${store.fetchedSubredditImages.map(image =>
-          html`
-            <div class="thumbnail-container">
-              <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"  data-permalink="${image.permalink}" ></img>
-            </div>
-          `
-        )} 
-      </div>
+      ${SubredditsContainer(subreddit, timefilter)}
       ${!isFavMixPage() && Toast(subreddit)}
     </main>    
     `
+}
+
+function SubredditsContainer(subreddit, timefilter){
+  return html`
+    <div class="subredditImagesContainer">
+      ${store.fetchedSubredditImages.map(image =>
+        html`
+          <div class="thumbnail-container">
+            <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"  
+              data-permalink="${image.permalink}"
+              onmouseup="${() => 
+                router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`)
+              }"></img>
+          </div>
+        `
+      )} 
+    </div>  
+  `
 }
 
 function Toast(subreddit) {
@@ -141,20 +151,20 @@ function toggleSubAsFavourite(subreddit, timefilter){
 }
 
 function toggleToast(toastSelector){
-  $(`.${toastSelector}`).classList.toggle('showToast')
+  $(`.${toastSelector}`)?.classList.toggle('showToast') // eslint-disable-line no-unused-expressions
   const threeSecondsInMS = 3000
   setTimeout(() => $(`.${toastSelector}`)?.classList.toggle('showToast'), threeSecondsInMS)
 }
 
 /*****
   Sometimes the thumbnail property is 'spoiler', in that case fall through to src or url
-  Sometimes the thumbnail is missing, in that case, return the src
-  Sometimes the src is missing (i think if its nsfw), in that case, return url
+  Sometimes the thumbnail is missing, in that case, return the url
+  Sometimes the url is missing (i think if its nsfw), in that case, return src
 *****/
 function getThumbnailSrc ({thumbnail, src, url}) {
   if(thumbnail?.startsWith('http')) return thumbnail
-  if(src) return src
-  return url
+  if(url) return url
+  return src
 }
 
 export {
