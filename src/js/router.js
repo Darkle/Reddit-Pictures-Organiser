@@ -6,7 +6,7 @@ import {loadManagePage} from './views/managePage.js'
 import {loadFoldersPage} from './views/foldersPage.js'
 import {loadFolderPage} from './views/folderPage.js'
 import {loadImageViewer} from './views/imageViewer.js'
-import { noSubsStored } from './utils.js'
+import { noSubsStored, $$ } from './utils.js'
 import { logger } from './logger.js'
 
 const root = null
@@ -19,7 +19,10 @@ function initRouter(){
       // Show them the manage page to add new subs if they are new.
     .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
     .on('/sub/:subreddit/:timefilter', loadSubredditPage)
-    .on('/sub/:subreddit/:timefilter/imageviewer/:imageid', loadImageViewer)
+    .on('/sub/:subreddit/:timefilter/imageviewer/:imageid', 
+      loadImageViewer,
+      {leave(){ removeImageViewerImagePreloaders() }}
+    )
     .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
     .on('/folders/:folder', loadFolderPage)
@@ -28,6 +31,10 @@ function initRouter(){
       router.navigate('/')
     })
     .resolve()  
+}
+
+function removeImageViewerImagePreloaders(){
+  $$('.imagePreloaders').forEach(elem => elem.remove())
 }
 
 export {
