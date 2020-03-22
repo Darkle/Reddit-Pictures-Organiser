@@ -8,16 +8,13 @@ import { router } from '../router.js'
 const html = htm.bind(h)
 const amountImagesToCacheEachWay = 10
 
-function loadImageViewer({subreddit, timefilter, imageid}) { // eslint-disable-line max-statements
+function loadImageViewer({subreddit, timefilter, imageid}) { // eslint-disable-line max-statements, consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
   so redirect to the subreddit page.
   *****/
-  if(!store.fetchedSubredditImages.length){
-    router.navigate(`/sub/${subreddit}/${timefilter}`)
-    return
-  } 
+  if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
   const storedImageIndex = getStoredImageIndex(imageid)
 

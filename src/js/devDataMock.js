@@ -1,5 +1,7 @@
 import {store} from './store/store.js'
 
+// add this to index.js import('./devDataMock.js').catch(logger.error)
+
 /* eslint-disable */
 setTimeout(() => {
   console.log('running devDataMock')
