@@ -2,12 +2,10 @@ import { h, patch } from '../web_modules/superfine.js'
 import htm from '../web_modules/htm.js'
 
 import {store} from '../store/store.js'
-import { setPageTitle } from '../utils.js'
+import { $, setPageTitle } from '../utils.js'
 import { router } from '../router.js'
-import {$} from '../utils.js'
 
 const html = htm.bind(h)
-const oneSecondInMs = 1000
 
 function loadImageViewer({subreddit, timefilter, imageid}) {
   setPageTitle(`RPO - Image Viewer`)
@@ -50,27 +48,31 @@ function setUpImageCaching(storedImageIndex){
   const [prevTen, nextTen] = getInitialImagesToPreload(storedImageIndex)
   const firstThreeOfNextTen = nextTen.slice(0, 3)
   const lastSevenOfNextTen = nextTen.slice(3, 10) // eslint-disable-line no-magic-numbers
-  const shouldDelay = true
+  const oneSecondInMs = 1000
+  const twoSecondInMs = 5000
 
-  addPrefetchLinksToDom(firstThreeOfNextTen)
-  addPrefetchLinksToDom(lastSevenOfNextTen, shouldDelay)
-  addPrefetchLinksToDom(prevTen, shouldDelay)
-}
-
-function addPrefetchLinksToDom(images, shouldDelay = false){
-  if(!images.length) return
-  const fragment = new DocumentFragment()
-  images.forEach(image => fragment.appendChild(createImgCacheLink(image)))
   /*****
-    We let the first 3 to the right load first as they may be needed straight away.
+  We delay for 1 second to let the current image load first, then we load the first
+  3 images to the right, then 2 seconds later we load the last 7 to the right and
+  the previous 10.  
   *****/
-  if(shouldDelay){
-    setTimeout(() => document.head.appendChild(fragment), oneSecondInMs)
-    return
-  }
-  document.head.appendChild(fragment)
+  addPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
+  addPrefetchLinksToDom(lastSevenOfNextTen, twoSecondInMs)
+  addPrefetchLinksToDom(prevTen, twoSecondInMs)
 }
 
+// function addPrefetchLinksToDom(images, delay){
+//   if(!images.length) return
+//   const fragment = new DocumentFragment()
+//   images.forEach(image => fragment.appendChild(createImgCacheLink(image)))
+//   setTimeout(() => document.head.appendChild(fragment), delay)
+// }
+function addPrefetchLinksToDom(images, delay){
+  if(!images.length) return
+  images.forEach(image => {
+    setTimeout(() => document.head.appendChild(createImgCacheLink(image)), delay)
+  })
+}
 function createImgCacheLink(image){
   const link = document.createElement('link')
   link.setAttribute('rel', 'preload')
@@ -84,12 +86,12 @@ function getInitialImagesToPreload(storedImageIndex){
   const amountImagesToCacheEachWay = 10
   const subImages = store.fetchedSubredditImages
   const prev10 = Array.from({length:amountImagesToCacheEachWay})
-                  .map((_, index) => subImages[storedImageIndex + (index + 1)])
-                  .filter(Boolean)
-  const next10 = Array.from({length:amountImagesToCacheEachWay})
                   .map((_, index) => subImages[storedImageIndex - (index + 1)])
                   .filter(Boolean)
-
+  const next10 = Array.from({length:amountImagesToCacheEachWay})
+                  .map((_, index) => subImages[storedImageIndex + (index + 1)])
+                  .filter(Boolean)
+  
   return [prev10, next10]
 }
 
