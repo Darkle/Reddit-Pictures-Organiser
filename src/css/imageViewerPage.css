@@ -18,6 +18,10 @@
   position: absolute;
   background-color: #595959;
 }
+.imageViewerPage .navWrapper > div{
+  overflow: hidden;
+  height: 22px;
+}
 .imageViewerPage .navWrapper .back{
   flex-grow: 1;
   padding: 10px;

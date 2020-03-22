@@ -5,6 +5,7 @@
     "navigo": "./navigo.js",
     "p-limit": "./p-limit.js",
     "store": "./store.js",
-    "superfine": "./superfine.js"
+    "superfine": "./superfine.js",
+    "tocca": "./tocca.js"
   }
 }

@@ -1,9 +1,10 @@
-import { h, patch } from '../web_modules/superfine.js'
-import htm from '../web_modules/htm.js'
+import { h, patch } from '../../web_modules/superfine.js'
+import htm from '../../web_modules/htm.js'
 
-import {store} from '../store/store.js'
-import { $, setPageTitle } from '../utils.js'
-import { router } from '../router.js'
+import {store} from '../../store/store.js'
+import { $, setPageTitle } from '../../utils.js'
+import { router } from '../../router.js'
+import { Nav } from './Nav.js'
 
 const html = htm.bind(h)
 const amountImagesToCacheEachWay = 10
@@ -28,24 +29,14 @@ function ImageViewer(subreddit, timefilter, imageid) {
   const storedImage = getStoredImage(imageid)
 
   return html`
-    <main id="app" class="imageViewerPage">
+    <main id="app" class="imageViewerPage" onclick=${showNav}>
       ${Nav(subreddit, timefilter)}
-      <div class="imageContainer">
-        <img onclick=${showNav} src="${(storedImage.src || storedImage.url)}" /> 
+      <div class="imageContainer" onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
+          onswiperight=${event => handleSwipe(event, subreddit, timefilter)}>
+        <img src="${(storedImage.src || storedImage.url)}" /> 
       </div>
     </main>    
     `  
-}
-
-function Nav(subreddit, timefilter){
-  return html`
-    <nav class="navWrapper hideNav">
-      <div class="back" onmouseup=${() => router.navigate(`/sub/${subreddit}/${timefilter}`)}>Back Icon Here</div>
-      <div class="edit" >Edit Icon</div>
-      <div class="share" >Share Icon</div>
-      <div class="addToFolder" >Add To Folder Icon</div>
-    </nav>  
-    `
 }
 
 function setUpInitialImageCaching(storedImageIndex){
@@ -120,6 +111,12 @@ function addKeysEventLister(subreddit, timefilter){
     const right = key === 'ArrowRight'
     changeImageDisplayed(subreddit, timefilter, right)
   })
+}
+
+function handleSwipe(event, subreddit, timefilter){
+  //swipeleft moves us right
+  const right = event.type === 'swipeleft'
+  changeImageDisplayed(subreddit, timefilter, right)
 }
 
 function showNav() {

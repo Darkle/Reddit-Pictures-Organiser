@@ -1,11 +1,11 @@
 import Navigo from './web_modules/navigo.js'
 
 import {loadHomePage} from './views/homePage.js'
-import {loadSubredditPage} from './views/subredditPage.js'
+import {loadSubredditPage} from './views/subredditPage/subredditPage.js'
 import {loadManagePage} from './views/managePage.js'
 import {loadFoldersPage} from './views/foldersPage.js'
 import {loadFolderPage} from './views/folderPage.js'
-import {loadImageViewer} from './views/imageViewer.js'
+import {loadImageViewer} from './views/imageViewer/imageViewer.js'
 import { noSubsStored, $$ } from './utils.js'
 import { logger } from './logger.js'
 
