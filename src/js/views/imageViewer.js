@@ -6,6 +6,7 @@ import { $, setPageTitle } from '../utils.js'
 import { router } from '../router.js'
 
 const html = htm.bind(h)
+const amountImagesToCacheEachWay = 10
 
 function loadImageViewer({subreddit, timefilter, imageid}) {
   setPageTitle(`RPO - Image Viewer`)
@@ -13,15 +14,22 @@ function loadImageViewer({subreddit, timefilter, imageid}) {
   We dont have the images stored if the user reloads the page to the image viewer,
   so redirect to the subreddit page.
   *****/
-  if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
+ if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
+ 
+  const initialRender = true
 
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageid))
+  patch($('#app'), ImageViewer(subreddit, timefilter, imageid, initialRender))
 }
 
-function ImageViewer(subreddit, timefilter, imageid) {
+function ImageViewer(subreddit, timefilter, imageid, initialRender = false) {
   const storedImage = getStoredImage(imageid)
   const storedImageIndex = getStoredImageIndex(imageid)
-  setUpImageCaching(storedImageIndex)
+
+  if(initialRender) {
+    store.updateCurrentlyViewedImageIndex(storedImageIndex)
+    setUpImageCaching(storedImageIndex)
+    addKeysEventLister(subreddit, timefilter)
+  }
   
   return html`
     <main id="app" class="subredditPage">
@@ -48,25 +56,19 @@ function setUpImageCaching(storedImageIndex){
   const [prevTen, nextTen] = getInitialImagesToPreload(storedImageIndex)
   const firstThreeOfNextTen = nextTen.slice(0, 3)
   const lastSevenOfNextTen = nextTen.slice(3, 10) // eslint-disable-line no-magic-numbers
-  const oneSecondInMs = 1000
-  const twoSecondInMs = 5000
-
   /*****
   We delay for 1 second to let the current image load first, then we load the first
   3 images to the right, then 2 seconds later we load the last 7 to the right and
   the previous 10.  
   *****/
+  const oneSecondInMs = 1000
+  const twoSecondInMs = 2000
+  
   addPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
   addPrefetchLinksToDom(lastSevenOfNextTen, twoSecondInMs)
   addPrefetchLinksToDom(prevTen, twoSecondInMs)
 }
 
-// function addPrefetchLinksToDom(images, delay){
-//   if(!images.length) return
-//   const fragment = new DocumentFragment()
-//   images.forEach(image => fragment.appendChild(createImgCacheLink(image)))
-//   setTimeout(() => document.head.appendChild(fragment), delay)
-// }
 function addPrefetchLinksToDom(images, delay){
   if(!images.length) return
   images.forEach(image => {
@@ -83,7 +85,6 @@ function createImgCacheLink(image){
 }
 
 function getInitialImagesToPreload(storedImageIndex){
-  const amountImagesToCacheEachWay = 10
   const subImages = store.fetchedSubredditImages
   const prev10 = Array.from({length:amountImagesToCacheEachWay})
                   .map((_, index) => subImages[storedImageIndex - (index + 1)])
@@ -95,37 +96,45 @@ function getInitialImagesToPreload(storedImageIndex){
   return [prev10, next10]
 }
 
-document.addEventListener('keyup', ({key}) => {// eslint-disable-line 
-  const img = $('.imagesContainer img')
-  console.log(img)
-  console.log(Number(img.dataset.imageIndex))
-  const imageIndex = Number(img.dataset.imageIndex)
-  console.log('imageIndex', imageIndex)
-  if(key === 'ArrowRight'){
-    const advanceIndex = imageIndex + 1
-    const image = store.fetchedSubredditImages[advanceIndex]
-    console.log('advanceIndex', advanceIndex)
-    console.log('store.fetchedSubredditImages[advanceIndex].url', image.url)
-    const link = document.createElement('link')
-    link.setAttribute('rel', 'preload')
-    link.setAttribute('href', (image.url || image.src))
-    link.setAttribute('as', 'image')
-    link.setAttribute('class', 'imagePreloaders')
-    document.head.appendChild(link)
-    img.dataset.imageIndex = advanceIndex
-  }
-  if(key === 'ArrowLeft'){
-    const decreaseIndex = imageIndex - 1
-    const image = store.fetchedSubredditImages[decreaseIndex]
-    const link = document.createElement('link')
-    link.setAttribute('rel', 'preload')
-    link.setAttribute('href', (image.url || image.src))
-    link.setAttribute('as', 'image')
-    link.setAttribute('class', 'imagePreloaders')
-    document.head.appendChild(link)
-    img.dataset.imageIndex = decreaseIndex
-  }
-})
+function addKeysEventLister(subreddit, timefilter){ // eslint-disable-line max-lines-per-function
+  document.addEventListener('keyup', ({key}) => { // eslint-disable-line max-lines-per-function, complexity, max-statements
+    if(key === 'ArrowRight'){
+      const currIndexPlus10 = (store.currentlyViewedImageIndex + amountImagesToCacheEachWay) + 1
+      const nextImageIndex = store.currentlyViewedImageIndex + 1
+      const imageToPrefetch = store.fetchedSubredditImages[currIndexPlus10]
+      
+      if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+        document.head.appendChild(createImgCacheLink(imageToPrefetch))
+        $('.imagePreloaders').remove()
+      }
+
+      const nextImageToShow = store.fetchedSubredditImages[nextImageIndex]
+
+      if(!nextImageToShow) return
+
+      store.updateCurrentlyViewedImageIndex(nextImageIndex)
+      patch($('#app'), ImageViewer(subreddit, timefilter, nextImageToShow.id))
+    }
+    if(key === 'ArrowLeft'){
+      const currIndexMinus10 = (store.currentlyViewedImageIndex - amountImagesToCacheEachWay) - 1
+      const prevImageIndex = store.currentlyViewedImageIndex - 1
+      const imageToPrefetch = store.fetchedSubredditImages[currIndexMinus10]
+
+      if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+        document.head.appendChild(createImgCacheLink(imageToPrefetch))
+        $('.imagePreloaders').remove()
+      }
+
+      const prevImageToShow = store.fetchedSubredditImages[prevImageIndex]
+
+      if(!prevImageToShow) return
+      
+      store.updateCurrentlyViewedImageIndex(prevImageIndex)
+      patch($('#app'), ImageViewer(subreddit, timefilter, prevImageToShow.id))
+    }
+  })
+}
+
 
 function getStoredImage(imageId) {
   return store.fetchedSubredditImages.find(({id}) => imageId === id)

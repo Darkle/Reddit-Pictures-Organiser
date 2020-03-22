@@ -10,62 +10,66 @@ const store = createStore ({
   favouriteSubreddits: [
   ],
   fetchedSubredditImages: [],
-  createFolder: newFolder => {
+  currentlyViewedImageIndex: null,
+  updateCurrentlyViewedImageIndex(index){
+    store.currentlyViewedImageIndex = index
+  },
+  createFolder(newFolder) {
     const folder = newFolder.toLowerCase()
     if(store.folders[folder]) return
     store.folders[folder] = {}
     saveToLocalForage('folders', store.folders)
   },  
-  removeFolder: folderToRemove => {
+  removeFolder(folderToRemove) {
     const folder = folderToRemove.toLowerCase()
     if(!store.folders[folder]) return
     delete store.folders[folder]
     saveToLocalForage('folders', store.folders)
   },  
-  addImageToFolder: (folder, image) => {
+  addImageToFolder(folder, image) {
     const {permalink, thumbnail, src, url} = image
     if(store.folders[folder][permalink]) return
     const newImageItem = {permalink, thumbnail, src, url}
     store.folders[folder][permalink] = newImageItem
     saveToLocalForage('folders', store.folders)
   },  
-  removeImageFromFolder: (folder, imageToRemove) => {
+  removeImageFromFolder(folder, imageToRemove) {
     const {permalink} = imageToRemove
     if(!store.folders[folder][permalink]) return
     delete store.folders[folder][permalink]
     saveToLocalForage('folders', store.folders)
   },  
-  addSubreddit: newSub => {
+  addSubreddit(newSub) {
     const sub = newSub.toLowerCase()
     if(store.subreddits.includes(sub)) return
     store.subreddits.push(sub)
     saveToLocalForage('subreddits', store.subreddits)
   },
-  removeSubreddit: subToRemove => {
+  removeSubreddit(subToRemove) {
     const sub = subToRemove.toLowerCase()
     store.removeFavouriteSubreddit(sub)
     if(!store.subreddits.includes(sub)) return
     store.subreddits = store.subreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('subreddits', store.subreddits)
   },  
-  addFavouriteSubreddit: newSub => {
+  addFavouriteSubreddit(newSub){
     const sub = newSub.toLowerCase()
     if(store.favouriteSubreddits.includes(sub)) return
     store.favouriteSubreddits.push(sub)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
-  removeFavouriteSubreddit: subToRemove => {
+  removeFavouriteSubreddit(subToRemove) {
     const sub = subToRemove.toLowerCase()
     if(!store.favouriteSubreddits.includes(sub)) return 
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   // We dont need to store this in IndexedDB
-  storeFetchedSubredditImages: images => {
+  storeFetchedSubredditImages(images) {
     if(!images.length) return
     store.fetchedSubredditImages = store.fetchedSubredditImages.concat(images)
   },
-  removeStoredFetchedSubredditImages: () => {
+  removeStoredFetchedSubredditImages() {
     store.fetchedSubredditImages = []
   },
 })
