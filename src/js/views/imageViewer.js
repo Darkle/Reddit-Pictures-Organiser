@@ -32,9 +32,9 @@ function ImageViewer(subreddit, timefilter, imageid, initialRender = false) {
   }
   
   return html`
-    <main id="app" class="subredditPage">
+    <main id="app" class="imageViewerPage">
       ${Nav(subreddit, timefilter)}
-      <div class="imagesContainer">
+      <div class="imageContainer">
         <img src="${(storedImage.src || storedImage.url)}" data-image-index="${storedImageIndex}" /> 
       </div>
     </main>    
@@ -45,9 +45,9 @@ function Nav(subreddit, timefilter){
   return html`
     <nav class="navWrapper">
       <div class="back" onmouseup=${() => router.navigate(`/sub/${subreddit}/${timefilter}`)}>Back Icon Here</div>
-      <div class="latest" >Edit Icon</div>
-      <div class="latest" >Share Icon</div>
-      <div class="latest" >Add To Folder Icon</div>
+      <div class="edit" >Edit Icon</div>
+      <div class="share" >Share Icon</div>
+      <div class="addToFolder" >Add To Folder Icon</div>
     </nav>  
     `
 }
@@ -64,12 +64,12 @@ function setUpImageCaching(storedImageIndex){
   const oneSecondInMs = 1000
   const twoSecondInMs = 2000
   
-  addPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
-  addPrefetchLinksToDom(lastSevenOfNextTen, twoSecondInMs)
-  addPrefetchLinksToDom(prevTen, twoSecondInMs)
+  addInitialPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
+  addInitialPrefetchLinksToDom(lastSevenOfNextTen, twoSecondInMs)
+  addInitialPrefetchLinksToDom(prevTen, twoSecondInMs)
 }
 
-function addPrefetchLinksToDom(images, delay){
+function addInitialPrefetchLinksToDom(images, delay){
   if(!images.length) return
   images.forEach(image => {
     setTimeout(() => document.head.appendChild(createImgCacheLink(image)), delay)
@@ -96,65 +96,33 @@ function getInitialImagesToPreload(storedImageIndex){
   return [prev10, next10]
 }
 
-// function addKeysEventLister(subreddit, timefilter){ // eslint-disable-line max-lines-per-function
-//   document.addEventListener('keyup', ({key}) => { // eslint-disable-line max-lines-per-function, complexity, max-statements
-//     if(key === 'ArrowRight'){
-//       const currIndexPlus10 = store.currentlyViewedImageIndex + amountImagesToCacheEachWay + 1
-//       const nextImageIndex = store.currentlyViewedImageIndex + 1
-//       const imageToPrefetch = store.fetchedSubredditImages[currIndexPlus10]
-      
-//       if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
-//         document.head.appendChild(createImgCacheLink(imageToPrefetch))
-//         $('.imagePreloaders').remove()
-//       }
+function addPrefetchLinkToDom(imageToPrefetch){
+  document.head.appendChild(createImgCacheLink(imageToPrefetch))
+  $('.imagePreloaders').remove()
+}
 
-//       const nextImageToShow = store.fetchedSubredditImages[nextImageIndex]
+function changeImageDisplayed(subreddit, timefilter, right){ // eslint-disable-line complexity, max-statements
+  const currentImageIndex = store.currentlyViewedImageIndex
+  const nextPrevCacheIndex = right ? currentImageIndex + amountImagesToCacheEachWay + 1 : currentImageIndex - amountImagesToCacheEachWay - 1
+  const nextPrevImageIndex = right ? currentImageIndex + 1 : currentImageIndex - 1
+  const imageToPrefetch = store.fetchedSubredditImages[nextPrevCacheIndex]
+  
+  if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+    addPrefetchLinkToDom(imageToPrefetch)
+  }
 
-//       if(!nextImageToShow) return
+  const nextPrevImageToShow = store.fetchedSubredditImages[nextPrevImageIndex]
+  if(!nextPrevImageToShow) return
 
-//       store.updateCurrentlyViewedImageIndex(nextImageIndex)
-//       patch($('#app'), ImageViewer(subreddit, timefilter, nextImageToShow.id))
-//     }
-//     if(key === 'ArrowLeft'){
-//       const currIndexMinus10 = store.currentlyViewedImageIndex - amountImagesToCacheEachWay - 1
-//       const prevImageIndex = store.currentlyViewedImageIndex - 1
-//       const imageToPrefetch = store.fetchedSubredditImages[currIndexMinus10]
+  store.updateCurrentlyViewedImageIndex(nextPrevImageIndex)
+  patch($('#app'), ImageViewer(subreddit, timefilter, nextPrevImageToShow.id))  
+}
 
-//       if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
-//         document.head.appendChild(createImgCacheLink(imageToPrefetch))
-//         $('.imagePreloaders').remove()
-//       }
-
-//       const prevImageToShow = store.fetchedSubredditImages[prevImageIndex]
-
-//       if(!prevImageToShow) return
-      
-//       store.updateCurrentlyViewedImageIndex(prevImageIndex)
-//       patch($('#app'), ImageViewer(subreddit, timefilter, prevImageToShow.id))
-//     }
-//   })
-// }
-
-function addKeysEventLister(subreddit, timefilter){ // eslint-disable-line max-lines-per-function
-  document.addEventListener('keyup', ({key}) => { // eslint-disable-line complexity, max-statements
+function addKeysEventLister(subreddit, timefilter){
+  document.addEventListener('keyup', ({key}) => {
     if(key !== 'ArrowRight' && key !== 'ArrowLeft') return
     const right = key === 'ArrowRight'
-    const currentImageIndex = store.currentlyViewedImageIndex
-    const nextPrevCacheIndex = right ? currentImageIndex + amountImagesToCacheEachWay + 1 : currentImageIndex - amountImagesToCacheEachWay - 1
-    const nextPrevImageIndex = right ? currentImageIndex + 1 : currentImageIndex - 1
-    const imageToPrefetch = store.fetchedSubredditImages[nextPrevCacheIndex]
-    
-    if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
-      document.head.appendChild(createImgCacheLink(imageToPrefetch))
-      $('.imagePreloaders').remove()
-    }
-
-    const nextPrevImageToShow = store.fetchedSubredditImages[nextPrevImageIndex]
-
-    if(!nextPrevImageToShow) return
-
-    store.updateCurrentlyViewedImageIndex(nextPrevImageIndex)
-    patch($('#app'), ImageViewer(subreddit, timefilter, nextPrevImageToShow.id))    
+    changeImageDisplayed(subreddit, timefilter, right)
   })
 }
 
