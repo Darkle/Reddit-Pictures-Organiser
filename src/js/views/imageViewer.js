@@ -8,34 +8,33 @@ import { router } from '../router.js'
 const html = htm.bind(h)
 const amountImagesToCacheEachWay = 10
 
-function loadImageViewer({subreddit, timefilter, imageid}) {
+function loadImageViewer({subreddit, timefilter, imageid}) { // eslint-disable-line max-statements
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
   so redirect to the subreddit page.
   *****/
- if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
+  if(!store.fetchedSubredditImages.length){
+    router.navigate(`/sub/${subreddit}/${timefilter}`)
+    return
+  } 
  
-  const initialRender = true
-
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageid, initialRender))
-}
-
-function ImageViewer(subreddit, timefilter, imageid, initialRender = false) {
-  const storedImage = getStoredImage(imageid)
   const storedImageIndex = getStoredImageIndex(imageid)
 
-  if(initialRender) {
-    store.updateCurrentlyViewedImageIndex(storedImageIndex)
-    setUpImageCaching(storedImageIndex)
-    addKeysEventLister(subreddit, timefilter)
-  }
-  
+  store.updateCurrentlyViewedImageIndex(storedImageIndex)
+  setUpInitialImageCaching(storedImageIndex)
+  addKeysEventLister(subreddit, timefilter)
+  patch($('#app'), ImageViewer(subreddit, timefilter, imageid))
+}
+
+function ImageViewer(subreddit, timefilter, imageid) {
+  const storedImage = getStoredImage(imageid)
+
   return html`
     <main id="app" class="imageViewerPage">
       ${Nav(subreddit, timefilter)}
       <div class="imageContainer">
-        <img src="${(storedImage.src || storedImage.url)}" data-image-index="${storedImageIndex}" /> 
+        <img onclick=${showNav} src="${(storedImage.src || storedImage.url)}" /> 
       </div>
     </main>    
     `  
@@ -43,7 +42,7 @@ function ImageViewer(subreddit, timefilter, imageid, initialRender = false) {
 
 function Nav(subreddit, timefilter){
   return html`
-    <nav class="navWrapper">
+    <nav class="navWrapper hideNav">
       <div class="back" onmouseup=${() => router.navigate(`/sub/${subreddit}/${timefilter}`)}>Back Icon Here</div>
       <div class="edit" >Edit Icon</div>
       <div class="share" >Share Icon</div>
@@ -52,7 +51,7 @@ function Nav(subreddit, timefilter){
     `
 }
 
-function setUpImageCaching(storedImageIndex){
+function setUpInitialImageCaching(storedImageIndex){
   const [prevTen, nextTen] = getInitialImagesToPreload(storedImageIndex)
   const firstThreeOfNextTen = nextTen.slice(0, 3)
   const lastSevenOfNextTen = nextTen.slice(3, 10) // eslint-disable-line no-magic-numbers
@@ -62,11 +61,11 @@ function setUpImageCaching(storedImageIndex){
   the previous 10.  
   *****/
   const oneSecondInMs = 1000
-  const twoSecondInMs = 2000
+  const aboutTwoSeconds = 2500
   
   addInitialPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
-  addInitialPrefetchLinksToDom(lastSevenOfNextTen, twoSecondInMs)
-  addInitialPrefetchLinksToDom(prevTen, twoSecondInMs)
+  addInitialPrefetchLinksToDom(lastSevenOfNextTen, aboutTwoSeconds)
+  addInitialPrefetchLinksToDom(prevTen, aboutTwoSeconds)
 }
 
 function addInitialPrefetchLinksToDom(images, delay){
@@ -124,6 +123,11 @@ function addKeysEventLister(subreddit, timefilter){
     const right = key === 'ArrowRight'
     changeImageDisplayed(subreddit, timefilter, right)
   })
+}
+
+function showNav() {
+  $('.navWrapper').classList.toggle('showNav')
+  $('.navWrapper').classList.toggle('hideNav')
 }
 
 function getStoredImage(imageId) {

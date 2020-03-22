@@ -2,12 +2,21 @@
   display: flex;
   flex-direction: column;
 }
-
+.imageViewerPage .navWrapper.hideNav{
+  visibility: hidden;
+}
+.imageViewerPage .navWrapper.showNav{
+  visibility: unset;
+}
 .imageViewerPage .navWrapper{
+  visibility: hidden;
+  z-index: 1;
+  position: absolute;  
   display: flex;
   border-bottom: 2px solid #737373;
   width: 100%;
-  /* margin-bottom: 10px; */
+  position: absolute;
+  background-color: #595959;
 }
 .imageViewerPage .navWrapper .back{
   flex-grow: 1;
