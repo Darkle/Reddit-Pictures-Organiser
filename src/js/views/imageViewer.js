@@ -96,45 +96,67 @@ function getInitialImagesToPreload(storedImageIndex){
   return [prev10, next10]
 }
 
+// function addKeysEventLister(subreddit, timefilter){ // eslint-disable-line max-lines-per-function
+//   document.addEventListener('keyup', ({key}) => { // eslint-disable-line max-lines-per-function, complexity, max-statements
+//     if(key === 'ArrowRight'){
+//       const currIndexPlus10 = store.currentlyViewedImageIndex + amountImagesToCacheEachWay + 1
+//       const nextImageIndex = store.currentlyViewedImageIndex + 1
+//       const imageToPrefetch = store.fetchedSubredditImages[currIndexPlus10]
+      
+//       if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+//         document.head.appendChild(createImgCacheLink(imageToPrefetch))
+//         $('.imagePreloaders').remove()
+//       }
+
+//       const nextImageToShow = store.fetchedSubredditImages[nextImageIndex]
+
+//       if(!nextImageToShow) return
+
+//       store.updateCurrentlyViewedImageIndex(nextImageIndex)
+//       patch($('#app'), ImageViewer(subreddit, timefilter, nextImageToShow.id))
+//     }
+//     if(key === 'ArrowLeft'){
+//       const currIndexMinus10 = store.currentlyViewedImageIndex - amountImagesToCacheEachWay - 1
+//       const prevImageIndex = store.currentlyViewedImageIndex - 1
+//       const imageToPrefetch = store.fetchedSubredditImages[currIndexMinus10]
+
+//       if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+//         document.head.appendChild(createImgCacheLink(imageToPrefetch))
+//         $('.imagePreloaders').remove()
+//       }
+
+//       const prevImageToShow = store.fetchedSubredditImages[prevImageIndex]
+
+//       if(!prevImageToShow) return
+      
+//       store.updateCurrentlyViewedImageIndex(prevImageIndex)
+//       patch($('#app'), ImageViewer(subreddit, timefilter, prevImageToShow.id))
+//     }
+//   })
+// }
+
 function addKeysEventLister(subreddit, timefilter){ // eslint-disable-line max-lines-per-function
-  document.addEventListener('keyup', ({key}) => { // eslint-disable-line max-lines-per-function, complexity, max-statements
-    if(key === 'ArrowRight'){
-      const currIndexPlus10 = (store.currentlyViewedImageIndex + amountImagesToCacheEachWay) + 1
-      const nextImageIndex = store.currentlyViewedImageIndex + 1
-      const imageToPrefetch = store.fetchedSubredditImages[currIndexPlus10]
-      
-      if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
-        document.head.appendChild(createImgCacheLink(imageToPrefetch))
-        $('.imagePreloaders').remove()
-      }
-
-      const nextImageToShow = store.fetchedSubredditImages[nextImageIndex]
-
-      if(!nextImageToShow) return
-
-      store.updateCurrentlyViewedImageIndex(nextImageIndex)
-      patch($('#app'), ImageViewer(subreddit, timefilter, nextImageToShow.id))
+  document.addEventListener('keyup', ({key}) => { // eslint-disable-line complexity, max-statements
+    if(key !== 'ArrowRight' && key !== 'ArrowLeft') return
+    const right = key === 'ArrowRight'
+    const currentImageIndex = store.currentlyViewedImageIndex
+    const nextPrevCacheIndex = right ? currentImageIndex + amountImagesToCacheEachWay + 1 : currentImageIndex - amountImagesToCacheEachWay - 1
+    const nextPrevImageIndex = right ? currentImageIndex + 1 : currentImageIndex - 1
+    const imageToPrefetch = store.fetchedSubredditImages[nextPrevCacheIndex]
+    
+    if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+      document.head.appendChild(createImgCacheLink(imageToPrefetch))
+      $('.imagePreloaders').remove()
     }
-    if(key === 'ArrowLeft'){
-      const currIndexMinus10 = (store.currentlyViewedImageIndex - amountImagesToCacheEachWay) - 1
-      const prevImageIndex = store.currentlyViewedImageIndex - 1
-      const imageToPrefetch = store.fetchedSubredditImages[currIndexMinus10]
 
-      if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
-        document.head.appendChild(createImgCacheLink(imageToPrefetch))
-        $('.imagePreloaders').remove()
-      }
+    const nextPrevImageToShow = store.fetchedSubredditImages[nextPrevImageIndex]
 
-      const prevImageToShow = store.fetchedSubredditImages[prevImageIndex]
+    if(!nextPrevImageToShow) return
 
-      if(!prevImageToShow) return
-      
-      store.updateCurrentlyViewedImageIndex(prevImageIndex)
-      patch($('#app'), ImageViewer(subreddit, timefilter, prevImageToShow.id))
-    }
+    store.updateCurrentlyViewedImageIndex(nextPrevImageIndex)
+    patch($('#app'), ImageViewer(subreddit, timefilter, nextPrevImageToShow.id))    
   })
 }
-
 
 function getStoredImage(imageId) {
   return store.fetchedSubredditImages.find(({id}) => imageId === id)
