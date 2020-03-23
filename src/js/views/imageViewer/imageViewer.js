@@ -5,11 +5,12 @@ import {store} from '../../store/store.js'
 import { $, setPageTitle } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
+import { FoldersContainer } from './FoldersContainer.js'
 
 const html = htm.bind(h)
 const amountImagesToCacheEachWay = 10
 
-function loadImageViewer({subreddit, timefilter, imageid}) { // eslint-disable-line max-statements, consistent-return
+function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line max-statements, consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
@@ -17,31 +18,33 @@ function loadImageViewer({subreddit, timefilter, imageid}) { // eslint-disable-l
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
-  const currentImageIndex = getCurrentImageIndex(imageid)
+  const currentImageIndex = getCurrentImageIndex(imageId)
 
   store.updateCurrentlyViewedImageIndex(currentImageIndex)
   setUpInitialImageCaching(currentImageIndex)
   addKeysEventLister(subreddit, timefilter)
-  updatePage(subreddit, timefilter, imageid)
+  updatePage(subreddit, timefilter, imageId)
 }
 
-function updatePage(subreddit, timefilter, imageid) {
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageid))
+function updatePage(subreddit, timefilter, imageId) {
+  patch($('#app'), ImageViewer(subreddit, timefilter, imageId))
 }
 
-function ImageViewer(subreddit, timefilter, imageid) {
-  const currentImage = getCurrentImage(imageid)
+function ImageViewer(subreddit, timefilter, imageId) {
+  const currentImage = getCurrentImage(imageId)
   const {permalink} = currentImage
 
   return html`
     <main id="app" class="imageViewerPage">
-      ${Nav({subreddit, timefilter, imageid, permalink})}
+      ${Nav({subreddit, timefilter, imageId, permalink})}
       <div class="imageContainer"  onclick=${toggleNav} 
           onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
           onswiperight=${event => handleSwipe(event, subreddit, timefilter)}>
         <img id="currentImage" src="${(currentImage.src || currentImage.url)}" /> 
       </div>
+      ${FoldersContainer(currentImage)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
+      <div class="toast notifyAddedImageToFolder">Image Added To Folder</div>
     </main>    
     `  
 }

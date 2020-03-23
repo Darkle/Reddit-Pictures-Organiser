@@ -75,6 +75,9 @@
   height: 100vh;
   width: 100vw;
 }
+.imageViewerPage .imageContainer.hide {
+  display: none;
+}
 @media (orientation: landscape) {
   .imageViewerPage .imageContainer img{
     height: 100vh;
@@ -84,6 +87,36 @@
   .imageViewerPage .imageContainer img{
     max-width: 100vw;
   }
+}
+.imageViewerPage .foldersContainer{
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  margin-top: 42px; /* For the Nav above it.*/
+}
+.imageViewerPage .foldersContainer.show{
+  display: flex;
+}
+
+.imageViewerPage .folder{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff4e8;
+  border: 1px solid #737373;
+  margin: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.imageViewerPage .folder .folderImageCount{
+  opacity: 0.5;
+  margin-left: 20px;
+  font-size: 0.9em;
+  margin-right: -2px;
 }
 .imageViewerPage .toast{
   border-radius: 2px;

@@ -17,11 +17,22 @@ const logger = {
   },
   debug(...args){
     if(window.location.port === '') return
-
+    
     console.info(
       `%c${getOriginalCallingFunctionDetails()} :`, 
       'color: #AAAAAA;', '\n', 
       ...args
+    ) 
+  },
+  debugForProxy(...args){
+    if(window.location.port === '') return
+    
+    const processedArgs = args.map(proxy => JSON.parse(JSON.stringify(proxy)))
+
+    console.info(
+      `%c${getOriginalCallingFunctionDetails()} :`, 
+      'color: #AAAAAA;', '\n', 
+      ...processedArgs
     ) 
   }  
 }

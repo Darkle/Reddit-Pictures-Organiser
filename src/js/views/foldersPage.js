@@ -106,5 +106,6 @@ function noFolders(){
 }
 
 export {
-  loadFoldersPage
+  loadFoldersPage,
+  getFolders,
 }

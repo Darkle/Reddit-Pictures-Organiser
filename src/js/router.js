@@ -19,7 +19,7 @@ function initRouter(){
       // Show them the manage page to add new subs if they are new.
     .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
     .on('/sub/:subreddit/:timefilter', loadSubredditPage)
-    .on('/sub/:subreddit/:timefilter/imageviewer/:imageid', 
+    .on('/sub/:subreddit/:timefilter/imageviewer/:imageId', 
       loadImageViewer,
       {leave(){ removeImageViewerImagePreloaders() }}
     )
