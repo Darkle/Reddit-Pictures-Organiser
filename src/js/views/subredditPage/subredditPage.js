@@ -3,7 +3,7 @@ import htm from '../../web_modules/htm.js'
 import pLimit from '../../web_modules/p-limit.js'
 
 import {store} from '../../store/store.js'
-import {fetchSubImages} from '../../fetchSubImages.js'
+import {fetchSubImages} from './fetchSubImages.js'
 import {logger} from '../../logger.js'
 import {$, setPageTitle, isFavMixPage} from '../../utils.js'
 import { NoMoreImagesToFetch } from '../../Errors.js'

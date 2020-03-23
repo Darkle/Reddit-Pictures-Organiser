@@ -1,7 +1,7 @@
-import { pipe, subPageNavigatedAway, Fetcher, isFavMixPage } from './utils.js'
-import { store } from './store/store.js'
-import { logger } from './logger.js'
-import { UserNavigatedAway, NoMoreImagesToFetch } from './Errors.js'
+import { pipe, subPageNavigatedAway, Fetcher, isFavMixPage } from '../../utils.js'
+import { store } from '../../store/store.js'
+import { logger } from '../../logger.js'
+import { UserNavigatedAway, NoMoreImagesToFetch } from '../../Errors.js'
 
 function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-disable-line max-lines-per-function
   if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())

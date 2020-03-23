@@ -6,7 +6,7 @@ import {loadManagePage} from './views/managePage.js'
 import {loadFoldersPage} from './views/foldersPage.js'
 import {loadFolderPage} from './views/folderPage.js'
 import {loadImageViewer} from './views/imageViewer/imageViewer.js'
-import { noSubsStored, $$ } from './utils.js'
+import { noSubsStored } from './utils.js'
 import { logger } from './logger.js'
 
 const root = null
