@@ -19,18 +19,18 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
   const currentImageIndex = getCurrentImageIndex(imageId)
+  const initialRender = true
 
   store.updateCurrentlyViewedImageIndex(currentImageIndex)
-  setUpInitialImageCaching(currentImageIndex)
   addKeysEventLister(subreddit, timefilter)
-  updatePage(subreddit, timefilter, imageId)
+  updatePage(subreddit, timefilter, imageId, currentImageIndex, initialRender)
 }
 
-function updatePage(subreddit, timefilter, imageId) {
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageId))
+function updatePage(subreddit, timefilter, imageId, currentImageIndex = null, initialRender = false) {
+  patch($('#app'), ImageViewer(subreddit, timefilter, imageId, currentImageIndex, initialRender))
 }
 
-function ImageViewer(subreddit, timefilter, imageId) {
+function ImageViewer(subreddit, timefilter, imageId, currentImageIndex, initialRender) {
   const currentImage = getCurrentImage(imageId)
   const {permalink} = currentImage
 
@@ -40,7 +40,9 @@ function ImageViewer(subreddit, timefilter, imageId) {
       <div class="imageContainer"  onclick=${toggleNav} 
           onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
           onswiperight=${event => handleSwipe(event, subreddit, timefilter)}>
-        <img id="currentImage" src="${(currentImage.src || currentImage.url)}" style="${currentImage.edits}"/> 
+        <img id="currentImage" src="${(currentImage.src || currentImage.url)}" 
+          style="${currentImage.edits}" onload=${() => setUpInitialImageCaching(currentImageIndex, initialRender)} 
+          onerror=${() => setUpInitialImageCaching(currentImageIndex, initialRender)}  /> 
       </div>
       ${FoldersContainer(currentImage)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
@@ -49,41 +51,44 @@ function ImageViewer(subreddit, timefilter, imageId) {
     `  
 }
 
-function setUpInitialImageCaching(storedImageIndex){ // eslint-disable-line max-statements
+function setUpInitialImageCaching(currentImageIndex, initialRender){ // eslint-disable-line max-statements
+  if(!initialRender) return
+
   removePreviousPreloaders()
 
-  const [prevTen, nextTen] = getInitialImagesToPreload(storedImageIndex)
+  const [prevTen, nextTen] = getInitialImagesToPreload(currentImageIndex)
   const firstThreeOfNextTen = nextTen.slice(0, 3)
   const lastSevenOfNextTen = nextTen.slice(3, 10) // eslint-disable-line no-magic-numbers
+  const finalGroupToPrefetch = [...lastSevenOfNextTen, ...prevTen]
+
   /*****
-  We delay for 1 second to let the current image load first, then we load the first
-  3 images to the right, then 2 seconds later we load the last 7 to the right and
-  the previous 10.  
+  Preload the first three to the right, then do the last 7 to the right and the previous 10
   *****/
-  const oneSecondInMs = 1000
-  const aboutTwoSeconds = 2500
-  
-  addInitialPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
-  addInitialPrefetchLinksToDom(lastSevenOfNextTen, aboutTwoSeconds)
-  addInitialPrefetchLinksToDom(prevTen, aboutTwoSeconds)
+  addCacheLinkToDom(createImgCacheLink(firstThreeOfNextTen[0]))
+  addCacheLinkToDom(createImgCacheLink(firstThreeOfNextTen[1]))
+  addCacheLinkToDom(createImgCacheLink(firstThreeOfNextTen[2], finalGroupToPrefetch))
 }
 
 function removePreviousPreloaders(){
   $$('.imagePreloaders').forEach(elem => elem.remove())
 }
 
-function addInitialPrefetchLinksToDom(images, delay){
-  if(!images.length) return
-  images.forEach(image => {
-    setTimeout(() => document.head.appendChild(createImgCacheLink(image)), delay)
-  })
+function addCacheLinkToDom(link){
+  document.head.appendChild(link)
 }
-function createImgCacheLink(image){
+
+function createImgCacheLink(image, finalGroupToPrefetch = []){
   const link = document.createElement('link')
   link.setAttribute('rel', 'preload')
   link.setAttribute('href', (image.url || image.src))
   link.setAttribute('as', 'image')
   link.setAttribute('class', 'imagePreloaders')
+  link.addEventListener('error', () => {
+    finalGroupToPrefetch.forEach(img => addCacheLinkToDom(createImgCacheLink(img)))
+  })
+  link.addEventListener('load', () => {
+    finalGroupToPrefetch.forEach(img => addCacheLinkToDom(createImgCacheLink(img)))
+  })  
   return link
 }
 

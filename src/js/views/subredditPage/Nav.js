@@ -10,6 +10,7 @@ const html = htm.bind(h)
 
 function Nav(timefilter, subreddit){
   const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
+  // There will be different subreddits calling Nav if we're in favmix
   const sub = isFavMixPage() ? 'favmix' : subreddit
   const subFilterNavigate = event => router.navigate(`/sub/${sub}/${event.target.textContent.trim()}`)
 

@@ -28,8 +28,12 @@ const store = createStore ({
   },  
   addImageToFolder(folder, image) {
     const {permalink, thumbnail, src, url, id} = image
+    
     if(store.folders[folder][permalink]) return
-    const newImageItem = {permalink, thumbnail, src, url, id, edits: ''}
+    
+    const edits = image.edits ? image.edits : ''
+    const newImageItem = {permalink, thumbnail, src, url, id, edits}
+
     store.folders[folder][permalink] = newImageItem
     saveToLocalForage('folders', store.folders)
   },  
