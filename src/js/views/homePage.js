@@ -52,13 +52,11 @@ function showStarIfFavouritedSub(subName) {
 }
 
 /*****
-  Subs sorted favourites first and then both sets are sorted
+  Subs sorted favourites first and then both sets are sorted a-z
 *****/
 function sortSubs({favouriteSubreddits, subreddits}) {
-  const favSubs = favouriteSubreddits?.length ? favouriteSubreddits : []
-  const nonFavSubs = subreddits?.length ? subreddits : []
-  const sortedNonfavSubs = nonFavSubs.filter(sub => !favSubs?.includes(sub)).sort()
-  const sortedFavSubs = [...favSubs].sort()
+  const sortedNonfavSubs = subreddits.filter(sub => !favouriteSubreddits?.includes(sub)).sort()
+  const sortedFavSubs = [...favouriteSubreddits].sort()
 
   return [...sortedFavSubs, ...sortedNonfavSubs ]
 }
