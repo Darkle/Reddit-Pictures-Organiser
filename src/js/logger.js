@@ -24,7 +24,7 @@ const logger = {
       ...args
     ) 
   },
-  debugForProxy(...args){
+  debugForProxys(...args){
     if(window.location.port === '') return
     
     const processedArgs = args.map(proxy => JSON.parse(JSON.stringify(proxy)))

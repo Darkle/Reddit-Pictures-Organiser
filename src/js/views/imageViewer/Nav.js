@@ -49,7 +49,7 @@ function handleBackNavigation(subreddit, timefilter){
 function shareImageRedditPermalink(permalink){
   const fullPermalink = `https://reddit.com${permalink}`
   // @ts-ignore
-  if (navigator.share){ // eslint-disable-line functional/no-conditional-statement
+  if (navigator.share){
     // @ts-ignore
     return navigator.share({
       url: fullPermalink,
@@ -62,7 +62,7 @@ function shareImageRedditPermalink(permalink){
 }
 
 function showClipboardToast(){
-  const toggleToastClass = () => $(`.imageViewerPage .notifyClipboardCopy`)?.classList.toggle('showToast') // eslint-disable-line no-unused-expressions
+  const toggleToastClass = () => $(`.imageViewerPage .notifyClipboardCopy`)?.classList.toggle('showToast')
   toggleToastClass()
   const threeSecondsInMS = 3000
   setTimeout(toggleToastClass, threeSecondsInMS)
@@ -70,11 +70,11 @@ function showClipboardToast(){
 
 function toggleNav() {
   const navWrapper = $('.navWrapper')
-  if(!navWrapper.classList.contains('slideDown')){ // eslint-disable-line functional/no-conditional-statement
+  if(!navWrapper.classList.contains('slideDown')){
     navWrapper.classList.remove('slideUp')
     navWrapper.classList.add('slideDown')
   }
-  else{ // eslint-disable-line functional/no-conditional-statement
+  else{
     navWrapper.classList.remove('slideDown')
     navWrapper.classList.add('slideUp')
   }

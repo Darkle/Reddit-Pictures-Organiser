@@ -34,7 +34,7 @@ module.exports = {
     'complexity': ['error', 4],
     'consistent-return': 'error',
     'eqeqeq': 'error',
-    'functional/no-conditional-statement': ['error', {allowReturningBranches: true}],
+    'functional/no-conditional-statement': 'off',
     'functional/no-expression-statement': 'off',
     'functional/functional-parameters': 'off',    
     'functional/immutable-data': ['error', {ignoreImmediateMutation: true}],    

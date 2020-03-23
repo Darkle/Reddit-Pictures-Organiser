@@ -104,7 +104,7 @@ function changeImageDisplayed(subreddit, timefilter, right){ // eslint-disable-l
   const nextPrevImageIndex = right ? currentImageIndex + 1 : currentImageIndex - 1
   const imageToPrefetch = store.fetchedSubredditImages[nextPrevCacheIndex]
   
-  if(imageToPrefetch){ // eslint-disable-line functional/no-conditional-statement
+  if(imageToPrefetch){
     addPrefetchLinkToDom(imageToPrefetch)
   }
 

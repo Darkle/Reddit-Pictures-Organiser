@@ -40,11 +40,11 @@ function FavStar(subreddit){
 }
 
 function toggleSubAsFavourite(subreddit, timefilter){
-  if(isFavSub(subreddit)){ // eslint-disable-line functional/no-conditional-statement
+  if(isFavSub(subreddit)){
     store.removeFavouriteSubreddit(subreddit)
     toggleToast('subUnFavouritedToast')
   }
-  else{ // eslint-disable-line functional/no-conditional-statement
+  else{
     store.addFavouriteSubreddit(subreddit)
     toggleToast('subFavouritedToast')
   }

@@ -5,12 +5,11 @@ import { getFolders } from '../foldersPage.js'
 import { toggleFolders } from './Nav.js'
 import { store } from '../../store/store.js'
 import { $ } from '../../utils.js'
-import { logger } from '../../logger.js'
+// import { logger } from '../../logger.js'
 
 const html = htm.bind(h)
 
 function FoldersContainer(currentImage){
-  logger.debugForProxy(store.folders)
   return html`
     <div class="foldersContainer">
     ${getFolders().map(folder =>
@@ -29,7 +28,7 @@ function addImageToFolder(folder, currentImage){
 }
 
 function showFolderToast(){
-  const toggleToastClass = () => $(`.imageViewerPage .notifyAddedImageToFolder`)?.classList.toggle('showToast') // eslint-disable-line no-unused-expressions
+  const toggleToastClass = () => $(`.imageViewerPage .notifyAddedImageToFolder`)?.classList.toggle('showToast')
   toggleToastClass()
   const threeSecondsInMS = 3000
   setTimeout(toggleToastClass, threeSecondsInMS)

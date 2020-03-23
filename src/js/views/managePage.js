@@ -97,7 +97,7 @@ function onChangeSelectSubredditToRemove(event){
 function onMouseUpSelectSubredditToRemove(event){
   if(inputIsEmpty(event.target)) return  
   const showConfirmRemoveSubDialog = true
-  if(event.key === 'Enter'){ // eslint-disable-line functional/no-conditional-statement
+  if(event.key === 'Enter'){
     patch($('#app'), ManagePage(store.subreddits, showConfirmRemoveSubDialog))
   }
 }
