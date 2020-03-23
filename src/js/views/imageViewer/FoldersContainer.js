@@ -5,11 +5,12 @@ import { getFolders } from '../foldersPage.js'
 import { toggleFolders } from './Nav.js'
 import { store } from '../../store/store.js'
 import { $ } from '../../utils.js'
-// import { logger } from '../../logger.js'
+import { logger } from '../../logger.js'
 
 const html = htm.bind(h)
 
 function FoldersContainer(currentImage){
+  logger.debugForProxys(store.folders)
   return html`
     <div class="foldersContainer">
     ${getFolders().map(folder =>
@@ -21,10 +22,12 @@ function FoldersContainer(currentImage){
     </div>  
   `
 }
+
 function addImageToFolder(folder, currentImage){
   store.addImageToFolder(folder, currentImage)
   toggleFolders()
   showFolderToast()
+  logger.debugForProxys(store.folders)
 }
 
 function showFolderToast(){

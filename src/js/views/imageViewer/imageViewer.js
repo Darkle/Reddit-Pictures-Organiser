@@ -2,7 +2,7 @@ import { h, patch } from '../../web_modules/superfine.js'
 import htm from '../../web_modules/htm.js'
 
 import {store} from '../../store/store.js'
-import { $, setPageTitle } from '../../utils.js'
+import { $, $$, setPageTitle } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
@@ -49,7 +49,9 @@ function ImageViewer(subreddit, timefilter, imageId) {
     `  
 }
 
-function setUpInitialImageCaching(storedImageIndex){
+function setUpInitialImageCaching(storedImageIndex){ // eslint-disable-line max-statements
+  removePreviousPreloaders()
+
   const [prevTen, nextTen] = getInitialImagesToPreload(storedImageIndex)
   const firstThreeOfNextTen = nextTen.slice(0, 3)
   const lastSevenOfNextTen = nextTen.slice(3, 10) // eslint-disable-line no-magic-numbers
@@ -64,6 +66,10 @@ function setUpInitialImageCaching(storedImageIndex){
   addInitialPrefetchLinksToDom(firstThreeOfNextTen, oneSecondInMs)
   addInitialPrefetchLinksToDom(lastSevenOfNextTen, aboutTwoSeconds)
   addInitialPrefetchLinksToDom(prevTen, aboutTwoSeconds)
+}
+
+function removePreviousPreloaders(){
+  $$('.imagePreloaders').forEach(elem => elem.remove())
 }
 
 function addInitialPrefetchLinksToDom(images, delay){

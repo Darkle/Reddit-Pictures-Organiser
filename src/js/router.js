@@ -19,10 +19,7 @@ function initRouter(){
       // Show them the manage page to add new subs if they are new.
     .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
     .on('/sub/:subreddit/:timefilter', loadSubredditPage)
-    .on('/sub/:subreddit/:timefilter/imageviewer/:imageId', 
-      loadImageViewer,
-      {leave(){ removeImageViewerImagePreloaders() }}
-    )
+    .on('/sub/:subreddit/:timefilter/imageviewer/:imageId', loadImageViewer)
     .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
     .on('/folders/:folder', loadFolderPage)
@@ -31,10 +28,6 @@ function initRouter(){
       router.navigate('/')
     })
     .resolve()  
-}
-
-function removeImageViewerImagePreloaders(){
-  $$('.imagePreloaders').forEach(elem => elem.remove())
 }
 
 export {
