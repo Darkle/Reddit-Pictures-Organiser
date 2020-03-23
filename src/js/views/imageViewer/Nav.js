@@ -49,13 +49,8 @@ function handleBackNavigation(subreddit, timefilter){
 function shareImageRedditPermalink(permalink){
   const fullPermalink = `https://reddit.com${permalink}`
   // @ts-ignore
-  if (navigator.share){
-    // @ts-ignore
-    return navigator.share({
-      url: fullPermalink,
-    })
-    .catch(logger.error)
-  }
+  if (navigator.share) return navigator.share({url: fullPermalink}).catch(logger.error)
+  
   return navigator.clipboard.writeText(fullPermalink)
     .then(showClipboardToast)
     .catch(logger.error)

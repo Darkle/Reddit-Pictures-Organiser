@@ -29,7 +29,7 @@ const store = createStore ({
   addImageToFolder(folder, image) {
     const {permalink, thumbnail, src, url, id} = image
     if(store.folders[folder][permalink]) return
-    const newImageItem = {permalink, thumbnail, src, url, id}
+    const newImageItem = {permalink, thumbnail, src, url, id, edits: ''}
     store.folders[folder][permalink] = newImageItem
     saveToLocalForage('folders', store.folders)
   },  
@@ -64,6 +64,17 @@ const store = createStore ({
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
+  addEditsToImage(image, edits, folder = null){
+    const {permalink, id} = image
+    if(folder){
+      store.folders[folder][permalink].edits = edits
+      return
+    }
+    store.fetchedSubredditImages = store.fetchedSubredditImages.map(img => {
+      if(img.id === id) img.edits = edits
+      return img
+    })
+  },
   // We dont need to store this in IndexedDB
   storeFetchedSubredditImages(images) {
     if(!images.length) return

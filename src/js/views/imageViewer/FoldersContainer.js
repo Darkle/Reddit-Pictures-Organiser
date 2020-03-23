@@ -13,12 +13,12 @@ function FoldersContainer(currentImage){
   logger.debugForProxys(store.folders)
   return html`
     <div class="foldersContainer">
-    ${getFolders().map(folder =>
-        html`<div class="folder" onmouseup=${() => addImageToFolder(folder, currentImage)}>
-            <div class="folderName">${folder}</div>
-            <div class="folderImageCount">${Object.keys(folder).length}</div>
-          </div>`
-      )}
+    ${getFolders().map(folder => html`
+        <div class="folder" onmouseup=${() => addImageToFolder(folder, currentImage)}>
+          <div class="folderName">${folder}</div>
+          <div class="folderImageCount">${Object.keys(folder).length}</div>
+        </div>
+    `)}
     </div>  
   `
 }

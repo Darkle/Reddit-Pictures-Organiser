@@ -25,12 +25,12 @@ function FoldersPage(showDialog){
     <main id="app" class="foldersPage">
       ${Nav()}
       <div class="foldersContainer">
-        ${getFolders().map(folder =>
-          html`<div class="folder">
-              <div class="folderName">${folder}</div>
-              <div class="folderImageCount">${Object.keys(folder).length}</div>
-            </div>`
-        )}
+        ${getFolders().map(folder => html`
+          <div class="folder">
+            <div class="folderName">${folder}</div>
+            <div class="folderImageCount">${Object.keys(folder).length}</div>
+          </div>
+      `)}
       </div>
       ${Dialog(showDialog)}
     </main>    
@@ -69,7 +69,7 @@ function Nav(){
 }
 
 function Dialog(showDialog){
-  // there is a bug atm with chrome and html prop autofocus when using url hash https://git.io/JvMxg
+  // There is a bug atm with chrome and html prop autofocus when using url hash/fragment https://crbug.com/1046357
   setTimeout(() => $('dialog input').focus(), halfSecondInMs)
   return html `
     <dialog open=${showDialog} on>

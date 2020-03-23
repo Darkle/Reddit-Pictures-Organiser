@@ -40,7 +40,7 @@ function ImageViewer(subreddit, timefilter, imageId) {
       <div class="imageContainer"  onclick=${toggleNav} 
           onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
           onswiperight=${event => handleSwipe(event, subreddit, timefilter)}>
-        <img id="currentImage" src="${(currentImage.src || currentImage.url)}" /> 
+        <img id="currentImage" src="${(currentImage.src || currentImage.url)}" style="${currentImage.edits}"/> 
       </div>
       ${FoldersContainer(currentImage)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
