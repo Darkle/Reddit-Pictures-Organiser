@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepare": "snowpack --include \"src/js/**/*.js\" --dest src/js/web_modules",
-    "dev": "cd src && browser-sync --server --port 8888 --watch --no-open --no-notify",
+    "dev": "cd src && browser-sync --server --port 8888 --watch --no-open --no-notify --https",
     "build": "run-s eslint test copy-to-dist minify-** size-check",
     "eslint": "eslint src/js/**/*.js",
     "test": "jest",

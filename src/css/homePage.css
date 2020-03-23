@@ -26,7 +26,6 @@ TODO: Change mouse icon for hover over things
   text-align: center;
 }
 .homePage .subreddit{
-  flex-grow: 1;
   color: #fff4e8;
   border: 1px solid #737373;
   padding: 10px;

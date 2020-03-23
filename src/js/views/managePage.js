@@ -124,7 +124,7 @@ function resetInputs(){
 }
 
 function toggleToast(toastSelector){
-  $(`.${toastSelector}`).classList.toggle('showToast')
+  $(`.${toastSelector}`)?.classList.toggle('showToast') // eslint-disable-line no-unused-expressions
   const threeSecondsInMS = 3000
   setTimeout(() => $(`.${toastSelector}`)?.classList.toggle('showToast'), threeSecondsInMS)
 }

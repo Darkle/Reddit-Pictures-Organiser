@@ -4,7 +4,7 @@ import htm from '../../web_modules/htm.js'
 import {store} from '../../store/store.js'
 import { $, setPageTitle } from '../../utils.js'
 import { router } from '../../router.js'
-import { Nav } from './Nav.js'
+import { Nav, toggleNav } from './Nav.js'
 
 const html = htm.bind(h)
 const amountImagesToCacheEachWay = 10
@@ -17,24 +17,31 @@ function loadImageViewer({subreddit, timefilter, imageid}) { // eslint-disable-l
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
-  const storedImageIndex = getStoredImageIndex(imageid)
+  const currentImageIndex = getCurrentImageIndex(imageid)
 
-  store.updateCurrentlyViewedImageIndex(storedImageIndex)
-  setUpInitialImageCaching(storedImageIndex)
+  store.updateCurrentlyViewedImageIndex(currentImageIndex)
+  setUpInitialImageCaching(currentImageIndex)
   addKeysEventLister(subreddit, timefilter)
+  updatePage(subreddit, timefilter, imageid)
+}
+
+function updatePage(subreddit, timefilter, imageid) {
   patch($('#app'), ImageViewer(subreddit, timefilter, imageid))
 }
 
 function ImageViewer(subreddit, timefilter, imageid) {
-  const storedImage = getStoredImage(imageid)
+  const currentImage = getCurrentImage(imageid)
+  const {permalink} = currentImage
 
   return html`
-    <main id="app" class="imageViewerPage" onclick=${showNav}>
-      ${Nav(subreddit, timefilter)}
-      <div class="imageContainer" onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
+    <main id="app" class="imageViewerPage">
+      ${Nav({subreddit, timefilter, imageid, permalink})}
+      <div class="imageContainer"  onclick=${toggleNav} 
+          onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
           onswiperight=${event => handleSwipe(event, subreddit, timefilter)}>
-        <img src="${(storedImage.src || storedImage.url)}" /> 
+        <img id="currentImage" src="${(currentImage.src || currentImage.url)}" /> 
       </div>
+      <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
     </main>    
     `  
 }
@@ -102,7 +109,7 @@ function changeImageDisplayed(subreddit, timefilter, right){ // eslint-disable-l
   if(!nextPrevImageToShow) return
 
   store.updateCurrentlyViewedImageIndex(nextPrevImageIndex)
-  patch($('#app'), ImageViewer(subreddit, timefilter, nextPrevImageToShow.id))  
+  updatePage(subreddit, timefilter, nextPrevImageToShow.id)
 }
 
 function addKeysEventLister(subreddit, timefilter){
@@ -119,19 +126,16 @@ function handleSwipe(event, subreddit, timefilter){
   changeImageDisplayed(subreddit, timefilter, right)
 }
 
-function showNav() {
-  $('.navWrapper').classList.toggle('showNav')
-  $('.navWrapper').classList.toggle('hideNav')
-}
-
-function getStoredImage(imageId) {
+function getCurrentImage(imageId) {
   return store.fetchedSubredditImages.find(({id}) => imageId === id)
 }
 
-function getStoredImageIndex(imageId) {
+function getCurrentImageIndex(imageId) {
   return store.fetchedSubredditImages.findIndex(({id}) => imageId === id)
 }
 
 export {
-  loadImageViewer
+  loadImageViewer,
+  toggleNav,
+  updatePage,
 }
