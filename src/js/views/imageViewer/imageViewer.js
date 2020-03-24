@@ -107,12 +107,12 @@ function setUpSwiper(startingImageIndex){
       grabCursor: true,
       keyboard: true,
       on: {
-        slideNextTransitionEnd: () => {
+        slideNextTransitionEnd() {
           const swiper = this // eslint-disable-line functional/no-this-expression
           const forward = true
           preloadImage(swiper, forward)
         },
-        slidePrevTransitionEnd: () => {
+        slidePrevTransitionEnd(){
           const swiper = this // eslint-disable-line functional/no-this-expression
           const forward = false
           preloadImage(swiper, forward)
