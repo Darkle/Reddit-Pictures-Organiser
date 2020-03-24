@@ -107,33 +107,30 @@ function setUpSwiper(startingImageIndex){
       grabCursor: true,
       keyboard: true,
       on: {
-        slideNextTransitionEnd: setImgSrcNext10th,
-        slidePrevTransitionEnd: setImgSrcPrev10th,
+        slideNextTransitionEnd: () => {
+          const swiper = this // eslint-disable-line functional/no-this-expression
+          const forward = true
+          preloadImage(swiper, forward)
+        },
+        slidePrevTransitionEnd: () => {
+          const swiper = this // eslint-disable-line functional/no-this-expression
+          const forward = false
+          preloadImage(swiper, forward)
+        },
       }
     }
   )
 }
 
-function setImgSrcNext10th(){
-  const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
-  const next10thIndex = currentImageIndex + amountImagesToCacheEachWay
-  const next10thImage = store.fetchedSubredditImages[next10thIndex]
+function preloadImage(swiper, forward){
+  const currentImageIndex = swiper.activeIndex 
+  const tenthIndex = forward ? (currentImageIndex + amountImagesToCacheEachWay) : (currentImageIndex - amountImagesToCacheEachWay)
+  const tenthImage = store.fetchedSubredditImages[tenthIndex]
 
-  if(!next10thImage) return
+  if(!tenthImage) return
   
-  const next10thImageSrc = next10thImage.src || next10thImage.url
-  $(`.swiper-slide img[data-index="${next10thIndex}"]`).setAttribute('src', next10thImageSrc)
-}
-
-function setImgSrcPrev10th(){
-  const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
-  const prev10thIndex = currentImageIndex - amountImagesToCacheEachWay
-  const prev10thImage = store.fetchedSubredditImages[prev10thIndex]
-  
-  if(!prev10thImage) return
-  
-  const prev10thImageSrc = prev10thImage.src || prev10thImage.url
-  $(`.swiper-slide img[data-index="${prev10thIndex}"]`).setAttribute('src', prev10thImageSrc)
+  const tenthImageSrc = tenthImage.src || tenthImage.url
+  $(`.swiper-slide img[data-index="${tenthIndex}"]`).setAttribute('src', tenthImageSrc)
 }
 
 function getCurrentImage(imageId) {
