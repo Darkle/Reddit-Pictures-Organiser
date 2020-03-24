@@ -5,15 +5,9 @@ import {logger} from '../logger.js'
 /* eslint-disable functional/immutable-data */
 const store = createStore ({
   folders : {},
-  subreddits: [
-  ],
-  favouriteSubreddits: [
-  ],
+  subreddits: [],
+  favouriteSubreddits: [],
   fetchedSubredditImages: [],
-  // currentlyViewedImageIndex: null,
-  // updateCurrentlyViewedImageIndex(index){
-  //   store.currentlyViewedImageIndex = index
-  // },
   createFolder(newFolder) {
     const folder = newFolder.toLowerCase()
     if(store.folders[folder]) return
