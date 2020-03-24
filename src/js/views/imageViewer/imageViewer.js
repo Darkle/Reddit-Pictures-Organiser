@@ -15,7 +15,7 @@ const amountImagesToCacheEachWay = 10
 function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
-  We dont have the images stored if the user reloads the page to the image viewer,
+  We dont have any images stored if the user reloads the page to the image viewer,
   so redirect to the subreddit page.
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
@@ -27,7 +27,6 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
 
 function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
   const currentImage = getCurrentImage(imageId)
-  
   const {permalink} = currentImage
 
   return html`
