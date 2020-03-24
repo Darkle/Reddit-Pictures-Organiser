@@ -3,14 +3,14 @@ import htm from '../../web_modules/htm.js'
 import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
-import { $, setPageTitle } from '../../utils.js'
+import { $, setPageTitle, curryRight } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
 import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 
 const html = htm.bind(h)
-const amountImagesToCacheEachWay = 10
+// const amountImagesToCacheEachWay = 10
 
 function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
@@ -46,14 +46,12 @@ function Images(startingImageIndex){
       <div class="swiper-wrapper">
         ${store.fetchedSubredditImages.map((image, index) => {
           const isStartingImage = index === startingImageIndex
+          const onload = curryRight(preloadImages)(startingImageIndex)
           const imageAttrs = {
             style: image.edits, 
             'data-index': index,
-            onload: event => handleImageLoadEvent(event, startingImageIndex),
-            onerror: event => {
-              event.target.setAttribute('src', imageLoadErrorIcon)
-              handleImageLoadEvent(event, startingImageIndex)
-            },
+            onload,
+            onerror: onload,
             ...isStartingImage ? {src: (image.src || image.url)} : {}
           }
           
@@ -63,33 +61,71 @@ function Images(startingImageIndex){
     </div>`
 }
 
-function handleImageLoadEvent(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
+function preloadImages(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
   const thisImageElement = event.target
   const thisImageElementsIndex = Number(thisImageElement.dataset.index)
   const isStartingImage = thisImageElementsIndex === startingImageIndex
 
   if(isStartingImage) setUpSwiper(startingImageIndex)
+  if(event.type === 'error') thisImageElement.setAttribute('src', imageLoadErrorIcon)
 
-  const previousImage = store.fetchedSubredditImages[thisImageElementsIndex - 1]
-  const nextImage = store.fetchedSubredditImages[thisImageElementsIndex + 1]
-
-  if(isStartingImage && previousImage || isInPrev10Range(thisImageElementsIndex, startingImageIndex) && previousImage){
+  if(thisImageElementsIndex > startingImageIndex){
+    const nextImage = store.fetchedSubredditImages[thisImageElementsIndex + 1]
+    if(!nextImage) return 
+    const imgSrc = nextImage.src || nextImage.url    
+    thisImageElement.parentNode.nextElementSibling.firstElementChild.setAttribute('src', imgSrc) // eslint-disable-line no-unused-expressions
+  }
+  if(thisImageElementsIndex < startingImageIndex){
+    const previousImage = store.fetchedSubredditImages[thisImageElementsIndex - 1]
+    if(!previousImage) return 
     const imgSrc = previousImage.src || previousImage.url
-    thisImageElement.parentNode.previousElementSibling.firstElementChild.setAttribute('src', imgSrc)
-  }
-  if(isStartingImage && nextImage || isInNext10Range(thisImageElementsIndex, startingImageIndex) && nextImage){
-    const imgSrc = nextImage.src || nextImage.url
-    thisImageElement.parentNode.nextElementSibling.firstElementChild.setAttribute('src', imgSrc)    
+    thisImageElement.parentNode.previousElementSibling.firstElementChild.setAttribute('src', imgSrc) // eslint-disable-line no-unused-expressions
   }
 }
+// function initialImagePreloads(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
+//   const thisImageElement = event.target
+//   const thisImageElementsIndex = Number(thisImageElement.dataset.index)
+//   const isStartingImage = thisImageElementsIndex === startingImageIndex
 
-function isInPrev10Range(imageIndex, startImageIndex){
-  return (imageIndex < startImageIndex) && imageIndex > (startImageIndex - amountImagesToCacheEachWay)
-}
+//   if(event.type === 'error') thisImageElement.setAttribute('src', imageLoadErrorIcon)
+//   if(isStartingImage) setUpSwiper(startingImageIndex)
 
-function isInNext10Range(imageIndex, startImageIndex){
-  return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + amountImagesToCacheEachWay)
-}
+//   const previousImage = store.fetchedSubredditImages[thisImageElementsIndex - 1]
+//   console.log('previousImage 1', previousImage)
+//   console.log('store.fetchedSubredditImages[thisImageElementsIndex]', store.fetchedSubredditImages[thisImageElementsIndex])
+//   const nextImage = store.fetchedSubredditImages[thisImageElementsIndex + 1]
+//   console.log('shouldPreloadPrevImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex) ', shouldPreloadPrevImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex))
+//   if(shouldPreloadPrevImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex)){
+//     const imgSrc = previousImage.src || previousImage.url
+//     thisImageElement.parentNode.previousElementSibling.firstElementChild.setAttribute('src', imgSrc)
+//     /*****
+//       We need the 'data-already-srced' check as forward images will check the one before themselves
+//     *****/
+//     thisImageElement.parentNode.previousElementSibling.firstElementChild.setAttribute('data-already-srced', true)
+//   }
+//   if(shouldPreloadNextImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex)){
+//     const imgSrc = nextImage.src || nextImage.url
+//     thisImageElement.parentNode.nextElementSibling.firstElementChild.setAttribute('src', imgSrc)    
+//     thisImageElement.parentNode.nextElementSibling.firstElementChild.setAttribute('data-already-srced', true)    
+//   }
+// }
+
+// function shouldPreloadNextImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex){
+//   return !!(isStartingImage && nextImage || isInNext10Range(thisImageElementsIndex, startingImageIndex) && nextImage)
+// }
+
+// function shouldPreloadPrevImage(isStartingImage, previousImage, thisImageElementsIndex, startingImageIndex){
+//   console.log('previousImage', previousImage)
+//   return !!(isStartingImage && previousImage || isInPrev10Range(thisImageElementsIndex, startingImageIndex) && previousImage)
+// }
+
+// function isInPrev10Range(imageIndex, startImageIndex){
+//   return (imageIndex < startImageIndex) && imageIndex > (startImageIndex - amountImagesToCacheEachWay)
+// }
+
+// function isInNext10Range(imageIndex, startImageIndex){
+//   return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + amountImagesToCacheEachWay)
+// }
 
 function setUpSwiper(startingImageIndex){
   new Swiper('.swiper-container',
@@ -97,35 +133,35 @@ function setUpSwiper(startingImageIndex){
       initialSlide:startingImageIndex, 
       grabCursor: true,
       keyboard: true,
-      on: {
-        slideNextTransitionEnd: setImgSrcNext10th,
-        slidePrevTransitionEnd: setImgSrcPrev10th,
-      }
+      // on: {
+      //   slideNextTransitionEnd: setImgSrcNext10th,
+      //   slidePrevTransitionEnd: setImgSrcPrev10th,
+      // }
     }
   )
 }
 
-function setImgSrcNext10th(){
-  const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
-  const next10thIndex = currentImageIndex + amountImagesToCacheEachWay
-  const next10thImage = store.fetchedSubredditImages[next10thIndex]
+// function setImgSrcNext10th(){
+//   const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
+//   const next10thIndex = currentImageIndex + amountImagesToCacheEachWay
+//   const next10thImage = store.fetchedSubredditImages[next10thIndex]
 
-  if(!next10thImage) return
+//   if(!next10thImage) return
   
-  const next10thImageSrc = next10thImage.src || next10thImage.url
-  $(`.swiper-slide img[data-index="${next10thIndex}"]`).setAttribute('src', next10thImageSrc)
-}
+//   const next10thImageSrc = next10thImage.src || next10thImage.url
+//   $(`.swiper-slide img[data-index="${next10thIndex}"]`).setAttribute('src', next10thImageSrc)
+// }
 
-function setImgSrcPrev10th(){
-  const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
-  const prev10thIndex = currentImageIndex - amountImagesToCacheEachWay
-  const prev10thImage = store.fetchedSubredditImages[prev10thIndex]
+// function setImgSrcPrev10th(){
+//   const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
+//   const prev10thIndex = currentImageIndex - amountImagesToCacheEachWay
+//   const prev10thImage = store.fetchedSubredditImages[prev10thIndex]
   
-  if(!prev10thImage) return
+//   if(!prev10thImage) return
   
-  const prev10thImageSrc = prev10thImage.src || prev10thImage.url
-  $(`.swiper-slide img[data-index="${prev10thIndex}"]`).setAttribute('src', prev10thImageSrc)
-}
+//   const prev10thImageSrc = prev10thImage.src || prev10thImage.url
+//   $(`.swiper-slide img[data-index="${prev10thIndex}"]`).setAttribute('src', prev10thImageSrc)
+// }
 
 function getCurrentImage(imageId) {
   return store.fetchedSubredditImages.find(({id}) => imageId === id)
