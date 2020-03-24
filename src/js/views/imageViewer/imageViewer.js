@@ -1,16 +1,18 @@
 import { h, patch } from '../../web_modules/superfine.js'
 import htm from '../../web_modules/htm.js'
+import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
-import { $, $$, setPageTitle } from '../../utils.js'
+import { $, setPageTitle } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
+import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 
 const html = htm.bind(h)
 const amountImagesToCacheEachWay = 10
 
-function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line max-statements, consistent-return
+function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
@@ -18,32 +20,20 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
-  const currentImageIndex = getCurrentImageIndex(imageId)
-  const initialRender = true
-
-  store.updateCurrentlyViewedImageIndex(currentImageIndex)
-  addKeysEventLister(subreddit, timefilter)
-  updatePage(subreddit, timefilter, imageId, currentImageIndex, initialRender)
+  const startingImageIndex = getCurrentImageIndex(imageId)
+  
+  patch($('#app'), ImageViewer(subreddit, timefilter, imageId, startingImageIndex))
 }
 
-function updatePage(subreddit, timefilter, imageId, currentImageIndex = null, initialRender = false) {
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageId, currentImageIndex, initialRender))
-}
-
-function ImageViewer(subreddit, timefilter, imageId, currentImageIndex, initialRender) {
+function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
   const currentImage = getCurrentImage(imageId)
+  
   const {permalink} = currentImage
 
   return html`
     <main id="app" class="imageViewerPage">
       ${Nav({subreddit, timefilter, imageId, permalink})}
-      <div class="imageContainer"  onclick=${toggleNav} 
-          onswipeleft=${event => handleSwipe(event, subreddit, timefilter)} 
-          onswiperight=${event => handleSwipe(event, subreddit, timefilter)}>
-        <img id="currentImage" src="${(currentImage.src || currentImage.url)}" 
-          style="${currentImage.edits}" onload=${() => setUpInitialImageCaching(currentImageIndex, initialRender)} 
-          onerror=${() => setUpInitialImageCaching(currentImageIndex, initialRender)}  /> 
-      </div>
+      ${Images(startingImageIndex)}
       ${FoldersContainer(currentImage)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
       <div class="toast notifyAddedImageToFolder">Image Added To Folder</div>
@@ -51,93 +41,93 @@ function ImageViewer(subreddit, timefilter, imageId, currentImageIndex, initialR
     `  
 }
 
-function setUpInitialImageCaching(currentImageIndex, initialRender){ // eslint-disable-line max-statements
-  if(!initialRender) return
-
-  removePreviousPreloaders()
-
-  const [prevTen, nextTen] = getInitialImagesToPreload(currentImageIndex)
-  const firstThreeOfNextTen = nextTen.slice(0, 3)
-  const lastSevenOfNextTen = nextTen.slice(3, 10) // eslint-disable-line no-magic-numbers
-  const finalGroupToPrefetch = [...lastSevenOfNextTen, ...prevTen]
-
-  /*****
-  Preload the first three to the right, then do the last 7 to the right and the previous 10
-  *****/
-  addCacheLinkToDom(createImgCacheLink(firstThreeOfNextTen[0]))
-  addCacheLinkToDom(createImgCacheLink(firstThreeOfNextTen[1]))
-  addCacheLinkToDom(createImgCacheLink(firstThreeOfNextTen[2], finalGroupToPrefetch))
+function Images(startingImageIndex){ // eslint-disable-line max-lines-per-function
+  return html`<div>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+      ${store.fetchedSubredditImages.map((image, index) => {
+          const isStartingImage = index === startingImageIndex
+          const imageAttrs = {
+            style: image.edits, 
+            'data-index': index,
+            onload: event => handleImageLoadEvent(event, startingImageIndex),
+            onerror: event => {
+              event.target.setAttribute('src', imageLoadErrorIcon)
+              handleImageLoadEvent(event, startingImageIndex)
+            }
+          }
+          return h('div', {class: 'swiper-slide'},[
+            isStartingImage ? h('img', {src: (image.src || image.url), ...imageAttrs}) 
+              : h('img', imageAttrs)
+          ])
+        })}      
+      </div>
+    </div>
+  `
 }
 
-function removePreviousPreloaders(){
-  $$('.imagePreloaders').forEach(elem => elem.remove())
-}
+function handleImageLoadEvent(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
+  const thisImageElement = event.target
+  const thisImageElementsIndex = Number(thisImageElement.dataset.index)
+  const isStartingImage = thisImageElementsIndex === startingImageIndex
 
-function addCacheLinkToDom(link){
-  document.head.appendChild(link)
-}
+  if(isStartingImage) setUpSwiper(startingImageIndex)
 
-function createImgCacheLink(image, finalGroupToPrefetch = []){
-  const link = document.createElement('link')
-  link.setAttribute('rel', 'preload')
-  link.setAttribute('href', (image.url || image.src))
-  link.setAttribute('as', 'image')
-  link.setAttribute('class', 'imagePreloaders')
-  link.addEventListener('error', () => {
-    finalGroupToPrefetch.forEach(img => addCacheLinkToDom(createImgCacheLink(img)))
-  })
-  link.addEventListener('load', () => {
-    finalGroupToPrefetch.forEach(img => addCacheLinkToDom(createImgCacheLink(img)))
-  })  
-  return link
-}
+  const previousImage = store.fetchedSubredditImages[thisImageElementsIndex - 1]
+  const nextImage = store.fetchedSubredditImages[thisImageElementsIndex + 1]
 
-function getInitialImagesToPreload(storedImageIndex){
-  const subImages = store.fetchedSubredditImages
-  const prev10 = Array.from({length:amountImagesToCacheEachWay})
-                  .map((_, index) => subImages[storedImageIndex - (index + 1)])
-                  .filter(Boolean)
-  const next10 = Array.from({length:amountImagesToCacheEachWay})
-                  .map((_, index) => subImages[storedImageIndex + (index + 1)])
-                  .filter(Boolean)
-  
-  return [prev10, next10]
-}
-
-function addPrefetchLinkToDom(imageToPrefetch){
-  document.head.appendChild(createImgCacheLink(imageToPrefetch))
-  $('.imagePreloaders').remove()
-}
-
-function changeImageDisplayed(subreddit, timefilter, right){ // eslint-disable-line complexity, max-statements
-  const currentImageIndex = store.currentlyViewedImageIndex
-  const nextPrevCacheIndex = right ? currentImageIndex + amountImagesToCacheEachWay + 1 : currentImageIndex - amountImagesToCacheEachWay - 1
-  const nextPrevImageIndex = right ? currentImageIndex + 1 : currentImageIndex - 1
-  const imageToPrefetch = store.fetchedSubredditImages[nextPrevCacheIndex]
-  
-  if(imageToPrefetch){
-    addPrefetchLinkToDom(imageToPrefetch)
+  if(isStartingImage && previousImage || isInPrev10Range(thisImageElementsIndex, startingImageIndex) && previousImage){
+    const imgSrc = previousImage.src || previousImage.url
+    thisImageElement.parentNode.previousElementSibling.firstElementChild.setAttribute('src', imgSrc)
   }
-
-  const nextPrevImageToShow = store.fetchedSubredditImages[nextPrevImageIndex]
-  if(!nextPrevImageToShow) return
-
-  store.updateCurrentlyViewedImageIndex(nextPrevImageIndex)
-  updatePage(subreddit, timefilter, nextPrevImageToShow.id)
+  if(isStartingImage && nextImage || isInNext10Range(thisImageElementsIndex, startingImageIndex) && nextImage){
+    const imgSrc = nextImage.src || nextImage.url
+    thisImageElement.parentNode.nextElementSibling.firstElementChild.setAttribute('src', imgSrc)    
+  }
 }
 
-function addKeysEventLister(subreddit, timefilter){
-  document.addEventListener('keyup', ({key}) => {
-    if(key !== 'ArrowRight' && key !== 'ArrowLeft') return
-    const right = key === 'ArrowRight'
-    changeImageDisplayed(subreddit, timefilter, right)
-  })
+function isInPrev10Range(imageIndex, startImageIndex){
+  return (imageIndex < startImageIndex) && imageIndex > (startImageIndex - amountImagesToCacheEachWay)
 }
 
-function handleSwipe(event, subreddit, timefilter){
-  //swipeleft moves us right
-  const right = event.type === 'swipeleft'
-  changeImageDisplayed(subreddit, timefilter, right)
+function isInNext10Range(imageIndex, startImageIndex){
+  return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + amountImagesToCacheEachWay)
+}
+
+function setUpSwiper(startingImageIndex){
+  new Swiper('.swiper-container',
+    {
+      initialSlide:startingImageIndex, 
+      grabCursor: true,
+      keyboard: true,
+      on: {
+        slideNextTransitionEnd: setImgSrcNext10th,
+        slidePrevTransitionEnd: setImgSrcPrev10th,
+      }
+    }
+  )
+}
+
+function setImgSrcNext10th(){
+  const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
+  const next10thIndex = currentImageIndex + amountImagesToCacheEachWay
+  const next10thImage = store.fetchedSubredditImages[next10thIndex]
+
+  if(!next10thImage) return
+  
+  const next10thImageSrc = next10thImage.src || next10thImage.url
+  $(`.swiper-slide img[data-index="${next10thIndex}"]`).setAttribute('src', next10thImageSrc)
+}
+
+function setImgSrcPrev10th(){
+  const currentImageIndex = this.activeIndex // eslint-disable-line functional/no-this-expression
+  const prev10thIndex = currentImageIndex - amountImagesToCacheEachWay
+  const prev10thImage = store.fetchedSubredditImages[prev10thIndex]
+  
+  if(!prev10thImage) return
+  
+  const prev10thImageSrc = prev10thImage.src || prev10thImage.url
+  $(`.swiper-slide img[data-index="${prev10thIndex}"]`).setAttribute('src', prev10thImageSrc)
 }
 
 function getCurrentImage(imageId) {
@@ -151,5 +141,4 @@ function getCurrentImageIndex(imageId) {
 export {
   loadImageViewer,
   toggleNav,
-  updatePage,
 }

@@ -10,10 +10,10 @@ const store = createStore ({
   favouriteSubreddits: [
   ],
   fetchedSubredditImages: [],
-  currentlyViewedImageIndex: null,
-  updateCurrentlyViewedImageIndex(index){
-    store.currentlyViewedImageIndex = index
-  },
+  // currentlyViewedImageIndex: null,
+  // updateCurrentlyViewedImageIndex(index){
+  //   store.currentlyViewedImageIndex = index
+  // },
   createFolder(newFolder) {
     const folder = newFolder.toLowerCase()
     if(store.folders[folder]) return
@@ -28,7 +28,7 @@ const store = createStore ({
   },  
   addImageToFolder(folder, image) {
     const {permalink, thumbnail, src, url, id} = image
-    
+
     if(store.folders[folder][permalink]) return
     
     const edits = image.edits ? image.edits : ''

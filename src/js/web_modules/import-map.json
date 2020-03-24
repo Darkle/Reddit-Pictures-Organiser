@@ -6,6 +6,6 @@
     "p-limit": "./p-limit.js",
     "store": "./store.js",
     "superfine": "./superfine.js",
-    "tocca": "./tocca.js"
+    "swiper": "./swiper.js"
   }
 }
