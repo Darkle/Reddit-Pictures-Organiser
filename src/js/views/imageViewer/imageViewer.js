@@ -46,12 +46,12 @@ function Images(startingImageIndex){
       <div class="swiper-wrapper">
         ${store.fetchedSubredditImages.map((image, index) => {
           const isStartingImage = index === startingImageIndex
-          const onload = curryRight(initialImagePreloads)(startingImageIndex)
+          const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
           const imageAttrs = {
             style: image.edits, 
             'data-index': index,
-            onload,
-            onerror: onload,
+            onload: onImgLoad,
+            onerror: onImgLoad,
             ...isStartingImage ? {src: (image.src || image.url)} : {}
           }
           
@@ -60,7 +60,10 @@ function Images(startingImageIndex){
       </div>
     </div>`
 }
-
+/*****
+So on page load we walk left and right of the current image that is being displayed 
+and load the next and previous images till we've loaded 10 next and 10 previous.
+*****/
 function initialImagePreloads(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
   const thisImageElement = event.target
   const thisImageElementsIndex = Number(thisImageElement.dataset.index)
@@ -82,14 +85,14 @@ function initialImagePreloads(event, startingImageIndex){ // eslint-disable-line
   }
 }
 
-function shouldPreloadNextImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex){
-  if(!nextImage) return false
-  return (isStartingImage || isInNext10Range(thisImageElementsIndex, startingImageIndex))
-}
-
 function shouldPreloadPrevImage(isStartingImage, previousImage, thisImageElementsIndex, startingImageIndex){
   if(!previousImage) return false
   return (isStartingImage || isInPrev10Range(thisImageElementsIndex, startingImageIndex))
+}
+
+function shouldPreloadNextImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex){
+  if(!nextImage) return false
+  return (isStartingImage || isInNext10Range(thisImageElementsIndex, startingImageIndex))
 }
 
 function isInPrev10Range(imageIndex, startImageIndex){
