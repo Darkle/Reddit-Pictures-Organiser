@@ -10,7 +10,7 @@ import { FoldersContainer } from './FoldersContainer.js'
 import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 
 const html = htm.bind(h)
-const amountImagesToCacheEachWay = 10
+const numImgsToCache = 10
 
 function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
@@ -93,11 +93,11 @@ function shouldPreloadPrevImage(isStartingImage, previousImage, thisImageElement
 }
 
 function isInPrev10Range(imageIndex, startImageIndex){
-  return (imageIndex < startImageIndex) && imageIndex > (startImageIndex - amountImagesToCacheEachWay)
+  return (imageIndex < startImageIndex) && imageIndex > (startImageIndex - numImgsToCache)
 }
 
 function isInNext10Range(imageIndex, startImageIndex){
-  return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + amountImagesToCacheEachWay)
+  return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + numImgsToCache)
 }
 
 function setUpSwiper(startingImageIndex){
@@ -124,7 +124,7 @@ function setUpSwiper(startingImageIndex){
 
 function preloadImage(swiper, forward){
   const currentImageIndex = swiper.activeIndex 
-  const tenthIndex = forward ? (currentImageIndex + amountImagesToCacheEachWay) : (currentImageIndex - amountImagesToCacheEachWay)
+  const tenthIndex = forward ? (currentImageIndex + numImgsToCache) : (currentImageIndex - numImgsToCache)
   const tenthImage = store.fetchedSubredditImages[tenthIndex]
 
   if(!tenthImage) return
