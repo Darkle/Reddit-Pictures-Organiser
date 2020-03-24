@@ -3,7 +3,7 @@ import { store } from '../../store/store.js'
 import { logger } from '../../logger.js'
 import { UserNavigatedAway, NoMoreImagesToFetch } from '../../Errors.js'
 
-function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-disable-line max-lines-per-function
+function fetchSubImages({subreddit, lastImgFetched, timefilter}) {
   if(subPageNavigatedAway(timefilter)) return Promise.reject(new UserNavigatedAway())
   logger.debug(generateFetchUrl(subreddit, lastImgFetched, timefilter))
 
@@ -13,7 +13,6 @@ function fetchSubImages({subreddit, lastImgFetched, timefilter}) { // eslint-dis
 
       const images = resp.data?.children ?? []
       const processedImages = processImages(images)
-
       logger.debug(processedImages)
       /*****
         We only reject to stop any subsequent fetches for this particular sub if its part of the favmix. We dont

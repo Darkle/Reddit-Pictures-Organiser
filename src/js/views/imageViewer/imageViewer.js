@@ -41,11 +41,11 @@ function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
     `  
 }
 
-function Images(startingImageIndex){ // eslint-disable-line max-lines-per-function
+function Images(startingImageIndex){
   return html`<div>
     <div class="swiper-container">
       <div class="swiper-wrapper">
-      ${store.fetchedSubredditImages.map((image, index) => {
+        ${store.fetchedSubredditImages.map((image, index) => {
           const isStartingImage = index === startingImageIndex
           const imageAttrs = {
             style: image.edits, 
@@ -54,16 +54,14 @@ function Images(startingImageIndex){ // eslint-disable-line max-lines-per-functi
             onerror: event => {
               event.target.setAttribute('src', imageLoadErrorIcon)
               handleImageLoadEvent(event, startingImageIndex)
-            }
+            },
+            ...isStartingImage ? {src: (image.src || image.url)} : {}
           }
-          return h('div', {class: 'swiper-slide'},[
-            isStartingImage ? h('img', {src: (image.src || image.url), ...imageAttrs}) 
-              : h('img', imageAttrs)
-          ])
+          
+          return h('div', {class:'swiper-slide'}, [h('img', imageAttrs)])
         })}      
       </div>
-    </div>
-  `
+    </div>`
 }
 
 function handleImageLoadEvent(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
