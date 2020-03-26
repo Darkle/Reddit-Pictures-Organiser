@@ -16,7 +16,7 @@ function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-li
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
   
-  setPageTitle(`RPO - Image Viewer`)
+  setPageTitle(`RPO - Image Editor`)
   addCropperStylesheet()
   patch($('#app'), ImageEditor(subreddit, timefilter, imageId))
 }

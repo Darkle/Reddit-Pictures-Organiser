@@ -3,10 +3,9 @@ import htm from '../../web_modules/htm.js'
 
 import { router } from '../../router.js'
 import { $ } from '../../utils.js'
-import { store } from '../../store/store.js'
+import { cropImage, rotateLeft, rotateRight, saveEdits, cancelEditsOnNavAway} from './editing.js'
 
 const html = htm.bind(h)
-let edits = '' // eslint-disable-line functional/no-let
 
 function Nav(subreddit, timefilter, imageId){ // eslint-disable-line max-lines-per-function
   return html`
@@ -38,31 +37,10 @@ function Nav(subreddit, timefilter, imageId){ // eslint-disable-line max-lines-p
 }
 
 function handleBackNavigation(subreddit, timefilter, imageId){
+  cancelEditsOnNavAway()
   router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${imageId}`)
-  // superfine patch is severely broken
+  // ⬇ superfine patch is severely broken ⬇
   requestAnimationFrame(() => $('#app').firstChild.nextSibling.remove())
-}
-
-function cropImage(){
-  // edits +=
-}
-
-function rotateLeft(){
-  // edits +=
-}
-
-function rotateRight(){
-  // edits +=
-}
-
-function saveEdits(subreddit, timefilter, imageId){
-  const currentImage = getCurrentImage(imageId)
-  store.addEditsToImage(currentImage, edits)
-  router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${imageId}`)
-}
-
-function getCurrentImage(imageId) {
-  return store.fetchedSubredditImages.find(({id}) => imageId === id)
 }
 
 export {
