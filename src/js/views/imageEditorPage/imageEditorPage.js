@@ -24,11 +24,11 @@ function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-li
 function ImageEditor(subreddit, timefilter, imageId){
   const image = getCurrentImage(imageId)
   const imageSrc = image.src || image.url
-  
+
   return html`
     <main id="app" class="imageEditorPage">
-      ${Nav(subreddit, timefilter, imageId)}
-      <img src=${imageSrc} class="imageToBeEdited" />
+        ${Nav(subreddit, timefilter, imageId)}
+        <img src=${imageSrc} class="imageToBeEdited" />
     </main>   
   `
 }
