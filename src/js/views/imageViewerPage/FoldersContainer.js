@@ -42,8 +42,7 @@ function addImageToFolder(folder){
 function addImageToNewFolder({target: input, key}, subreddit, timefilter){
   const newFolderName = input.value.trim()
   
-  if(key !== 'Enter') return
-  if(!newFolderName.length) return
+  if(key !== 'Enter' || !newFolderName.length) return
 
   const {id:imageId} = store.fetchedSubredditImages[swiper.activeIndex]
   
