@@ -1,18 +1,24 @@
 import { store } from '../../store/store.js'
 import { router } from '../../router.js'
 
+import {updateImageEditPage} from './imageEditorPage.js'
+
 let edits = '' // eslint-disable-line functional/no-let
+let rotateAngle = 0 // eslint-disable-line functional/no-let
 
-function cropImage(){
+function cropImage(subreddit, timefilter, imageId){
   // edits +=
+  updateImageEditPage(subreddit, timefilter, imageId)
 }
 
-function rotateLeft(){
+function rotateLeft(subreddit, timefilter, imageId){
   // edits +=
+  updateImageEditPage(subreddit, timefilter, imageId)
 }
 
-function rotateRight(){
+function rotateRight(subreddit, timefilter, imageId){
   // edits +=
+  updateImageEditPage(subreddit, timefilter, imageId)
 }
 
 function saveEdits(subreddit, timefilter, imageId){
@@ -27,6 +33,7 @@ function getCurrentImage(imageId) {
 
 function cancelEditsOnNavAway(){
   edits = ''
+  rotateAngle = 0
 }
 
 export{

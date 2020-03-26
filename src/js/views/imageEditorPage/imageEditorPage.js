@@ -18,7 +18,7 @@ function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-li
   
   setPageTitle(`RPO - Image Editor`)
   addCropperStylesheet()
-  patch($('#app'), ImageEditor(subreddit, timefilter, imageId))
+  updateImageEditPage(subreddit, timefilter, imageId)
 }
 
 function ImageEditor(subreddit, timefilter, imageId){
@@ -31,6 +31,10 @@ function ImageEditor(subreddit, timefilter, imageId){
       <img src=${imageSrc} class="imageToBeEdited" />
     </main>   
   `
+}
+
+function updateImageEditPage(subreddit, timefilter, imageId){
+  patch($('#app'), ImageEditor(subreddit, timefilter, imageId))
 }
 
 function addCropperStylesheet(){
@@ -47,5 +51,6 @@ function getCurrentImage(imageId) {
 }
 
 export {
-  loadImageEditor
+  loadImageEditor,
+  updateImageEditPage,
 }

@@ -15,16 +15,16 @@ function Nav(subreddit, timefilter, imageId){ // eslint-disable-line max-lines-p
         <path d="M15 18l-6-6 6-6"></path>
         </svg> 
       </div>      
-      <div class="crop" onmouseup=${cropImage}>
+      <div class="crop" onmouseup=${() => cropImage(subreddit, timefilter, imageId)}>
         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
           <path fill="#fff4e8" d="M7,17V1H5V5H1V7H5V17A2,2 0 0,0 7,19H17V23H19V19H23V17M17,15H19V7C19,5.89 18.1,5 17,5H9V7H17V15Z" />
         </svg>        
       </div>
-      <div class="rotateLeft" onmouseup=${rotateLeft}>
+      <div class="rotateLeft" onmouseup=${() => rotateLeft(subreddit, timefilter, imageId)}>
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"/>
       </svg>       
     </div>
-    <div class="rotateRight" onmouseup=${rotateRight}>
+    <div class="rotateRight" onmouseup=${() => rotateRight(subreddit, timefilter, imageId)}>
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"/>
       </svg>      
     </div>

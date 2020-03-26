@@ -10,15 +10,16 @@ function SubredditImagesContainer(subreddit, timefilter){
   return html`
     <div class="subredditImagesContainer">
       ${store.fetchedSubredditImages.map(image =>
-        html`
-          <div class="thumbnail-container">
-            <img class="thumbnail" src="${getThumbnailSrc(image)}" data-id="${image.id}"  
-              data-permalink="${image.permalink}"
-              onmouseup="${() => 
-                router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`)
-              }"></img>
-          </div>
-        `
+        h('div', {class:'thumbnail-container'}, [
+          h('img', {
+            class: 'thumbnail',
+            src: getThumbnailSrc(image),
+            style: image.edits,
+            'data-id': image.id,
+            'data-permalink': image.permalink,
+            onmouseup: () => router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`),
+          })
+        ])
       )} 
     </div>  
   `
