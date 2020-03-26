@@ -24,17 +24,6 @@ const logger = {
       ...args
     ) 
   },
-  debugForProxys(...args){
-    if(window.location.port === '') return
-    
-    const processedArgs = args.map(proxy => JSON.parse(JSON.stringify(proxy)))
-
-    console.info(
-      `%c${getOriginalCallingFunctionDetails()} :`, 
-      'color: #AAAAAA;', '\n', 
-      ...processedArgs
-    ) 
-  }  
 }
 
 //https://stackoverflow.com/a/57023880/2785644

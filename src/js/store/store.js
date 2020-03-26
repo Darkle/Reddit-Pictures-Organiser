@@ -1,9 +1,8 @@
-import {store as createStore} from '../web_modules/store.js'
 import localforage from '../web_modules/localforage.js'
 
 import {logger} from '../logger.js'
 /* eslint-disable functional/immutable-data */
-const store = createStore ({
+const store = {
   folders : {},
   subreddits: [],
   favouriteSubreddits: [],
@@ -84,7 +83,7 @@ const store = createStore ({
   removeStoredFetchedSubredditImages() {
     store.fetchedSubredditImages = []
   },
-})
+}
 
 function constructEdits(currentEdits, newEdits){
   if(!currentEdits) return newEdits
@@ -93,7 +92,7 @@ function constructEdits(currentEdits, newEdits){
 }
 
 function saveToLocalForage(key, value) {
-  localforage.setItem(key, JSON.stringify(value)).catch(logger.error)
+  localforage.setItem(key, value).catch(logger.error)
 }
 
 export {

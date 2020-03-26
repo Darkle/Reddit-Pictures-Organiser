@@ -11,7 +11,7 @@ import { ImageViewer, swiper } from './imageViewerPage.js'
 const html = htm.bind(h)
 
 function FoldersContainer(subreddit, timefilter){
-  logger.debugForProxys(store.folders)
+  logger.debug(store.folders)
 
   return html`
     <div class="foldersContainer">
@@ -36,7 +36,7 @@ function addImageToFolder(folder){
   store.addImageToFolder(folder, store.fetchedSubredditImages[swiper.activeIndex])
   toggleFolders()
   showFolderToast()
-  logger.debugForProxys(store.folders)
+  logger.debug(store.folders)
 }
 
 function addImageToNewFolder({target: input, key}, subreddit, timefilter){

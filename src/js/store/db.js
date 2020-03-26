@@ -8,7 +8,7 @@ localforage.config({
 
 function init(){
   return localforage.iterate((value, key) => {
-    store[key] = JSON.parse(value)
+    store[key] = value // eslint-disable-line functional/immutable-data
   })
 }
 export {
