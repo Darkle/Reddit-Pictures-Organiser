@@ -14,7 +14,6 @@ function SubredditImagesContainer(subreddit, timefilter){
           h('img', {
             class: 'thumbnail',
             src: getThumbnailSrc(image),
-            style: image.edits,
             'data-id': image.id,
             'data-permalink': image.permalink,
             onmouseup: () => router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`),
