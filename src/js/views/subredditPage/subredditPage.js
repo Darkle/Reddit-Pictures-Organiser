@@ -9,7 +9,7 @@ import {$, setPageTitle, isFavMixPage} from '../../utils.js'
 import { NoMoreImagesToFetch } from '../../Errors.js'
 import { PlaceHolder } from './PlaceHolder.js'
 import { Nav } from './Nav.js'
-import { SubredditsContainer } from './SubredditsContainer.js'
+import { SubredditImagesContainer } from './SubredditImagesContainer.js'
 import { Toast } from './Toast.js'
 
 const html = htm.bind(h)
@@ -66,7 +66,7 @@ function SubredditPage({showLoadingPlaceholder, timefilter, subreddit}) {
   return html`
     <main id="app" class="subredditPage">
       ${Nav(timefilter, subreddit)}
-      ${SubredditsContainer(subreddit, timefilter)}
+      ${SubredditImagesContainer(subreddit, timefilter)}
       ${!isFavMixPage() && Toast(subreddit)}
     </main>    
     `

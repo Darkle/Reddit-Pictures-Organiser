@@ -6,7 +6,7 @@ import { router } from '../../router.js'
 
 const html = htm.bind(h)
 
-function SubredditsContainer(subreddit, timefilter){
+function SubredditImagesContainer(subreddit, timefilter){
   return html`
     <div class="subredditImagesContainer">
       ${store.fetchedSubredditImages.map(image =>
@@ -36,5 +36,5 @@ function getThumbnailSrc ({thumbnail, src, url}) {
 }
 
 export {
-  SubredditsContainer
+  SubredditImagesContainer
 }

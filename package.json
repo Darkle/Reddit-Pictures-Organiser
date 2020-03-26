@@ -15,6 +15,7 @@
     "size-check": "bundlesize -f \"dist/js/**/*.js\" -s 20kB"
   },
   "dependencies": {
+    "croppr": "^2.3.1",
     "htm": "^3.0.3",
     "localforage": "^1.7.3",
     "navigo": "^7.1.2",

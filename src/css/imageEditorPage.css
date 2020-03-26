@@ -1,0 +1,26 @@
+.imageEditorPage{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: black;
+
+}
+.imageEditorPage nav{
+  display: flex;
+  border-bottom: 2px solid #737373;
+  width: 100%;
+  background-color: #595959;
+}
+.imageEditorPage nav > div{
+  overflow: hidden;
+  height: 22px;
+  flex-grow: 1;
+  padding: 10px;
+  color: #fff4e8;
+  text-align: center;
+  border-right: 2px solid #737373;
+}
+.imageEditorPage .imageToBeEdited {
+  max-height: 100vh;
+  max-width: 100vw;
+}

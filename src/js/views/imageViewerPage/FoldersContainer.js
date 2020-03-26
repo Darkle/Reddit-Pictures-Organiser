@@ -6,7 +6,7 @@ import { toggleFolders } from './Nav.js'
 import { store } from '../../store/store.js'
 import { $ } from '../../utils.js'
 import { logger } from '../../logger.js'
-import { ImageViewer, swiper } from './imageViewer.js'
+import { ImageViewer, swiper } from './imageViewerPage.js'
 
 const html = htm.bind(h)
 

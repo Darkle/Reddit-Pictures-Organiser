@@ -4,10 +4,12 @@ import htm from '../../web_modules/htm.js'
 import { router } from '../../router.js'
 import { logger } from '../../logger.js'
 import { $ } from '../../utils.js'
+import { swiper } from './imageViewerPage.js'
+import { store } from '../../store/store.js'
 
 const html = htm.bind(h)
 
-function Nav({subreddit, timefilter, imageId, permalink}){ // eslint-disable-line max-lines-per-function
+function Nav({subreddit, timefilter, permalink}){ // eslint-disable-line max-lines-per-function
   return html`
     <nav class="navWrapper">
       <div class="back" onmouseup=${() => handleBackNavigation(subreddit, timefilter)}>
@@ -15,7 +17,7 @@ function Nav({subreddit, timefilter, imageId, permalink}){ // eslint-disable-lin
         <path d="M15 18l-6-6 6-6"></path>
         </svg> 
       </div>
-      <div class="edit" onmouseup=${() => console.log(imageId)}>
+      <div class="edit" onmouseup=${() => handleEditNavigation(subreddit, timefilter)}>
         <svg width="22" height="22" viewBox="0 0 24 24">
             <path fill="currentColor" d="M22.7 14.3L21.7 15.3L19.7 13.3L20.7 12.3C20.8 12.2 20.9 12.1 21.1 12.1C21.2 12.1 21.4 12.2 21.5 12.3L22.8 13.6C22.9 13.8 22.9 14.1 22.7 14.3M13 19.9V22H15.1L21.2 15.9L19.2 13.9L13 19.9M11.21 15.83L9.25 13.47L6.5 17H13.12L15.66 14.55L13.96 12.29L11.21 15.83M11 19.9V19.05L11.05 19H5V5H19V11.31L21 9.38V5C21 3.9 20.11 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.11 3.9 21 5 21H11V19.9Z" />
         </svg>        
@@ -36,6 +38,11 @@ function Nav({subreddit, timefilter, imageId, permalink}){ // eslint-disable-lin
       </div>
     </nav>  
     `
+}
+
+function handleEditNavigation(subreddit, timefilter){
+  const {id:currentImageId} = store.fetchedSubredditImages[swiper.activeIndex]
+  router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/edit/${currentImageId}`)
 }
 
 function handleBackNavigation(subreddit, timefilter){

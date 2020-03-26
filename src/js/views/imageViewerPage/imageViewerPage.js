@@ -31,7 +31,7 @@ function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
 
   return html`
     <main id="app" class="imageViewerPage">
-      ${Nav({subreddit, timefilter, imageId, permalink})}
+      ${Nav({subreddit, timefilter, permalink})}
       ${Images(startingImageIndex)}
       ${FoldersContainer(subreddit, timefilter)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>

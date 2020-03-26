@@ -33,42 +33,12 @@
 .imageViewerPage .navWrapper > div{
   overflow: hidden;
   height: 22px;
-}
-.imageViewerPage .navWrapper .back{
   flex-grow: 1;
   padding: 10px;
   color: #fff4e8;
   text-align: center;
   border-right: 2px solid #737373;
 }
-.imageViewerPage .navWrapper .edit{
-  flex-grow: 1;
-  padding: 10px;
-  color: #fff4e8;
-  text-align: center;
-  border-right: 2px solid #737373;
-}
-.imageViewerPage .navWrapper .share{
-  flex-grow: 1;
-  padding: 10px;
-  color: #fff4e8;
-  text-align: center;
-  border-right: 2px solid #737373;
-}
-.imageViewerPage .navWrapper .addToFolder{
-  flex-grow: 1;
-  padding: 10px;
-  color: #fff4e8;
-  text-align: center;
-  border-right: 2px solid #737373;
-}
-/* .imageViewerPage .imageContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-} */
 .imageViewerPage .swiper-container {
   height: 100vh;
   width: 100vw;
