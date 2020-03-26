@@ -119,3 +119,25 @@
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
+.managePage .welcomeToast {
+  text-align: center;
+}
+.managePage .welcomeToast p{
+  margin:0;
+}
+.managePage .welcomeToast p:nth-of-type(1){
+  margin-bottom: 10px;
+}
+.managePage .showWelcomeToast{
+  visibility: visible;
+  animation: managePageWelcomeToastFadeIn 0.5s, managePageWelcomeToastFadeOut 0.6s 9.5s;
+}
+@keyframes managePageWelcomeToastFadeIn {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes managePageWelcomeToastFadeOut {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}

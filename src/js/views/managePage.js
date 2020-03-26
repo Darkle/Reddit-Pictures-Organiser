@@ -6,10 +6,13 @@ import { router } from '../router.js'
 import { $, setPageTitle } from '../utils.js'
 
 const html = htm.bind(h)
+const threeSecondsInMS = 3000
+const tenSecondsInMS = 10000
 
 function loadManagePage() {
   setPageTitle('RPO - Manage Subs')
   patch($('#app'), ManagePage(store.subreddits))
+  showWelcomeMessageIfNew()
 }
 
 function ManagePage(subreddits, showConfirmRemoveSubDialog = false){
@@ -74,6 +77,10 @@ function Toast(){
   return html`
     <div class="toast subAddedToast">Subreddit Added</div>
     <div class="toast subRemovedToast">Subreddit Removed</div>  
+    <div class="toast welcomeToast">
+      <p>Welcome To Reddit Pictures Organiser</p>
+      <p>Please Add A Subreddit (e.g. Cats) To Get Started</p>
+    </div>  
   `
 }
 
@@ -120,10 +127,15 @@ function resetInputs(){
   $('#removeSubredditInput').value = '' // eslint-disable-line functional/immutable-data
 }
 
-function toggleToast(toastSelector){
-  $(`.${toastSelector}`)?.classList.toggle('showToast') // eslint-disable-line no-unused-expressions
-  const threeSecondsInMS = 3000
-  setTimeout(() => $(`.${toastSelector}`)?.classList.toggle('showToast'), threeSecondsInMS)
+function toggleToast(toastSelector, classToToggle = 'showToast', delay = threeSecondsInMS){
+  $(`.${toastSelector}`)?.classList.toggle(classToToggle) // eslint-disable-line no-unused-expressions
+  setTimeout(() => $(`.${toastSelector}`)?.classList.toggle(classToToggle), delay)
+}
+
+function showWelcomeMessageIfNew(){
+  if(localStorage.getItem('returningUser')) return
+  localStorage.setItem('returningUser', 'yes')
+  toggleToast('welcomeToast', 'showWelcomeToast', tenSecondsInMS)
 }
 
 export {

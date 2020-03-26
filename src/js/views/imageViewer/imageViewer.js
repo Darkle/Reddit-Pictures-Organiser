@@ -42,7 +42,7 @@ function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
 
 function Images(startingImageIndex){
   return html`<div>
-    <div class="swiper-container">
+    <div class="swiper-container" onmouseup=${toggleNav}>
       <div class="swiper-wrapper">
         ${store.fetchedSubredditImages.map((image, index) => {
           const isStartingImage = index === startingImageIndex
@@ -146,5 +146,4 @@ function getCurrentImageIndex(imageId) {
 
 export {
   loadImageViewer,
-  toggleNav,
 }
