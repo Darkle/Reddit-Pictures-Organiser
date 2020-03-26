@@ -16,8 +16,7 @@ function rotateRight(){
 }
 
 function saveEdits(subreddit, timefilter, imageId){
-  const currentImage = getCurrentImage(imageId)
-  store.addEditsToImage(currentImage, edits)
+  store.addEditsToImage(getCurrentImage(imageId), edits)
   edits = ''
   router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${imageId}`)
 }

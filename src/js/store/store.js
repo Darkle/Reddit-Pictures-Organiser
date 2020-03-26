@@ -62,14 +62,17 @@ const store = createStore ({
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
-  addEditsToImage(image, edits, folder = null){
+  addEditsToImage(image, newEdits, folder = null){
     const {permalink, id} = image
     if(folder){
-      store.folders[folder][permalink].edits = edits
+      const currentEdits = store.folders[folder][permalink].edits
+      store.folders[folder][permalink].edits = constructEdits(currentEdits, newEdits)
       return
     }
     store.fetchedSubredditImages = store.fetchedSubredditImages.map(img => {
-      if(img.id === id) img.edits = edits
+      if(img.id === id){
+        img.edits = constructEdits(img.edits, newEdits)
+      }
       return img
     })
   },
@@ -82,6 +85,12 @@ const store = createStore ({
     store.fetchedSubredditImages = []
   },
 })
+
+function constructEdits(currentEdits, newEdits){
+  if(!currentEdits) return newEdits
+  const edits = currentEdits + ';' + newEdits + ';' // eslint-disable-line operator-assignment
+  return edits
+}
 
 function saveToLocalForage(key, value) {
   localforage.setItem(key, JSON.stringify(value)).catch(logger.error)
