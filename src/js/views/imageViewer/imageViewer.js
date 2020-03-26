@@ -111,20 +111,22 @@ function setUpSwiper(startingImageIndex){
       keyboard: true,
       on: {
         slideNextTransitionEnd() {
+          const swiperObj = this // eslint-disable-line functional/no-this-expression
           const forward = true
-          preloadImage(forward)
+          preloadImage(swiperObj, forward)
         },
         slidePrevTransitionEnd(){
+          const swiperObj = this // eslint-disable-line functional/no-this-expression
           const forward = false
-          preloadImage(forward)
+          preloadImage(swiperObj, forward)
         },
       }
     }
   )
 }
 
-function preloadImage(forward){
-  const currentImageIndex = swiper.activeIndex 
+function preloadImage(swiperObj, forward){
+  const currentImageIndex = swiperObj.activeIndex 
   const tenthIndex = forward ? (currentImageIndex + numImgsToCache) : (currentImageIndex - numImgsToCache)
   const tenthImage = store.fetchedSubredditImages[tenthIndex]
 
