@@ -83,8 +83,11 @@ function Dialog(showDialog){
 }
 
 function createNewFolder(event){
-  if(event.key && event.key !== 'Enter') return
+  if(event.key !== 'Enter') return
   const newFolderName = $('dialog input').value.trim()
+
+  if(!newFolderName.length) return
+  
   store.createFolder(newFolderName)
   logger.debug(`${newFolderName} folder created`)
   updatePage()

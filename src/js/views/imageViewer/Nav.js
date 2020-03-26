@@ -77,7 +77,7 @@ function toggleNav() {
 }
 
 function toggleFolders(){
-  $('.imageContainer').classList.toggle('hide')
+  $('.swiper-container').classList.toggle('hide')
   $('.foldersContainer').classList.toggle('show')
 }
 

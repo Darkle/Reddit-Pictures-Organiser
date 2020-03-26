@@ -11,6 +11,7 @@ import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 
 const html = htm.bind(h)
 const numImgsToCache = 10
+let swiper = null // eslint-disable-line functional/no-let
 
 function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
@@ -26,14 +27,13 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
 }
 
 function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
-  const currentImage = getCurrentImage(imageId)
-  const {permalink} = currentImage
+  const {permalink} = getCurrentImage(imageId)
 
   return html`
     <main id="app" class="imageViewerPage">
       ${Nav({subreddit, timefilter, imageId, permalink})}
       ${Images(startingImageIndex)}
-      ${FoldersContainer(currentImage)}
+      ${FoldersContainer(subreddit, timefilter)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
       <div class="toast notifyAddedImageToFolder">Image Added To Folder</div>
     </main>    
@@ -104,28 +104,26 @@ function isInNext10Range(imageIndex, startImageIndex){
 }
 
 function setUpSwiper(startingImageIndex){
-  new Swiper('.swiper-container',
+  swiper = new Swiper('.swiper-container',
     {
       initialSlide:startingImageIndex, 
       grabCursor: true,
       keyboard: true,
       on: {
         slideNextTransitionEnd() {
-          const swiper = this // eslint-disable-line functional/no-this-expression
           const forward = true
-          preloadImage(swiper, forward)
+          preloadImage(forward)
         },
         slidePrevTransitionEnd(){
-          const swiper = this // eslint-disable-line functional/no-this-expression
           const forward = false
-          preloadImage(swiper, forward)
+          preloadImage(forward)
         },
       }
     }
   )
 }
 
-function preloadImage(swiper, forward){
+function preloadImage(forward){
   const currentImageIndex = swiper.activeIndex 
   const tenthIndex = forward ? (currentImageIndex + numImgsToCache) : (currentImageIndex - numImgsToCache)
   const tenthImage = store.fetchedSubredditImages[tenthIndex]
@@ -146,4 +144,6 @@ function getCurrentImageIndex(imageId) {
 
 export {
   loadImageViewer,
+  swiper,
+  ImageViewer,
 }
