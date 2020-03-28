@@ -1,13 +1,10 @@
-import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
+import {html, render} from '../../web_modules/lit-html.js'
 
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 
 import { $, setPageTitle } from '../../utils.js'
 import {Nav} from './Nav.js'
-
-const html = htm.bind(h)
 
 function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-line consistent-return
   /*****
@@ -34,7 +31,7 @@ function ImageEditor(subreddit, timefilter, imageId){
 }
 
 function updateImageEditPage(subreddit, timefilter, imageId){
-  patch($('#app'), ImageEditor(subreddit, timefilter, imageId))
+  render(ImageEditor(subreddit, timefilter, imageId), $('#app'))
 }
 
 function addCropperStylesheet(){

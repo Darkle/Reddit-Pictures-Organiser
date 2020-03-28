@@ -1,10 +1,9 @@
 {
   "imports": {
-    "htm": "./htm.js",
+    "lit-html": "./lit-html.js",
     "localforage": "./localforage.js",
     "navigo": "./navigo.js",
     "p-limit": "./p-limit.js",
-    "superfine": "./superfine.js",
     "swiper": "./swiper.js"
   }
 }

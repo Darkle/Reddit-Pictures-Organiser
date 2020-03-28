@@ -1,12 +1,9 @@
-import { h } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
+import {html} from '../../web_modules/lit-html.js'
 
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 import {$, isFavSub, isFavMixPage} from '../../utils.js'
 import { updatePage } from './subredditPage.js'
-
-const html = htm.bind(h)
 
 function Nav(timefilter, subreddit){
   const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
@@ -16,16 +13,16 @@ function Nav(timefilter, subreddit){
 
   return html`
     <nav class="navWrapper">
-      <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
-      ${!isFavMixPage() && html`<div class="favStarContainer" onmouseup=${() => toggleSubAsFavourite(subreddit, timefilter)}>
+      <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
+      ${!isFavMixPage() && html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(subreddit, timefilter)}>
           ${FavStar(subreddit)}
         </div>`
       }
-      <div class="latest ${isCurrentFilter(timefilter, 'latest')}" onmouseup=${subFilterNavigate}>latest</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'week')}" onmouseup=${subFilterNavigate}>week</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'month')}" onmouseup=${subFilterNavigate}>month</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'year')}" onmouseup=${subFilterNavigate}>year</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'all')}" onmouseup=${subFilterNavigate}>all</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'month')}" @mouseup=${subFilterNavigate}>month</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'year')}" @mouseup=${subFilterNavigate}>year</div>
+      <div class="latest ${isCurrentFilter(timefilter, 'all')}" @mouseup=${subFilterNavigate}>all</div>
     </nav>  
     `
 }

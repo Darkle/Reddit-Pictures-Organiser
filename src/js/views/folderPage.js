@@ -1,14 +1,11 @@
-import { h, patch } from '../web_modules/superfine.js'
-import htm from '../web_modules/htm.js'
+import {html, render} from '../web_modules/lit-html.js'
 
 import {$, setPageTitle} from '../utils.js'
-
-const html = htm.bind(h)
 
 function loadFolderPage({folder}){
   setPageTitle(`RPO - Folders`)
   const showDialog = false
-  patch($('#app'), FolderPage(folder, showDialog))
+  render( FolderPage(folder, showDialog), $('#app'))
 }
 
 function FolderPage(folder, showDialog){

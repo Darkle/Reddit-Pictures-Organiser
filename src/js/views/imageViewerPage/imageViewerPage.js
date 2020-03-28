@@ -1,5 +1,4 @@
-import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
+import {html, render} from '../../web_modules/lit-html.js'
 import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
@@ -9,7 +8,6 @@ import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
 import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 
-const html = htm.bind(h)
 const numImgsToCache = 10
 let swiper = null // eslint-disable-line functional/no-let
 
@@ -23,7 +21,7 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
  
   const startingImageIndex = getCurrentImageIndex(imageId)
   
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageId, startingImageIndex))
+  render(ImageViewer(subreddit, timefilter, imageId, startingImageIndex), $('#app'))
 }
 
 function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
@@ -39,23 +37,17 @@ function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
     </main>    
     `  
 }
-
 function Images(startingImageIndex){
   return html`<div>
-    <div class="swiper-container" onmouseup=${toggleNav}>
+    <div class="swiper-container" @mouseup=${toggleNav}>
       <div class="swiper-wrapper">
         ${store.fetchedSubredditImages.map((image, index) => {
           const isStartingImage = index === startingImageIndex
           const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
-          const imageAttrs = {
-            style: image.edits, 
-            'data-index': index,
-            onload: onImgLoad,
-            onerror: onImgLoad,
-            ...isStartingImage ? {src: (image.src || image.url)} : {}
-          }
-          
-          return h('div', {class:'swiper-slide'}, [h('img', imageAttrs)])
+          return html`<div class="swiper-slide">
+            <img ?style=${image.edits} data-index=${index} 
+              @load=${onImgLoad} @error=${onImgLoad} src=${isStartingImage ? (image.src || image.url) : ''} />
+          </div>`
         })}      
       </div>
     </div>`

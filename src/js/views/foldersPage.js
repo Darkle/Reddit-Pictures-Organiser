@@ -1,12 +1,10 @@
-import { h, patch } from '../web_modules/superfine.js'
-import htm from '../web_modules/htm.js'
+import {html, render} from '../web_modules/lit-html.js'
 
 import {$, setPageTitle} from '../utils.js'
 import { router } from '../router.js'
 import {store} from '../store/store.js'
 import { logger } from '../logger.js'
 
-const html = htm.bind(h)
 const halfSecondInMs = 500
 
 function loadFoldersPage(){
@@ -15,7 +13,7 @@ function loadFoldersPage(){
 }
 
 function updatePage(showDialog = false){
-  patch($('#app'), FoldersPage(showDialog))
+  render(FoldersPage(showDialog), $('#app'))
 }
 
 function FoldersPage(showDialog){
@@ -56,9 +54,9 @@ function PlaceHolder() {
 function Nav(){
   return html `
     <nav class="navWrapper">
-      <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
-      <div class="folders" onmouseup=${ () => router.navigate('/')}>Folders</div>
-      <div class="createFolderIcon" onmousedown="${showCreateFolderDialog}" >
+      <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
+      <div class="folders" @mouseup=${ () => router.navigate('/')}>Folders</div>
+      <div class="createFolderIcon" @mousedown=${showCreateFolderDialog} >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -73,10 +71,10 @@ function Dialog(showDialog){
   setTimeout(() => $('dialog input').focus(), halfSecondInMs)
   return html `
     <dialog open=${showDialog} on>
-      <input onkeyup=${createNewFolder}></input>
+      <input @keyup=${createNewFolder}></input>
       <menu>
-        <button onmouseup=${() => updatePage()}>Cancel</button>
-        <button onmouseup=${createNewFolder}>Create Folder</button>
+        <button @mouseup=${() => updatePage()}>Cancel</button>
+        <button @mouseup=${createNewFolder}>Create Folder</button>
       </menu>
     </dialog>  
   `

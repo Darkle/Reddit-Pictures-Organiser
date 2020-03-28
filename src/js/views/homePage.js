@@ -1,25 +1,22 @@
-import { h, patch } from '../web_modules/superfine.js'
-import htm from '../web_modules/htm.js'
+import {html, render} from '../web_modules/lit-html.js'
 
 import {store} from '../store/store.js'
 import { $, setPageTitle, isFavSub } from '../utils.js'
 import { router } from '../router.js'
 
-const html = htm.bind(h)
-
 function loadHomePage() {
   setPageTitle('RPO')
-  patch($('#app'), HomePage(store))
+  render(HomePage(store), $('#app'))
 }
 
 function HomePage(state) {
   return html`
     <main id="app" class="homePage">
       <nav class="navWrapper">
-        <div class="folders" onmouseup=${ () => router.navigate('/folders')}>Folders</div>
-        <div class="manage" onmouseup=${ () => router.navigate('/manage')}>Manage</div>
+        <div class="folders" @mouseup=${ () => router.navigate('/folders')}>Folders</div>
+        <div class="manage" @mouseup=${ () => router.navigate('/manage')}>Manage</div>
       </nav>
-      <div class="subreddit" onmouseup=${() => router.navigate(`/sub/favmix/latest`)}>
+      <div class="subreddit" @mouseup=${() => router.navigate(`/sub/favmix/latest`)}>
         <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 14 16' fill='currentColor'  class='favouriteStar'>
           <path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path>
         </svg>
@@ -33,7 +30,7 @@ function HomePage(state) {
 function listOfSubreddits(subs) {
   return !subs.length ? [null] : subs.map(subName =>
     html`
-      <div class="subreddit" onmouseup=${() => router.navigate(`/sub/${subName}/latest`)}>
+      <div class="subreddit" @mouseup=${() => router.navigate(`/sub/${subName}/latest`)}>
         ${showStarIfFavouritedSub(subName)}
         <div>${subName}</div>
       </div>

@@ -1,22 +1,20 @@
-import { h } from '../../web_modules/superfine.js'
+import {html} from '../../web_modules/lit-html.js'
 
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 
 function SubredditImagesContainer(subreddit, timefilter){
-  return h('div', {class:'subredditImagesContainer'}, [
-    store.fetchedSubredditImages.map(image =>
-      h('div', {class:'thumbnail-container'}, [
-        h('img', {
-          class: 'thumbnail',
-          src: getThumbnailSrc(image),
-          'data-id': image.id,
-          'data-permalink': image.permalink,
-          onmouseup: () => router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`),
-        })
-      ])
-    )
-  ])
+  return html`
+    <div class="subredditImagesContainer">
+      ${store.fetchedSubredditImages.map(image =>
+        html`
+          <div class="thumbnail-container">
+            <img class="thumbnail" src=${getThumbnailSrc(image)} data-id=${image.id} data-permalink=${image.permalink} @mouseup=${ () => router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`)} />
+          </div>
+        `
+      )}
+    </div>
+  `
 }
 
 /*****

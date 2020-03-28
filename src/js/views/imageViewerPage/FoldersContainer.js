@@ -1,5 +1,4 @@
-import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
+import {html, render} from '../../web_modules/lit-html.js'
 
 import { getFolders } from '../foldersPage.js'
 import { toggleFolders } from './Nav.js'
@@ -8,8 +7,6 @@ import { $ } from '../../utils.js'
 import { logger } from '../../logger.js'
 import { ImageViewer, swiper } from './imageViewerPage.js'
 
-const html = htm.bind(h)
-
 function FoldersContainer(subreddit, timefilter){
   logger.debug(store.folders)
 
@@ -17,12 +14,12 @@ function FoldersContainer(subreddit, timefilter){
     <div class="foldersContainer">
       <div class="addToNewFolderContainer">
         <label for="addImageToNewFolder">Add To New Folder</label>
-        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" onkeyup=${event => addImageToNewFolder(event, subreddit, timefilter)} autocomplete="off"/>
+        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" @keyup=${event => addImageToNewFolder(event, subreddit, timefilter)} autocomplete="off"/>
       </div>
       <label>Add To Existing Folder</label>
       <div class="existingFoldersContainer">
         ${getFolders().map(folder => html`
-            <div class="folder" onmouseup=${() => addImageToFolder(folder)}>
+            <div class="folder" @mouseup=${() => addImageToFolder(folder)}>
               <div class="folderName">${folder}</div>
               <div class="folderImageCount">${Object.keys(folder).length}</div>
             </div>
@@ -48,7 +45,7 @@ function addImageToNewFolder({target: input, key}, subreddit, timefilter){
   
   store.createFolder(newFolderName)
   addImageToFolder(newFolderName)
-  patch($('#app'), ImageViewer(subreddit, timefilter, imageId, swiper.activeIndex))
+  render(ImageViewer(subreddit, timefilter, imageId, swiper.activeIndex), $('#app'))
 }
 
 function showFolderToast(){

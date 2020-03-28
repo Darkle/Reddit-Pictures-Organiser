@@ -1,9 +1,6 @@
-import { h } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
+import {html} from '../../web_modules/lit-html.js'
 
 import { Nav } from './Nav.js'
-
-const html = htm.bind(h)
 
 function PlaceHolder(timefilter, showLoadingPlaceholder, subreddit){
   return html`
