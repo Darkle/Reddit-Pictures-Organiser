@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: [
     'functional',
+    'lit',
   ],
   rules: {
     'array-callback-return': 'error',
@@ -41,6 +42,17 @@ module.exports = {
     'functional/no-promise-reject': 'off',    
     'guard-for-in': 'error',
     'handle-callback-err': 'error',
+    'lit/attribute-value-entities': 'error',
+    'lit/binding-positions': 'error',
+    'lit/no-duplicate-template-bindings': 'error',
+    'lit/no-invalid-escape-sequences': 'error',
+    'lit/no-invalid-html': 'error',
+    'lit/no-legacy-template-syntax': 'error',
+    'lit/no-private-properties': 'error',
+    'lit/no-property-change-update': 'error',
+    'lit/no-template-bind': 'error',
+    'lit/no-useless-template-literals': 'error',
+    'lit/no-value-attribute': 'error',
     'max-depth': ['error', 3],
     'max-lines-per-function': [
       'error',

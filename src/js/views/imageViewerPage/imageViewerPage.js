@@ -20,7 +20,7 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
   const startingImageIndex = getCurrentImageIndex(imageId)
-  
+  // @ts-ignore
   render(ImageViewer(subreddit, timefilter, imageId, startingImageIndex), $('#app'))
 }
 
@@ -37,6 +37,7 @@ function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
     </main>    
     `  
 }
+
 function Images(startingImageIndex){
   return html`<div>
     <div class="swiper-container" @mouseup=${toggleNav}>
@@ -45,7 +46,7 @@ function Images(startingImageIndex){
           const isStartingImage = index === startingImageIndex
           const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
           return html`<div class="swiper-slide">
-            <img ?style=${image.edits} data-index=${index} 
+            <img ?style=${image.edits} data-index=${index}
               @load=${onImgLoad} @error=${onImgLoad} src=${isStartingImage ? (image.src || image.url) : ''} />
           </div>`
         })}      

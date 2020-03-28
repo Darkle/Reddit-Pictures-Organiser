@@ -31,6 +31,7 @@ function ImageEditor(subreddit, timefilter, imageId){
 }
 
 function updateImageEditPage(subreddit, timefilter, imageId){
+  // @ts-ignore
   render(ImageEditor(subreddit, timefilter, imageId), $('#app'))
 }
 

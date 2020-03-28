@@ -13,6 +13,7 @@ function loadFoldersPage(){
 }
 
 function updatePage(showDialog = false){
+  // @ts-ignore
   render(FoldersPage(showDialog), $('#app'))
 }
 

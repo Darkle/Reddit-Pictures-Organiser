@@ -24,6 +24,7 @@ function loadSubredditPage({subreddit, timefilter}) {
 }
 
 function updatePage({showLoadingPlaceholder = false, timefilter, subreddit}) {
+  // @ts-ignore
   render(SubredditPage({showLoadingPlaceholder, timefilter, subreddit}), $('#app'))
 }
 

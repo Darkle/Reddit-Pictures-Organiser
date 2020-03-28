@@ -6,6 +6,7 @@ import { router } from '../router.js'
 
 function loadHomePage() {
   setPageTitle('RPO')
+  // @ts-ignore
   render(HomePage(store), $('#app'))
 }
 

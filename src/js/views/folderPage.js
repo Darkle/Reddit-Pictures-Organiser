@@ -5,7 +5,8 @@ import {$, setPageTitle} from '../utils.js'
 function loadFolderPage({folder}){
   setPageTitle(`RPO - Folders`)
   const showDialog = false
-  render( FolderPage(folder, showDialog), $('#app'))
+  // @ts-ignore
+  render(FolderPage(folder, showDialog), $('#app'))
 }
 
 function FolderPage(folder, showDialog){
