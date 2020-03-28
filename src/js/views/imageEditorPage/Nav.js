@@ -36,8 +36,6 @@ function Nav(subreddit, timefilter, imageId){ // eslint-disable-line max-lines-p
 function handleBackNavigation(subreddit, timefilter, imageId){
   cancelEditsOnNavAway()
   router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${imageId}`)
-  // superfine patch is severely broken, so need to remove a wayward text node.
-  setTimeout(() => $('#app').firstChild.nextSibling.remove(), 50) // eslint-disable-line no-magic-numbers
 }
 
 export {

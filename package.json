@@ -16,14 +16,11 @@
   },
   "dependencies": {
     "croppr": "^2.3.1",
-    "htm": "^3.0.3",
     "lit-html": "^1.2.1",
     "localforage": "^1.7.3",
     "navigo": "^7.1.2",
     "p-limit": "^2.2.2",
-    "superfine": "^7.0.0",
-    "swiper": "^5.3.6",
-    "yo-yo": "^1.4.1"
+    "swiper": "^5.3.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
