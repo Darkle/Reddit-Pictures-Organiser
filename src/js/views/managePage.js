@@ -62,7 +62,7 @@ function RemoveSub(subreddits, showConfirmRemoveSubDialog) {
 
 function Dialog(showConfirmRemoveSubDialog){
   return html `
-    <dialog open=${showConfirmRemoveSubDialog} >
+    <dialog ?open=${showConfirmRemoveSubDialog} >
       <label>Are you sure you want to remove the ${$('#removeSubredditInput')?.value} subreddit?</label>
       <menu>
         <button @mouseup=${cancelRemove}>Cancel</button>

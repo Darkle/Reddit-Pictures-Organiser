@@ -14,9 +14,10 @@ function Nav(timefilter, subreddit){
   return html`
     <nav class="navWrapper">
       <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
-      ${!isFavMixPage() && html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(subreddit, timefilter)}>
-          ${FavStar(subreddit)}
-        </div>`
+      ${!isFavMixPage() ?
+          html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(subreddit, timefilter)}>
+            ${FavStar(subreddit)}
+          </div>` : ''
       }
       <div class="latest ${isCurrentFilter(timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
       <div class="latest ${isCurrentFilter(timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>

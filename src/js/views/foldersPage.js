@@ -71,7 +71,7 @@ function Dialog(showDialog){
   // There is a bug atm with chrome and html prop autofocus when using url hash/fragment https://crbug.com/1046357
   setTimeout(() => $('dialog input').focus(), halfSecondInMs)
   return html `
-    <dialog open=${showDialog} on>
+    <dialog ?open=${showDialog} on>
       <input @keyup=${createNewFolder}></input>
       <menu>
         <button @mouseup=${() => updatePage()}>Cancel</button>
