@@ -1,14 +1,14 @@
 import {html} from '../../web_modules/lit-html.js'
 
 import { router } from '../../router.js'
-import { $ } from '../../utils.js'
 import { cropImage, rotateLeft, rotateRight, saveEdits, cancelEditsOnNavAway} from './editing.js'
 
 function Nav(subreddit, timefilter, imageId){ // eslint-disable-line max-lines-per-function
   return html`
     <nav >
       <div class="back" @mouseup=${() => handleBackNavigation(subreddit, timefilter, imageId)}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" 
+            fill="none" stroke="#fff4e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         <path d="M15 18l-6-6 6-6"></path>
         </svg> 
       </div>      
@@ -18,15 +18,21 @@ function Nav(subreddit, timefilter, imageId){ // eslint-disable-line max-lines-p
         </svg>        
       </div>
       <div class="rotateLeft" @mouseup=${() => rotateLeft(subreddit, timefilter, imageId)}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" 
+            fill="none" stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"/>
       </svg>       
     </div>
     <div class="rotateRight" @mouseup=${() => rotateRight(subreddit, timefilter, imageId)}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"/>
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" 
+          fill="none" stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"/>
       </svg>      
     </div>
     <div class="save" @mouseup=${saveEdits}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline>
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" 
+          fill="none" stroke="#fff4e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
       </svg>       
     </div>
     </nav>  

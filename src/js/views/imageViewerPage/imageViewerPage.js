@@ -45,9 +45,17 @@ function Images(startingImageIndex){
         ${store.fetchedSubredditImages.map((image, index) => {
           const isStartingImage = index === startingImageIndex
           const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
+          /*****
+            For some reason the lit-html conditional bind to attributes doesnt work for `src` - maybe cause its not a boolean attribute?
+            So gonna conditionaly render the whole img element.
+            https://lit-html.polymer-project.org/guide/writing-templates#bind-to-attributes
+          *****/
           return html`<div class="swiper-slide">
-            <img ?style=${image.edits} data-index=${index}
-              @load=${onImgLoad} @error=${onImgLoad} src=${isStartingImage ? (image.src || image.url) : ''} />
+            ${isStartingImage ? 
+              html`<img ?style=${image.edits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} src=${(image.src || image.url)} />`
+              : html`<img ?style=${image.edits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} />`
+            }
+
           </div>`
         })}      
       </div>
