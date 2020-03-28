@@ -1,5 +1,4 @@
 import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
 import pLimit from '../../web_modules/p-limit.js'
 
 import {store} from '../../store/store.js'
@@ -12,7 +11,6 @@ import { Nav } from './Nav.js'
 import { SubredditImagesContainer } from './SubredditImagesContainer.js'
 import { Toast } from './Toast.js'
 
-const html = htm.bind(h)
 const queue = pLimit(2)
 
 function loadSubredditPage({subreddit, timefilter}) {
@@ -63,13 +61,11 @@ function SubredditPage({showLoadingPlaceholder, timefilter, subreddit}) {
   if(showLoadingPlaceholder) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
   if(!store.fetchedSubredditImages.length) return PlaceHolder(timefilter, showLoadingPlaceholder, subreddit)
   
-  return html`
-    <main id="app" class="subredditPage">
-      ${Nav(timefilter, subreddit)}
-      ${SubredditImagesContainer(subreddit, timefilter)}
-      ${!isFavMixPage() && Toast(subreddit)}
-    </main>    
-    `
+  return h('main', {id:'app', class: 'subredditPage'},[
+    Nav(timefilter, subreddit),
+    SubredditImagesContainer(subreddit, timefilter),
+    !isFavMixPage() && Toast(subreddit),
+  ])
 }
 
 export {

@@ -1,13 +1,10 @@
 import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
 
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 
 import { $, setPageTitle } from '../../utils.js'
 import {Nav} from './Nav.js'
-
-const html = htm.bind(h)
 
 function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-line consistent-return
   /*****
@@ -25,12 +22,11 @@ function ImageEditor(subreddit, timefilter, imageId){
   const image = getCurrentImage(imageId)
   const imageSrc = image.src || image.url
 
-  return html`
-    <main id="app" class="imageEditorPage">
-        ${Nav(subreddit, timefilter, imageId)}
-        <img src=${imageSrc} class="imageToBeEdited" />
-    </main>   
-  `
+  return h('main', {id: 'app', class: 'imageEditorPage'}, [
+    Nav(subreddit, timefilter, imageId),
+    h('img', {src: imageSrc, class: 'imageToBeEdited'})
+  ])
+
 }
 
 function updateImageEditPage(subreddit, timefilter, imageId){

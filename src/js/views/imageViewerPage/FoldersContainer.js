@@ -1,5 +1,4 @@
 import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
 
 import { getFolders } from '../foldersPage.js'
 import { toggleFolders } from './Nav.js'
@@ -8,28 +7,30 @@ import { $ } from '../../utils.js'
 import { logger } from '../../logger.js'
 import { ImageViewer, swiper } from './imageViewerPage.js'
 
-const html = htm.bind(h)
-
-function FoldersContainer(subreddit, timefilter){
+function FoldersContainer(subreddit, timefilter){ // eslint-disable-line max-lines-per-function
   logger.debug(store.folders)
 
-  return html`
-    <div class="foldersContainer">
-      <div class="addToNewFolderContainer">
-        <label for="addImageToNewFolder">Add To New Folder</label>
-        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" onkeyup=${event => addImageToNewFolder(event, subreddit, timefilter)} autocomplete="off"/>
-      </div>
-      <label>Add To Existing Folder</label>
-      <div class="existingFoldersContainer">
-        ${getFolders().map(folder => html`
-            <div class="folder" onmouseup=${() => addImageToFolder(folder)}>
-              <div class="folderName">${folder}</div>
-              <div class="folderImageCount">${Object.keys(folder).length}</div>
-            </div>
-        `)}
-      </div>
-    </div>  
-  `
+  return h('div', {class: 'foldersContainer'}, [
+    h('div', {class: 'addToNewFolderContainer'}, [
+      h('label', {for: 'addImageToNewFolder'}, 'Add To New Folder'),
+      h('input', {
+        type: 'text', 
+        id: 'addImageToNewFolder', 
+        class: 'addImageToNewFolder', 
+        autocomplete: 'off',
+        onkeyup: event => addImageToNewFolder(event, subreddit, timefilter)
+      }, 'Add To New Folder'),
+    ]),
+    h('label', {}, 'Add To Existing Folder'),
+    h('div', {class: 'existingFoldersContainer'}, [
+      getFolders().map(folder => 
+        h('div', {class: 'folder', onmouseup: () => addImageToFolder(folder)}, [
+          h('div', {class: 'folderName'}, folder),
+          h('div', {class: 'folderImageCount'}, Object.keys(folder).length),
+        ]),
+      )
+    ])
+  ])
 }
 
 function addImageToFolder(folder){

@@ -1,12 +1,10 @@
 import { h, patch } from '../web_modules/superfine.js'
-import htm from '../web_modules/htm.js'
 
 import {$, setPageTitle} from '../utils.js'
 import { router } from '../router.js'
 import {store} from '../store/store.js'
 import { logger } from '../logger.js'
 
-const html = htm.bind(h)
 const halfSecondInMs = 500
 
 function loadFoldersPage(){
@@ -21,65 +19,65 @@ function updatePage(showDialog = false){
 function FoldersPage(showDialog){
   if(noFolders()) return PlaceHolder()
 
-  return html`
-    <main id="app" class="foldersPage">
-      ${Nav()}
-      <div class="foldersContainer">
-        ${getFolders().map(folder => html`
-          <div class="folder">
-            <div class="folderName">${folder}</div>
-            <div class="folderImageCount">${Object.keys(folder).length}</div>
-          </div>
-      `)}
-      </div>
-      ${Dialog(showDialog)}
-    </main>    
-    `  
+  return h('main', {class: 'foldersPage'}, [
+    Nav(),
+    h('div', {class: 'foldersContainer'}, 
+      getFolders().map(folder => 
+        h('div', {class:'folder'}, [
+          h('div', {class: 'folderName'}, folder),
+          h('div', {class: 'folderImageCount'} , Object.keys(folder).length)
+        ])  
+      )
+    ),
+    Dialog(showDialog)
+  ])
 }
 
 function PlaceHolder() {
-  return html`
-    <main id="app" class="foldersPage">
-      ${Nav()}
-      <div class="foldersPlaceholder">
-        <p>
-          No folders yet. Use Plus icon top right to create a folder. 
-        </p>
-        <p>
-          You can also create folders from the image viewer page. Just tap on an image and options will show up for you to add an image to a folder or create a new folder to add the image to.
-        </p>
-      </div>
-    </main>    
-    `    
+  return h('main', {class: 'foldersPage'}, [
+    Nav(),
+    h('div', {class: 'foldersPlaceholder'}, 
+      h('p', 'No folders yet. Use Plus icon top right to create a folder.'),
+      h('p', 'You can also create folders from the image viewer page. Just tap on an image and options will show up for you to add an image to a folder or create a new folder to add the image to.'),
+    ),
+  ])
 }
 
-function Nav(){
-  return html `
-    <nav class="navWrapper">
-      <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
-      <div class="folders" onmouseup=${ () => router.navigate('/')}>Folders</div>
-      <div class="createFolderIcon" onmousedown="${showCreateFolderDialog}" >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-      </div>
-    </nav> 
-  `
+function Nav(){ // eslint-disable-line max-lines-per-function
+  return h('nav', {class: 'navWrapper'}, [
+    h('div', {class:'home', onmouseup: () => router.navigate('/')}, 'Home'),
+    h('div', {class:'folders'}, 'Folders'),
+    h('div', {class:'createFolderIcon', onmousedown: showCreateFolderDialog}, [
+      h('svg', {
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: 24, // eslint-disable-line no-magic-numbers
+        height: 24, // eslint-disable-line no-magic-numbers
+        viewBox: '0 0 24 24',
+        fill: 'none',
+        stroke: 'currentColor',
+        'stroke-width': 2,
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round',
+        class: 'feather feather-plus',
+      }, [
+        h('line', {x1: 12, y1: 5, x2: 12, y2: 19}), // eslint-disable-line no-magic-numbers
+        h('line', {x1: 5, y1: 12, x2: 19, y2: 12}), // eslint-disable-line no-magic-numbers
+      ])
+    ]),
+  ])
+
 }
 
 function Dialog(showDialog){
   // There is a bug atm with chrome and html prop autofocus when using url hash/fragment https://crbug.com/1046357
   setTimeout(() => $('dialog input').focus(), halfSecondInMs)
-  return html `
-    <dialog open=${showDialog} on>
-      <input onkeyup=${createNewFolder}></input>
-      <menu>
-        <button onmouseup=${() => updatePage()}>Cancel</button>
-        <button onmouseup=${createNewFolder}>Create Folder</button>
-      </menu>
-    </dialog>  
-  `
+  return h('dialog', {open: showDialog, on: true}, [
+    h('input', {onkeyup: createNewFolder}),
+    h('menu', {}, [
+      h('button', {onmouseup: updatePage}, 'Cancel'),
+      h('button', {onmouseup: createNewFolder}, 'Create Folder'),
+    ])
+  ])
 }
 
 function createNewFolder(event){

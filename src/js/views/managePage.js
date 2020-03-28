@@ -1,11 +1,9 @@
 import { h, patch } from '../web_modules/superfine.js'
-import htm from '../web_modules/htm.js'
 
 import {store} from '../store/store.js'
 import { router } from '../router.js'
 import { $, setPageTitle } from '../utils.js'
 
-const html = htm.bind(h)
 const threeSecondsInMS = 3000
 const tenSecondsInMS = 10000
 
@@ -16,72 +14,68 @@ function loadManagePage() {
 }
 
 function ManagePage(subreddits, showConfirmRemoveSubDialog = false){
-  return html`
-    <main id="app" class="managePage">
-        ${Nav()}
-        <div class="inputsContainer">
-          ${AddSub()}
-          ${RemoveSub(subreddits, showConfirmRemoveSubDialog)}
-        </div>  
-    </main>
-    `
+  return h('main', {id: 'app', class: 'managePage'}, [
+    Nav(),
+    h('div', {class: 'inputsContainer'}, [
+      AddSub(),
+      RemoveSub(subreddits, showConfirmRemoveSubDialog)
+    ])
+  ])
 }
 
 function Nav(){
-  return html`
-    <nav class="navWrapper">
-      <div class="home" onmouseup=${ () => router.navigate('/')}>Home</div>
-      <div class="manage" >Manage</div>
-    </nav>  
-  `
+  return h('nav', {class: 'navWrapper'}, [
+    h('div', {class: 'home', onmouseup: () => router.navigate('/')}, 'Home'),
+    h('div', {class: 'manage', onmouseup: () => router.navigate('/')}, 'Manage'),
+  ])
 }
 
 function AddSub() {
-  return html `
-    <div class="addSubInputContainer">
-      <label for="addSubredditInput">Add Subreddit</label>
-      <input type="text" id="addSubredditInput" class="addSubredditInput" 
-      onkeyup=${addSubreddit} autocomplete="off"/>
-    </div>  
-  `
+  return h('div', {class: 'addSubInputContainer'}, [
+    h('label', {for: 'addSubredditInput'}, 'Add Subreddit'),
+    h('input', {type: 'text', id: 'addSubredditInput', class: 'addSubredditInput', onkeyup: addSubreddit, autocomplete: 'off'}, 'Add Subreddit'),
+  ])
 }
 
 function RemoveSub(subreddits, showConfirmRemoveSubDialog) {
-  return html `
-    <div class="removeSubInputContainer">
-      <label for="removeSubredditInput">Remove Subreddit</label>
-      <input type="text" id="removeSubredditInput" class="removeSubredditInput" list="subredditList" autocomplete="off"
-      onchange=${onChangeSelectSubredditToRemove} onmouseup=${onMouseUpSelectSubredditToRemove} />
-      <datalist id="subredditList">
-        ${subreddits.map(subreddit => html`<option>${subreddit}</option>`)}
-      </datalist>
-      ${Dialog(showConfirmRemoveSubDialog)}
-      ${Toast()}
-    </div>  
-  `
+  return h('div', {class: 'removeSubInputContainer'}, [
+    h('label', {for: 'removeSubredditInput'}, 'Remove Subreddit'),
+    h('input', {
+      type: 'text', 
+      id: 'removeSubredditInput', 
+      class: 'removeSubredditInput', 
+      list: 'subredditList', 
+      autocomplete: 'off',
+      onchange: onChangeSelectSubredditToRemove,
+      onmouseup: onMouseUpSelectSubredditToRemove,
+    }),
+    h('datalist', {id: 'subredditList'}, 
+      subreddits.map(subreddit => h('option', {}, subreddit))
+    ),
+    Dialog(showConfirmRemoveSubDialog),
+    ...Toast()
+  ])
 }
 
 function Dialog(showConfirmRemoveSubDialog){
-  return html `
-    <dialog open=${showConfirmRemoveSubDialog} >
-      <label>Are you sure you want to remove the ${$('#removeSubredditInput')?.value} subreddit?</label>
-      <menu>
-        <button onmouseup=${cancelRemove}>Cancel</button>
-        <button onmouseup=${removeSubreddit}>Remove</button>
-      </menu>
-    </dialog>  
-  `
+  return h('dialog', {open: showConfirmRemoveSubDialog}, [
+    h('label', {}, `Are you sure you want to remove the ${$('#removeSubredditInput')?.value} subreddit?`),
+    h('menu', {}, [
+      h('button', {onmouseup: cancelRemove}, 'Cancel'),
+      h('button', {onmouseup: removeSubreddit}, 'Remove'),
+    ])
+  ])
 }
 
 function Toast(){
-  return html`
-    <div class="toast subAddedToast">Subreddit Added</div>
-    <div class="toast subRemovedToast">Subreddit Removed</div>  
-    <div class="toast welcomeToast">
-      <p>Welcome To Reddit Pictures Organiser</p>
-      <p>Please Add A Subreddit (e.g. Cats) To Get Started</p>
-    </div>  
-  `
+  return [
+    h('div', {class: 'toast subAddedToast'}, 'Subreddit Added'),
+    h('div', {class: 'toast subRemovedToast'}, 'Subreddit Removed'),
+    h('div', {class: 'toast welcomeToast'}, [
+      h('p', {}, 'Welcome To Reddit Pictures Organiser'),
+      h('p', {}, 'Please Add A Subreddit (e.g. Cats) To Get Started'),
+    ]),
+  ]
 }
 
 function addSubreddit(event){

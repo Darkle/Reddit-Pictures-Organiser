@@ -1,5 +1,4 @@
 import { h, patch } from '../../web_modules/superfine.js'
-import htm from '../../web_modules/htm.js'
 import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
@@ -9,7 +8,6 @@ import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
 import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 
-const html = htm.bind(h)
 const numImgsToCache = 10
 let swiper = null // eslint-disable-line functional/no-let
 
@@ -29,36 +27,33 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
 function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
   const {permalink} = getCurrentImage(imageId)
 
-  return html`
-    <main id="app" class="imageViewerPage">
-      ${Nav({subreddit, timefilter, permalink})}
-      ${Images(startingImageIndex)}
-      ${FoldersContainer(subreddit, timefilter)}
-      <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
-      <div class="toast notifyAddedImageToFolder">Image Added To Folder</div>
-    </main>    
-    `  
+  return h('main', {id: 'app', class: 'imageViewerPage'}, [
+    Nav({subreddit, timefilter, permalink}),
+    Images(startingImageIndex),
+    FoldersContainer(subreddit, timefilter),
+    h('div', {class:'toast notifyClipboardCopy'}, 'Reddit Post Link Copied To Clipboard'),
+    h('div', {class:'toast notifyAddedImageToFolder'}, 'Image Added To Folder'),
+  ])
 }
 
 function Images(startingImageIndex){
-  return html`<div>
-    <div class="swiper-container" onmouseup=${toggleNav}>
-      <div class="swiper-wrapper">
-        ${store.fetchedSubredditImages.map((image, index) => {
-          const isStartingImage = index === startingImageIndex
-          const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
-          const imageAttrs = {
-            style: image.edits, 
-            'data-index': index,
-            onload: onImgLoad,
-            onerror: onImgLoad,
-            ...isStartingImage ? {src: (image.src || image.url)} : {}
-          }
-          
-          return h('div', {class:'swiper-slide'}, [h('img', imageAttrs)])
-        })}      
-      </div>
-    </div>`
+  return h('div', {class: 'swiper-container', onmouseup: toggleNav}, [
+    h('div', {class: 'swiper-wrapper'}, 
+      store.fetchedSubredditImages.map((image, index) => {
+        const isStartingImage = index === startingImageIndex
+        const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
+        const imageAttrs = {
+          style: image.edits, 
+          'data-index': index,
+          onload: onImgLoad,
+          onerror: onImgLoad,
+          ...isStartingImage ? {src: (image.src || image.url)} : {}
+        }
+        
+        return h('div', {class:'swiper-slide'}, [h('img', imageAttrs)])
+      })    
+    )
+  ])
 }
 /*****
 So on page load we walk left and right of the current image that is being displayed 
