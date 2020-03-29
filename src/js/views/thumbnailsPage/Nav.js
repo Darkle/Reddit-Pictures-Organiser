@@ -31,11 +31,11 @@ function Nav(state){ // eslint-disable-line max-lines-per-function, complexity
             ${FavStar(state.subreddit)}
           </div>` : ''
       }
-      <div class="latest ${isCurrentFilter('latest')}" @mouseup=${subFilterNavigate}>latest</div>
-      <div class="latest ${isCurrentFilter('week')}" @mouseup=${subFilterNavigate}>week</div>
-      <div class="latest ${isCurrentFilter('month')}" @mouseup=${subFilterNavigate}>month</div>
-      <div class="latest ${isCurrentFilter('year')}" @mouseup=${subFilterNavigate}>year</div>
-      <div class="latest ${isCurrentFilter('all')}" @mouseup=${subFilterNavigate}>all</div>  
+      <div class="${isCurrentFilter('latest')}" @mouseup=${subFilterNavigate}>latest</div>
+      <div class="${isCurrentFilter('week')}" @mouseup=${subFilterNavigate}>week</div>
+      <div class="${isCurrentFilter('month')}" @mouseup=${subFilterNavigate}>month</div>
+      <div class="${isCurrentFilter('year')}" @mouseup=${subFilterNavigate}>year</div>
+      <div class="${isCurrentFilter('all')}" @mouseup=${subFilterNavigate}>all</div>  
     </nav>  
     `
 }
