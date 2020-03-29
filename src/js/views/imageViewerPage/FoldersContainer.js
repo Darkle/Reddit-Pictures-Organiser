@@ -1,9 +1,8 @@
 import {html, render} from '../../web_modules/lit-html.js'
 
-import { getFolders } from '../foldersPage.js'
 import { toggleFolders } from './Nav.js'
 import { store } from '../../store/store.js'
-import { $ } from '../../utils.js'
+import { $, getFolders } from '../../utils.js'
 import { logger } from '../../logger.js'
 import { ImageViewer, swiper } from './imageViewerPage.js'
 

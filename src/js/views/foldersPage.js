@@ -1,6 +1,6 @@
 import {html, render} from '../web_modules/lit-html.js'
 
-import {$, setPageTitle} from '../utils.js'
+import {$, setPageTitle, getFolders, noFolders} from '../utils.js'
 import { router } from '../router.js'
 import {store} from '../store/store.js'
 import { logger } from '../logger.js'
@@ -58,7 +58,8 @@ function Nav(){
       <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
       <div class="folders" @mouseup=${ () => router.navigate('/')}>Folders</div>
       <div class="createFolderIcon" @mousedown=${showCreateFolderDialog} >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
@@ -97,16 +98,6 @@ function showCreateFolderDialog(){
   updatePage(showDialog)
 }
 
-function getFolders(){
-  //reversing so newly created folders are shown at the top of the page
-  return [...Object.keys(store.folders)].reverse()
-}
-
-function noFolders(){
-  return !getFolders().length
-}
-
 export {
   loadFoldersPage,
-  getFolders,
 }

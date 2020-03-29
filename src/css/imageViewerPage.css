@@ -86,19 +86,6 @@
   margin-bottom: 10px;
   color: #fff4e8;
 }
-/* .imageViewerPage .addToNewFolderContainer button {
-  display: inline-block;
-  padding: 8px 16px;
-  border: none;
-  margin: 0 0.3em 0.3em 0;
-  border-radius: 0.12em;
-  box-sizing: border-box;
-  text-decoration: none;
-  color: #fff4e8;
-  text-align: center;
-  background-color: #595959;
-  font-size: 1em;
-} */
 .imageViewerPage .existingFoldersContainer{
   display: flex;
   align-items: flex-start;

@@ -20,7 +20,81 @@
   text-align: center;
   border-right: 2px solid #737373;
 }
+.imageEditorPage nav .shrink .st0{
+  fill: none;
+  stroke: #fff4e8;
+  stroke-width: 5;
+  stroke-miterlimit: 10;
+}
+.imageEditorPage nav .shrink .st1{
+  fill: none;
+  stroke: #fff4e8;
+  stroke-width: 5;
+  stroke-miterlimit: 3;
+}
 .imageEditorPage .imageToBeEdited {
   max-height: 100vh;
   max-width: 100vw;
+}
+
+.imageEditorPage .foldersContainer{
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+  margin-top: 42px; /* For the Nav above it.*/
+}
+.imageEditorPage .foldersContainer.show{
+  display: flex;
+}
+.imageEditorPage .addToNewFolderContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.imageEditorPage .addToNewFolderContainer .addImageToNewFolder {
+  line-height: 25px;
+  padding: 6px;
+  max-width: 240px;
+  min-width: 240px;
+  border: 2px solid #737373;
+  font-size: 1rem;
+}
+.imageEditorPage .addToNewFolderContainer label {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #fff4e8;
+}
+.imageEditorPage .existingFoldersContainer{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.imageEditorPage .addToNewFolderContainer + label{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #fff4e8;
+}
+
+.imageEditorPage .folder{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff4e8;
+  border: 1px solid #737373;
+  margin: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.imageEditorPage .folder .folderImageCount{
+  opacity: 0.5;
+  margin-left: 20px;
+  font-size: 0.9em;
+  margin-right: -2px;
 }

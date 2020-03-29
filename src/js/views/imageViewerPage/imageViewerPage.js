@@ -2,7 +2,7 @@ import {html, render} from '../../web_modules/lit-html.js'
 import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
-import { $, setPageTitle, curryRight } from '../../utils.js'
+import { $, setPageTitle, curryRight, getCurrentImage, getCurrentImageIndex } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
@@ -135,14 +135,6 @@ function preloadImage(swiperObj, forward){
   
   const tenthImageSrc = tenthImage.src || tenthImage.url
   $(`.swiper-slide img[data-index="${tenthIndex}"]`).setAttribute('src', tenthImageSrc)
-}
-
-function getCurrentImage(imageId) {
-  return store.fetchedSubredditImages.find(({id}) => imageId === id)
-}
-
-function getCurrentImageIndex(imageId) {
-  return store.fetchedSubredditImages.findIndex(({id}) => imageId === id)
 }
 
 export {

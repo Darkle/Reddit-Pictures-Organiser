@@ -13,38 +13,6 @@ const range = (start, end) => Array.from({length: (end - start)}, (v, k) => k + 
 rangeIncEnd: includes end number - useful if you actually want the numbers in the range instead of just the index range
 *****/
 const rangeIncEnd = (start, end) => Array.from({length: ((end - start) + 1)}, (v, k) => k + start) 
-// https://github.com/DrBoolean/Practically-Functional/blob/master/either.js
-const Right = x => ({
-  chain: f => f(x),
-  ap: other => other.map(x),
-  traverse: (of, f) => f(x).map(Right),
-  map: f => Right(f(x)),
-  fold: (f, g) => g(x),
-  inspect: () => `Right(${x})`
-})
-const Left = x => ({
-  chain: _ => Left(x),
-  ap: _ => Left(x),
-  traverse: (of, _) => of(Left(x)),
-  map: _ => Left(x),
-  fold: (f, _) => f(x),
-  inspect: () => `Left(${x})`
-})
-const fromNullable = x => x != null ? Right(x) : Left(null) // eslint-disable-line no-eq-null,eqeqeq
-const tryCatch = f => {
-  try { // eslint-disable-line functional/no-try-statement
-    return Right(f())
-  } catch(e) {
-    return Left(e)
-  }
-}
-const Either = {
-  Right,
-  Left,
-  tryCatch,
-  fromNullable,
-  of: Right,
-}
 
 const $$ = q => Array.from(document.querySelectorAll(q))
 const $ = document.querySelector.bind(document)
@@ -61,6 +29,11 @@ const setPageTitle = (title) => {
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 const isFavSub = subreddit => store.favouriteSubreddits.includes(subreddit)
 const isFavMixPage = () => window.location.hash.startsWith('#!/sub/favmix/') && !window.location.hash.endsWith('/imageviewer')
+const getCurrentImage = (imageId) => store.fetchedSubredditImages.find(({id}) => imageId === id)
+const getCurrentImageIndex = (imageId) => store.fetchedSubredditImages.findIndex(({id}) => imageId === id)
+//reversing so newly created folders are shown at the top of the page
+const getFolders = () => [...Object.keys(store.folders)].reverse()
+const noFolders = () => !getFolders().length
 
 const checkFetchResponseStatus = response => {
   if(response.ok) return response
@@ -92,8 +65,11 @@ export{
   subPageNavigatedAway,
   setPageTitle,
   noSubsStored,
-  Either,
   Fetcher,
   isFavSub,
   isFavMixPage,
+  getCurrentImage,
+  getCurrentImageIndex,
+  getFolders,
+  noFolders,
 }
