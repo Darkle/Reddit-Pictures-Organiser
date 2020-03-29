@@ -25,7 +25,7 @@ function FoldersPage(showDialog){
       ${Nav()}
       <div class="foldersContainer">
         ${getFolders().map(folder => html`
-          <div class="folder">
+          <div class="folder" @mouseup=${ () => router.navigate(`/folders/${folder}`)}>
             <div class="folderName">${folder}</div>
             <div class="folderImageCount">${Object.keys(folder).length}</div>
           </div>
@@ -56,7 +56,7 @@ function Nav(){
   return html `
     <nav class="navWrapper">
       <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
-      <div class="folders" @mouseup=${ () => router.navigate('/')}>Folders</div>
+      <div class="folders">Folders</div>
       <div class="createFolderIcon" @mousedown=${showCreateFolderDialog} >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
