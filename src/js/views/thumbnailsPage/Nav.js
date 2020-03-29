@@ -6,8 +6,8 @@ import {$, isFavSub, isFavMixPage} from '../../utils.js'
 import { updatePage } from './thumbnailsPage.js'
 
 function Nav(state){ // eslint-disable-line max-lines-per-function, complexity
-  const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
-  // There will be different subreddits calling Nav if we're in favmix
+  const isCurrentFilter = (routePath) => state.timefilter === routePath ? 'selectedSubTimeFilter' : ''
+  // There will be different subreddits calling Nav() if we're in favmix, so we need to we use the right sub for navigation.
   const sub = isFavMixPage() ? 'favmix' : state.subreddit
   const subFilterNavigate = event => router.navigate(`/sub/${sub}/${event.target.textContent.trim()}`)
 
@@ -31,11 +31,11 @@ function Nav(state){ // eslint-disable-line max-lines-per-function, complexity
             ${FavStar(state.subreddit)}
           </div>` : ''
       }
-      <div class="latest ${isCurrentFilter(state.timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
-      <div class="latest ${isCurrentFilter(state.timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>
-      <div class="latest ${isCurrentFilter(state.timefilter, 'month')}" @mouseup=${subFilterNavigate}>month</div>
-      <div class="latest ${isCurrentFilter(state.timefilter, 'year')}" @mouseup=${subFilterNavigate}>year</div>
-      <div class="latest ${isCurrentFilter(state.timefilter, 'all')}" @mouseup=${subFilterNavigate}>all</div>  
+      <div class="latest ${isCurrentFilter('latest')}" @mouseup=${subFilterNavigate}>latest</div>
+      <div class="latest ${isCurrentFilter('week')}" @mouseup=${subFilterNavigate}>week</div>
+      <div class="latest ${isCurrentFilter('month')}" @mouseup=${subFilterNavigate}>month</div>
+      <div class="latest ${isCurrentFilter('year')}" @mouseup=${subFilterNavigate}>year</div>
+      <div class="latest ${isCurrentFilter('all')}" @mouseup=${subFilterNavigate}>all</div>  
     </nav>  
     `
 }

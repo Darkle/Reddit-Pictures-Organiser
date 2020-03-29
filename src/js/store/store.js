@@ -9,12 +9,14 @@ const store = {
   subreddits: [],
   favouriteSubreddits: [],
   fetchedSubredditImages: [],
-  createFolder(folder) {
+  createFolder(newFolder) {
+    const folder = newFolder.trim()
     if(store.folders[folder]) return
     store.folders[folder] = []
     saveToLocalForage('folders', store.folders)
   },  
-  removeFolder(folder) {
+  removeFolder(folderToRemove) {
+    const folder = folderToRemove.trim()
     if(!store.folders[folder]) return
     delete store.folders[folder]
     saveToLocalForage('folders', store.folders)
@@ -43,13 +45,13 @@ const store = {
     saveToLocalForage('subreddits', store.subreddits)
   },  
   addFavouriteSubreddit(newSub){
-    const sub = newSub.toLowerCase()
+    const sub = newSub.toLowerCase().trim()
     if(store.favouriteSubreddits.includes(sub)) return
     store.favouriteSubreddits.push(sub)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   removeFavouriteSubreddit(subToRemove) {
-    const sub = subToRemove.toLowerCase()
+    const sub = subToRemove.toLowerCase().trim()
     if(!store.favouriteSubreddits.includes(sub)) return 
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)

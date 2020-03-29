@@ -42,7 +42,7 @@ function PlaceHolder() {
       ${Nav()}
       <div class="foldersPlaceholder">
         <p>
-          No folders yet. Use Plus icon top right to create a folder. 
+          No folders yet. Use plus icon top right to create a folder. 
         </p>
         <p>
           You can also create folders from the image viewer page. Just tap on an image and options will show up for you to add an image to a folder or create a new folder to add the image to.
