@@ -1,5 +1,4 @@
 import {html, render} from '../../web_modules/lit-html.js'
-import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
 import { $, setPageTitle, getImageFromId, getImageIndexFromId } from '../../utils.js'
@@ -8,6 +7,7 @@ import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
 import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
 import {Image} from './Image.js'
+import { logger } from '../../logger.js'
 
 const numImgsToCache = 10
 let swiper = null // eslint-disable-line functional/no-let
@@ -95,26 +95,31 @@ function isInNext10Range(imageIndex, startImageIndex){
   return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + numImgsToCache)
 }
 
-function setUpSwiper(startingImageIndex, folderpage){
-  swiper = new Swiper('.swiper-container',
-    {
-      initialSlide:startingImageIndex, 
-      grabCursor: true,
-      keyboard: true,
-      on: {
-        slideNextTransitionEnd() {
-          const swiperObj = this // eslint-disable-line functional/no-this-expression
-          const forward = true
-          preloadImageOnSwipe(swiperObj, forward, folderpage)
-        },
-        slidePrevTransitionEnd(){
-          const swiperObj = this // eslint-disable-line functional/no-this-expression
-          const forward = false
-          preloadImageOnSwipe(swiperObj, forward, folderpage)
-        },
-      }
-    }
-  )
+function setUpSwiper(startingImageIndex, folderpage){ // eslint-disable-line max-lines-per-function
+  import('../../web_modules/swiper.js')
+    .then(({default:Swiper}) => { // eslint-disable-line max-lines-per-function
+      swiper = new Swiper('.swiper-container',
+        {
+          initialSlide:startingImageIndex, 
+          grabCursor: true,
+          keyboard: true,
+          on: {
+            slideNextTransitionEnd() {
+              const swiperObj = this // eslint-disable-line functional/no-this-expression
+              const forward = true
+              preloadImageOnSwipe(swiperObj, forward, folderpage)
+            },
+            slidePrevTransitionEnd(){
+              const swiperObj = this // eslint-disable-line functional/no-this-expression
+              const forward = false
+              preloadImageOnSwipe(swiperObj, forward, folderpage)
+            },
+          }
+        }
+      )
+
+    })
+    .catch(logger.error)
 }
 
 function preloadImageOnSwipe(swiperObj, forward, folderpage){ // eslint-disable-line complexity

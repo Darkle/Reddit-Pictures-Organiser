@@ -14,7 +14,6 @@ module.exports = {
     'plugin:functional/all',
   ],
   globals: {
-
   },
   env: {
     node: true,
