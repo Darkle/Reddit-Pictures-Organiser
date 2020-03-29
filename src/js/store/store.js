@@ -36,7 +36,7 @@ const store = {
     saveToLocalForage('subreddits', store.subreddits)
   },
   removeSubreddit(subToRemove) {
-    const sub = subToRemove.toLowerCase()
+    const sub = subToRemove.toLowerCase().trim()
     store.removeFavouriteSubreddit(sub)
     if(!store.subreddits.includes(sub)) return
     store.subreddits = store.subreddits.filter(subreddit => subreddit !== subToRemove)
