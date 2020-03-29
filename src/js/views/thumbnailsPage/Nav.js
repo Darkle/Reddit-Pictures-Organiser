@@ -5,7 +5,7 @@ import { router } from '../../router.js'
 import {$, isFavSub, isFavMixPage} from '../../utils.js'
 import { updatePage } from './thumbnailsPage.js'
 
-function Nav(state){ // eslint-disable-line max-lines-per-function
+function Nav(state){ // eslint-disable-line max-lines-per-function, complexity
   const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
   // There will be different subreddits calling Nav if we're in favmix
   const sub = isFavMixPage() ? 'favmix' : state.subreddit
@@ -14,7 +14,7 @@ function Nav(state){ // eslint-disable-line max-lines-per-function
   return html`
     <nav class="navWrapper">
       <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
-      ${!isFavMixPage() ?
+      ${!isFavMixPage() && !state.folderpage ?
           html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(state)}>
             ${FavStar(state.subreddit)}
           </div>` : ''

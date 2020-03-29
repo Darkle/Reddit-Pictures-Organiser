@@ -45,7 +45,7 @@ function addImageToNewFolder({target: input, key}, {subreddit, timefilter}){
   store.createFolder(newFolderName)
   addImageToFolder(newFolderName)
   // @ts-ignore
-  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex: swiper.activeIndex}), $('#app'))
+  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex: swiper.activeIndex}), document.body)
 }
 
 function showFolderToast(){

@@ -20,7 +20,7 @@ function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-li
 
 function updateImageEditPage({subreddit, timefilter, imageId, imageEdits = ''}){
   // @ts-ignore
-  render(ImageEditor({subreddit, timefilter, imageId, imageEdits}), $('#app'))
+  render(ImageEditor({subreddit, timefilter, imageId, imageEdits}), document.body)
 }
 
 function ImageEditor(state){

@@ -10,7 +10,7 @@ const tenSecondsInMS = 10000
 function loadManagePage() {
   setPageTitle('RPO - Manage Subs')
   // @ts-ignore
-  render(ManagePage(store.subreddits), $('#app'))
+  render(ManagePage(store.subreddits), document.body)
   showWelcomeMessageIfNew()
 }
 
@@ -88,7 +88,7 @@ function addSubreddit(event){
   store.addSubreddit(event.target.value)
   resetInputs()
   // @ts-ignore
-  render(ManagePage(store.subreddits), $('#app'))
+  render(ManagePage(store.subreddits), document.body)
   toggleToast('subAddedToast')
 }
 
@@ -96,7 +96,7 @@ function onChangeSelectSubredditToRemove(event){
   if(inputIsEmpty(event.target)) return
   const showConfirmRemoveSubDialog = true
   // @ts-ignore
-  render(ManagePage(store.subreddits, showConfirmRemoveSubDialog), $('#app'))
+  render(ManagePage(store.subreddits, showConfirmRemoveSubDialog), document.body)
 }
 
 function onMouseUpSelectSubredditToRemove(event){
@@ -104,7 +104,7 @@ function onMouseUpSelectSubredditToRemove(event){
   const showConfirmRemoveSubDialog = true
   if(event.key === 'Enter'){
     // @ts-ignore
-    render(ManagePage(store.subreddits, showConfirmRemoveSubDialog), $('#app'))
+    render(ManagePage(store.subreddits, showConfirmRemoveSubDialog), document.body)
   }
 }
 
@@ -112,14 +112,14 @@ function removeSubreddit(){
   store.removeSubreddit($('#removeSubredditInput').value)
   resetInputs()
   // @ts-ignore
-  render(ManagePage(store.subreddits), $('#app'))
+  render(ManagePage(store.subreddits), document.body)
   toggleToast('subRemovedToast')
 }
 
 function cancelRemove(){
   resetInputs()
   // @ts-ignore
-  render(ManagePage(store.subreddits), $('#app'))
+  render(ManagePage(store.subreddits), document.body)
 }
 
 function inputIsEmpty(inputElem){

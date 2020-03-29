@@ -14,7 +14,7 @@ function loadFoldersPage(){
 
 function updatePage(showDialog = false){
   // @ts-ignore
-  render(FoldersPage(showDialog), $('#app'))
+  render(FoldersPage(showDialog), document.body)
 }
 
 function FoldersPage(showDialog){

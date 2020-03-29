@@ -1,13 +1,13 @@
 import {html, render} from '../web_modules/lit-html.js'
 
 import {store} from '../store/store.js'
-import { $, setPageTitle, isFavSub } from '../utils.js'
+import { setPageTitle, isFavSub } from '../utils.js'
 import { router } from '../router.js'
 
 function loadHomePage() {
   setPageTitle('RPO')
   // @ts-ignore
-  render(HomePage(store), $('#app'))
+  render(HomePage(store), document.body)
 }
 
 function HomePage(state) {

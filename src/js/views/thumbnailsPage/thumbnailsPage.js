@@ -4,7 +4,7 @@ import pLimit from '../../web_modules/p-limit.js'
 import {store} from '../../store/store.js'
 import {fetchSubImages} from './fetchSubImages.js'
 import {logger} from '../../logger.js'
-import {$, setPageTitle, isFavMixPage} from '../../utils.js'
+import {setPageTitle, isFavMixPage} from '../../utils.js'
 import { NoMoreImagesToFetch } from '../../Errors.js'
 import { PlaceHolder } from './PlaceHolder.js'
 import { Nav } from './Nav.js'
@@ -17,19 +17,19 @@ function loadThumbnailsPage({subreddit, timefilter, folderpage}) {
   const showLoadingPlaceholder = !folderpage
   setPageTitle(`RPO - ${folderpage ? folderpage : subreddit}`)
   
-  !folderpage && store.removeStoredFetchedSubredditImages()
+  if(!folderpage) store.removeStoredFetchedSubredditImages()
   
   updatePage({showLoadingPlaceholder, timefilter, subreddit, folderpage})
   
-  !folderpage && getImagesAndUpdatePage(subreddit, timefilter)
+  if(!folderpage) getSubImagesAndUpdatePage(subreddit, timefilter)
 }
 
 function updatePage({showLoadingPlaceholder = false, timefilter, subreddit, folderpage}) {
   // @ts-ignore
-  render(ThumbnailPage({showLoadingPlaceholder, timefilter, subreddit, folderpage}), $('#app'))
+  render(ThumbnailPage({showLoadingPlaceholder, timefilter, subreddit, folderpage}), document.body)
 }
 
-function getImagesAndUpdatePage(subreddit, timefilter) {
+function getSubImagesAndUpdatePage(subreddit, timefilter) {
   const subredditsToGetImagesFor = isFavMixPage() ? store.favouriteSubreddits : [subreddit] 
   const queuedSubsImagesFetchAndUpdate = subredditsToGetImagesFor.map(sub => 
     // @ts-ignore
@@ -50,25 +50,26 @@ function getImagesAndUpdatePage(subreddit, timefilter) {
 
 function initFetchAndUpdate({subreddit, lastImgFetched, timefilter}){
   return fetchSubImages({subreddit, lastImgFetched, timefilter})
-    .then(([latestLastImgFetched, returnedTimefilter]) => {
-      updatePage({timefilter: returnedTimefilter, subreddit, folderpage: false})
+    .then(latestLastImgFetched => {
+
+      updatePage({timefilter, subreddit, folderpage: false})
+      
       // We want to show the 'No Images Found...' placeholder if we are on a subreddit thats not the favmix.
       if(!store.fetchedSubredditImages.length) return Promise.reject(new NoMoreImagesToFetch())
 
-      return ({subreddit, lastImgFetched: latestLastImgFetched, timefilter: returnedTimefilter})
+      return ({subreddit, lastImgFetched: latestLastImgFetched, timefilter})
     })
 }
 
 function ThumbnailPage(state) { // eslint-disable-line complexity
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
-  if(state.showLoadingPlaceholder) return PlaceHolder(state)
-  if(!images.length) return PlaceHolder(state)
+  if(state.showLoadingPlaceholder || !images.length) return PlaceHolder(state)
   
   return html`
     <main id="app" class="thumbnailPage">
       ${Nav(state)}
       ${ThumbnailsContainer(state)}
-      ${!isFavMixPage() && Toast(state)}
+      ${!isFavMixPage() && !state.folderpage ? Toast(state) : ''}
     </main>    
     `
 }

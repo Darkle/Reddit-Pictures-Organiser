@@ -27,7 +27,7 @@ function fetchSubImages({subreddit, lastImgFetched, timefilter}) {
 
       const lastImageFetched = images[images.length - 1]
 
-      return [lastImageFetched, timefilter]
+      return lastImageFetched
     })
 }
 

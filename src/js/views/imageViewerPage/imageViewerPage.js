@@ -23,7 +23,7 @@ function loadImageViewer({subreddit, timefilter, imageId, folderpage}) { // esli
   const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
   const startingImageIndex = getImageIndexFromId(imageId, images)
   // @ts-ignore
-  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex, folderpage}), $('#app'))
+  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex, folderpage}), document.body)
 }
 
 function ImageViewer(state) {
