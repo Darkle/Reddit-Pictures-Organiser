@@ -31,26 +31,26 @@ const edits = {
 }
 /* eslint-enable */
 
-function cropImage({subreddit, timefilter, imageId}){
+function cropImage(state){
   const cropValues = null
   edits.updateCrop(cropValues)
-  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
+  updateImageEditPage({...state, imageEdits: edits.toString()})
 }
 
-function rotateLeft({subreddit, timefilter, imageId}){
+function rotateLeft(state){
   edits.updateRotate(edits.rotateAngle - ninetyDegrees)
-  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
+  updateImageEditPage({...state, imageEdits: edits.toString()})
 }
 
-function rotateRight({subreddit, timefilter, imageId}){
+function rotateRight(state){
   edits.updateRotate(edits.rotateAngle + ninetyDegrees)
-  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
+  updateImageEditPage({...state, imageEdits: edits.toString()})
 }
 
-function shrink({subreddit, timefilter, imageId}){
+function shrink(state){
   const shrinkAmount = null
   edits.updateShrink(shrinkAmount)
-  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
+  updateImageEditPage({...state, imageEdits: edits.toString()})
 }
 
 function saveEdits({subreddit, timefilter, imageId, folderpage}){

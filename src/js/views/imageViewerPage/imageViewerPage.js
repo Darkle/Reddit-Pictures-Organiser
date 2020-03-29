@@ -18,7 +18,7 @@ function loadImageViewer({subreddit, timefilter, imageId, folderpage}) { // esli
   We dont have any images stored if the user reloads the page to the image viewer,
   so redirect to the subreddit page.
   *****/
-  if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
+  if(!folderpage && !store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
   const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
   const startingImageIndex = getImageIndexFromId(imageId, images)
@@ -43,28 +43,29 @@ function ImageViewer(state) {
 
 function Images(state){
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
-
-  return html`<div>
+  
+  return html`
     <div class="swiper-container" @mouseup=${toggleNav}>
       <div class="swiper-wrapper">
-        ${images.map((image, index) => html`<div class="swiper-slide">${Image(image, index, state)}</div>`)}      
-      </div>
-    </div>`
+      ${images.map((image, index) => html`<div class="swiper-slide">${Image(image, index, state)}</div>`)}      
+    </div>
+  `
 }
 /*****
 So on page load we walk left and right of the current image that is being displayed 
 and load the next and previous images till we've loaded 10 next and 10 previous.
 *****/
-function initialImagePreloads(event, startingImageIndex){ // eslint-disable-line complexity, max-statements
+function initialImagePreloads(event, {startingImageIndex, folderpage}){ // eslint-disable-line complexity, max-statements
   const thisImageElement = event.target
   const thisImageElementsIndex = Number(thisImageElement.dataset.index)
   const isStartingImage = thisImageElementsIndex === startingImageIndex
 
   if(event.type === 'error') thisImageElement.setAttribute('src', imageLoadErrorIcon)
-  if(isStartingImage) setUpSwiper(startingImageIndex)
+  if(isStartingImage) setUpSwiper(startingImageIndex, folderpage)
 
-  const previousImage = store.fetchedSubredditImages[thisImageElementsIndex - 1]
-  const nextImage = store.fetchedSubredditImages[thisImageElementsIndex + 1]
+  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
+  const previousImage = images[thisImageElementsIndex - 1]
+  const nextImage = images[thisImageElementsIndex + 1]
 
   if(shouldPreloadPrevImage(isStartingImage, previousImage, thisImageElementsIndex, startingImageIndex)){
     const imgSrc = previousImage.src || previousImage.url
@@ -94,7 +95,7 @@ function isInNext10Range(imageIndex, startImageIndex){
   return (imageIndex > startImageIndex) && imageIndex < (startImageIndex + numImgsToCache)
 }
 
-function setUpSwiper(startingImageIndex){
+function setUpSwiper(startingImageIndex, folderpage){
   swiper = new Swiper('.swiper-container',
     {
       initialSlide:startingImageIndex, 
@@ -104,22 +105,23 @@ function setUpSwiper(startingImageIndex){
         slideNextTransitionEnd() {
           const swiperObj = this // eslint-disable-line functional/no-this-expression
           const forward = true
-          preloadImage(swiperObj, forward)
+          preloadImage(swiperObj, forward, folderpage)
         },
         slidePrevTransitionEnd(){
           const swiperObj = this // eslint-disable-line functional/no-this-expression
           const forward = false
-          preloadImage(swiperObj, forward)
+          preloadImage(swiperObj, forward, folderpage)
         },
       }
     }
   )
 }
 
-function preloadImage(swiperObj, forward){
+function preloadImage(swiperObj, forward, folderpage){ // eslint-disable-line complexity
   const currentImageIndex = swiperObj.activeIndex 
   const tenthIndex = forward ? (currentImageIndex + numImgsToCache) : (currentImageIndex - numImgsToCache)
-  const tenthImage = store.fetchedSubredditImages[tenthIndex]
+  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
+  const tenthImage = images[tenthIndex]
 
   if(!tenthImage) return
   

@@ -18,7 +18,7 @@ function FoldersContainer(state){
       <label>Add To Existing Folder</label>
       <div class="existingFoldersContainer">
         ${getFolders().map(folder => html`
-            <div class="folder" @mouseup=${() => addImageToFolder(folder)}>
+            <div class="folder" @mouseup=${() => addImageToFolder(folder, state.folderpage)}>
               <div class="folderName">${folder}</div>
               <div class="folderImageCount">${Object.keys(folder).length}</div>
             </div>
@@ -28,14 +28,15 @@ function FoldersContainer(state){
   `
 }
 
-function addImageToFolder(folder){
-  store.addImageToFolder(folder, store.fetchedSubredditImages[swiper.activeIndex].id)
+function addImageToFolder(folder, isFolderPage){
+  const images = isFolderPage ? store.folders[folder] : store.fetchedSubredditImages
+  store.addImageToFolder(folder, images[swiper.activeIndex])
   toggleFolders()
   showFolderToast()
   logger.debug(store.folders)
 }
 
-function addImageToNewFolder({target: input, key}, {subreddit, timefilter}){
+function addImageToNewFolder({target: input, key}, {subreddit, timefilter, folderpage}){
   const newFolderName = input.value.trim()
   
   if(key !== 'Enter' || !newFolderName.length) return
@@ -43,7 +44,7 @@ function addImageToNewFolder({target: input, key}, {subreddit, timefilter}){
   const {id:imageId} = store.fetchedSubredditImages[swiper.activeIndex]
   
   store.createFolder(newFolderName)
-  addImageToFolder(newFolderName)
+  addImageToFolder(newFolderName, folderpage)
   // @ts-ignore
   render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex: swiper.activeIndex}), document.body)
 }

@@ -6,21 +6,21 @@ import { router } from '../../router.js'
 import { $, setPageTitle, getImageFromId } from '../../utils.js'
 import {Nav} from './Nav.js'
 
-function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-line consistent-return
+function loadImageEditor({subreddit, timefilter, imageId, folderpage}){ // eslint-disable-line consistent-return
   /*****
   We dont have the images stored if the user reloads the page to the image viewer,
   so redirect to the subreddit page.
   *****/
-  if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
+  if(!folderpage && !store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
   
   setPageTitle(`RPO - Image Editor`)
   addCropperStylesheet()
-  updateImageEditPage({subreddit, timefilter, imageId})
+  updateImageEditPage({subreddit, timefilter, imageId, folderpage})
 }
 
-function updateImageEditPage({subreddit, timefilter, imageId, imageEdits = ''}){
+function updateImageEditPage({subreddit, timefilter, imageId, imageEdits = '', folderpage}){
   // @ts-ignore
-  render(ImageEditor({subreddit, timefilter, imageId, imageEdits}), document.body)
+  render(ImageEditor({subreddit, timefilter, imageId, imageEdits, folderpage}), document.body)
 }
 
 function ImageEditor(state){

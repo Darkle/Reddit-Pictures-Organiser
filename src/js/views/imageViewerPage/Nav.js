@@ -38,9 +38,11 @@ function Nav(state){ // eslint-disable-line max-lines-per-function
 }
 
 function handleEditNavigation({subreddit, timefilter, folderpage}){
-  const {id:currentImageId} = store.fetchedSubredditImages[swiper.activeIndex]
+  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
+  const {id:currentImageId} = images[swiper.activeIndex]
   const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/imageviewer/edit/${currentImageId}` 
     : `/folders/${folderpage}/imageviewer/edit/${currentImageId}`
+    
   router.navigate(navigationUrl)
 }
 
