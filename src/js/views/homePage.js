@@ -39,14 +39,14 @@ function Subreddits(subs) {
   )
 }
 
-const svgFavIcon = html`
+const FavIcon = html`
   <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 14 16' fill='currentColor'  class='favouriteStar'>
     <path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path>
   </svg>
 `
 
 function showStarIfFavouritedSub(subName) {
-  return isFavSub(subName) ? svgFavIcon : null
+  return isFavSub(subName) ? FavIcon : null
 }
 
 /*****
