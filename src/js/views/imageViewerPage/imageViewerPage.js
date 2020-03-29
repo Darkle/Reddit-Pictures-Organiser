@@ -15,8 +15,8 @@ let swiper = null // eslint-disable-line functional/no-let
 function loadImageViewer({subreddit, timefilter, imageId, folderpage}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
-  We dont have any images stored if the user reloads the page to the image viewer,
-  so redirect to the subreddit page.
+  We dont have any images stored if viewing sub (not folder) images and the user reloads 
+  the page to the image viewer, so redirect to the subreddit page.
   *****/
   if(!folderpage && !store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  

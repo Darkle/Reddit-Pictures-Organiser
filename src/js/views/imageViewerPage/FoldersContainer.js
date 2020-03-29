@@ -13,7 +13,8 @@ function FoldersContainer(state){
     <div class="foldersContainer">
       <div class="addToNewFolderContainer">
         <label for="addImageToNewFolder">Add To New Folder</label>
-        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" @keyup=${event => addImageToNewFolder(event, state)} autocomplete="off"/>
+        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" 
+            @keyup=${event => addImageToNewFolder(event, state)} autocomplete="off"/>
       </div>
       <label>Add To Existing Folder</label>
       <div class="existingFoldersContainer">

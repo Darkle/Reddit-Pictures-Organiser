@@ -8,8 +8,8 @@ import {Nav} from './Nav.js'
 
 function loadImageEditor({subreddit, timefilter, imageId, folderpage}){ // eslint-disable-line consistent-return
   /*****
-  We dont have the images stored if the user reloads the page to the image viewer,
-  so redirect to the subreddit page.
+  We dont have any images stored if viewing sub (not folder) images and the user reloads 
+  the page to the image viewer, so redirect to the subreddit page.
   *****/
   if(!folderpage && !store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
   
