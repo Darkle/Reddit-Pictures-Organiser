@@ -3,9 +3,8 @@ import {html, render} from '../../web_modules/lit-html.js'
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 
-import { $, setPageTitle, getCurrentImage } from '../../utils.js'
+import { $, setPageTitle, getImageFromId } from '../../utils.js'
 import {Nav} from './Nav.js'
-import { FoldersContainer } from './FoldersContainer.js'
 
 function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-line consistent-return
   /*****
@@ -19,20 +18,20 @@ function loadImageEditor({subreddit, timefilter, imageId}){ // eslint-disable-li
   updateImageEditPage({subreddit, timefilter, imageId})
 }
 
-function updateImageEditPage({subreddit, timefilter, imageId, unsavedImgEdits = '', showFolders = false}){
+function updateImageEditPage({subreddit, timefilter, imageId, imageEdits = ''}){
   // @ts-ignore
-  render(ImageEditor({subreddit, timefilter, imageId, unsavedImgEdits, showFolders}), $('#app'))
+  render(ImageEditor({subreddit, timefilter, imageId, imageEdits}), $('#app'))
 }
 
 function ImageEditor(state){
-  const image = getCurrentImage(state.imageId)
+  const images = state.folder ? store.folders[state.folder] : store.fetchedSubredditImages
+  const image = getImageFromId(state.imageId, images)
   const imageSrc = image.src || image.url
 
   return html`
     <main id="app" class="imageEditorPage">
-        ${Nav(state.subreddit, state.timefilter, state.imageId)}
-        ${state.showFolders ? FoldersContainer(state.subreddit, state.timefilter, state.imageId) : ''}
-        <img src=${imageSrc} style=${state.unsavedImgEdits} class="imageToBeEdited" />
+        ${Nav(state)}
+        <img src=${imageSrc} style=${state.imageEdits} class="imageToBeEdited" />
     </main>   
   `
 }

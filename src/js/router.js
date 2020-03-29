@@ -25,6 +25,8 @@ function initRouter(){
     .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
     .on('/folders/:folder', loadFolderPage)
+    .on('/folders/:folder/imageviewer/:imageId', loadImageViewer)
+    .on('/folders/:folder/imageviewer/edit/:imageId', loadImageEditor)
     .notFound(() => {
       logger.error('Page not found. Redirecting to home page')
       router.navigate('/')

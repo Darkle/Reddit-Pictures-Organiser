@@ -2,16 +2,17 @@ import {html, render} from '../../web_modules/lit-html.js'
 import Swiper from '../../web_modules/swiper.js'
 
 import {store} from '../../store/store.js'
-import { $, setPageTitle, curryRight, getCurrentImage, getCurrentImageIndex } from '../../utils.js'
+import { $, setPageTitle, getImageFromId, getImageIndexFromId } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
 import {imageLoadErrorIcon} from './imageLoadErrorIcon.js'
+import {Image} from './Image.js'
 
 const numImgsToCache = 10
 let swiper = null // eslint-disable-line functional/no-let
 
-function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-line consistent-return
+function loadImageViewer({subreddit, timefilter, imageId, folder}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have any images stored if the user reloads the page to the image viewer,
@@ -19,45 +20,34 @@ function loadImageViewer({subreddit, timefilter, imageId}) { // eslint-disable-l
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
-  const startingImageIndex = getCurrentImageIndex(imageId)
+  const images = folder ? store.folders[folder] : store.fetchedSubredditImages
+  const startingImageIndex = getImageIndexFromId(imageId, images)
   // @ts-ignore
-  render(ImageViewer(subreddit, timefilter, imageId, startingImageIndex), $('#app'))
+  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex, folder}), $('#app'))
 }
 
-function ImageViewer(subreddit, timefilter, imageId, startingImageIndex) {
-  const {permalink} = getCurrentImage(imageId)
+function ImageViewer(state) {
+  const images = state.folder ? store.folders[state.folder] : store.fetchedSubredditImages
+  const {permalink} = getImageFromId(state.imageId, images)
 
   return html`
     <main id="app" class="imageViewerPage">
-      ${Nav({subreddit, timefilter, permalink})}
-      ${Images(startingImageIndex)}
-      ${FoldersContainer(subreddit, timefilter)}
+      ${Nav({...state, permalink})}
+      ${Images(state)}
+      ${FoldersContainer(state)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
       <div class="toast notifyAddedImageToFolder">Image Added To Folder</div>
     </main>    
     `  
 }
 
-function Images(startingImageIndex){
+function Images(state){
+  const images = state.folder ? store.folders[state.folder] : store.fetchedSubredditImages
+
   return html`<div>
     <div class="swiper-container" @mouseup=${toggleNav}>
       <div class="swiper-wrapper">
-        ${store.fetchedSubredditImages.map((image, index) => {
-          const isStartingImage = index === startingImageIndex
-          const onImgLoad = curryRight(initialImagePreloads)(startingImageIndex)
-          /*****
-            For some reason the lit-html conditional bind to attributes doesnt work for `src` - maybe cause its not a boolean attribute?
-            So gonna conditionaly render the whole img element.
-            https://lit-html.polymer-project.org/guide/writing-templates#bind-to-attributes
-          *****/
-          return html`<div class="swiper-slide">
-            ${isStartingImage ? 
-              html`<img ?style=${image.edits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} src=${(image.src || image.url)} />`
-              : html`<img ?style=${image.edits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} />`
-            }
-
-          </div>`
-        })}      
+        ${images.map((image, index) => html`<div class="swiper-slide">${Image(image, index, state)}</div>`)}      
       </div>
     </div>`
 }
@@ -141,4 +131,5 @@ export {
   loadImageViewer,
   swiper,
   ImageViewer,
+  initialImagePreloads,
 }

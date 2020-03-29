@@ -1,4 +1,6 @@
 import {updateImageEditPage} from './imageEditorPage.js'
+import { store } from '../../store/store.js'
+import { router } from '../../router.js'
 
 /* eslint-disable functional/immutable-data, functional/no-this-expression */
 const ninetyDegrees = 90
@@ -16,39 +18,47 @@ const edits = {
     this.shrinkImage = shrinkAmount
   },
   toString(){
-    const rotateAngle = this.rotateAngle ? `transform: rotate(${this.rotateAngle})` : ''
-    const cropImg = this.cropImage ? `transform: thingFOOOO(${this.cropImage})` : ''
-    const shrinkImage = this.shrinkImage ? `transform: thingFOOOO(${this.shrinkImage})` : ''
-    return `${rotateAngle};${cropImg};${shrinkImage};`
+    const rotateAngle = this.rotateAngle ? `transform: rotate(${this.rotateAngle}deg);` : ''
+    const cropImg = this.cropImage ? `transform: thingFOOOO(${this.cropImage});` : ''
+    const shrinkImage = this.shrinkImage ? `transform: thingFOOOO(${this.shrinkImage});` : ''
+    return `${rotateAngle}${cropImg}${shrinkImage}`
   }
 }
 /* eslint-enable */
 
-function cropImage(subreddit, timefilter, imageId){
+function cropImage({subreddit, timefilter, imageId}){
   const cropValues = null
   edits.updateCrop(cropValues)
-  updateImageEditPage({subreddit, timefilter, imageId, unsavedImgEdits: edits.toString()})
+  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
 }
 
-function rotateLeft(subreddit, timefilter, imageId){
+function rotateLeft({subreddit, timefilter, imageId}){
   edits.updateRotate(edits.rotateAngle - ninetyDegrees)
-  updateImageEditPage({subreddit, timefilter, imageId, unsavedImgEdits: edits.toString()})
+  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
 }
 
-function rotateRight(subreddit, timefilter, imageId){
+function rotateRight({subreddit, timefilter, imageId}){
   edits.updateRotate(edits.rotateAngle + ninetyDegrees)
-  updateImageEditPage({subreddit, timefilter, imageId, unsavedImgEdits: edits.toString()})
+  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
 }
 
-function shrink(subreddit, timefilter, imageId){
+function shrink({subreddit, timefilter, imageId}){
   const shrinkAmount = null
   edits.updateShrink(shrinkAmount)
-  updateImageEditPage({subreddit, timefilter, imageId, unsavedImgEdits: edits.toString()})
+  updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
 }
 
-function saveEditedImageToFolder(subreddit, timefilter, imageId){
-  const showFolders = true
-  updateImageEditPage({subreddit, timefilter, imageId, unsavedImgEdits: edits.toString(), showFolders})
+function saveEdits({subreddit, timefilter, imageId, folder}){
+  const navigationUrl = !folder ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
+    : `/folders/${folder}/imageviewer/${imageId}`
+
+    if(folder){
+      store.addEditsToImageInFolder(folder, imageId, edits.toString())
+    }
+    else{
+      store.addEditsToStoredFetchedSubredditImage(imageId, edits.toString())
+    }
+    router.navigate(navigationUrl)  
 }
 
 function cancelEditsOnNavAway(){
@@ -61,7 +71,7 @@ export{
   cropImage,
   rotateLeft,
   rotateRight,
-  saveEditedImageToFolder,
+  saveEdits,
   cancelEditsOnNavAway,
   shrink,
 }

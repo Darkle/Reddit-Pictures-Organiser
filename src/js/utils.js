@@ -29,8 +29,8 @@ const setPageTitle = (title) => {
 const noSubsStored = () => !store.favouriteSubreddits.length && !store.subreddits.length
 const isFavSub = subreddit => store.favouriteSubreddits.includes(subreddit)
 const isFavMixPage = () => window.location.hash.startsWith('#!/sub/favmix/') && !window.location.hash.endsWith('/imageviewer')
-const getCurrentImage = (imageId) => store.fetchedSubredditImages.find(({id}) => imageId === id)
-const getCurrentImageIndex = (imageId) => store.fetchedSubredditImages.findIndex(({id}) => imageId === id)
+const getImageFromId = (imageId, images) => images.find(({id}) => imageId === id)
+const getImageIndexFromId = (imageId, images) => images.findIndex(({id}) => imageId === id)
 //reversing so newly created folders are shown at the top of the page
 const getFolders = () => [...Object.keys(store.folders)].reverse()
 const noFolders = () => !getFolders().length
@@ -68,8 +68,8 @@ export{
   Fetcher,
   isFavSub,
   isFavMixPage,
-  getCurrentImage,
-  getCurrentImageIndex,
+  getImageFromId,
+  getImageIndexFromId,
   getFolders,
   noFolders,
 }

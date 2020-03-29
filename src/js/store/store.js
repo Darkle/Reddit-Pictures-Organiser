@@ -36,6 +36,14 @@ const store = {
     delete store.folders[folder][permalink]
     saveToLocalForage('folders', store.folders)
   },  
+  addEditsToImageInFolder(folder, imageId, edits) {
+    store.fetchedSubredditImages = store.fetchedSubredditImages.map(image =>{
+      if(image.id === imageId){
+        image.edits = edits
+      } 
+      return image
+    })
+  },  
   addSubreddit(newSub) {
     const sub = newSub.toLowerCase()
     if(store.subreddits.includes(sub)) return
@@ -82,6 +90,14 @@ const store = {
   },
   removeStoredFetchedSubredditImages() {
     store.fetchedSubredditImages = []
+  },
+  addEditsToStoredFetchedSubredditImage(imageId, edits) {
+    store.fetchedSubredditImages = store.fetchedSubredditImages.map(image =>{
+      if(image.id === imageId){
+        image.edits = edits
+      } 
+      return image
+    })
   },
 }
 
