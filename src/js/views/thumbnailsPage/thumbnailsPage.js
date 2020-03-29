@@ -70,7 +70,7 @@ function fetchAndUpdatePage({subreddit, lastImgFetched, timefilter}){
       updatePage({timefilter, subreddit, folderpage: false})
       
       // We want to show the 'No Images Found...' placeholder if we are on a subreddit thats not the favmix.
-      if(!store.fetchedSubredditImages.length) return Promise.reject(new NoMoreImagesToFetch())
+      if(!isFavMixPage() && !store.fetchedSubredditImages.length) return Promise.reject(new NoMoreImagesToFetch())
 
       return ({subreddit, lastImgFetched: latestLastImgFetched, timefilter})
     })
