@@ -23,12 +23,12 @@ function HomePage(state) {
         </svg>
         <div>Favourites Mix</div>
       </div>      
-      ${listOfSubreddits(sortSubs(state))}
+      ${Subreddits(sortSubs(state))}
     </main>
   `
 }
 
-function listOfSubreddits(subs) {
+function Subreddits(subs) {
   return !subs.length ? [null] : subs.map(subName =>
     html`
       <div class="subreddit" @mouseup=${() => router.navigate(`/sub/${subName}/latest`)}>
