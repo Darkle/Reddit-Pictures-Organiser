@@ -1,7 +1,7 @@
 import Navigo from './web_modules/navigo.js'
 
 import {loadHomePage} from './views/homePage.js'
-import {loadSubredditPage} from './views/subredditPage/subredditPage.js'
+import {loadThumbnailsPage} from './views/thumbnailsPage/thumbnailsPage.js'
 import {loadManagePage} from './views/managePage.js'
 import {loadFoldersPage} from './views/foldersPage.js'
 import {loadImageViewer} from './views/imageViewerPage/imageViewerPage.js'
@@ -18,12 +18,12 @@ function initRouter(){
   router
       // Show them the manage page to add new subs if they are new.
     .on(() => noSubsStored() ? router.navigate('/manage') : loadHomePage())
-    .on('/sub/:subreddit/:timefilter', loadSubredditPage)
+    .on('/sub/:subreddit/:timefilter', loadThumbnailsPage)
     .on('/sub/:subreddit/:timefilter/imageviewer/:imageId', loadImageViewer)
     .on('/sub/:subreddit/:timefilter/imageviewer/edit/:imageId', loadImageEditor)
     .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
-    .on('/folders/:folderpage', loadFolderPage)
+    .on('/folders/:folderpage', loadThumbnailsPage)
     .on('/folders/:folderpage/imageviewer/:imageId', loadImageViewer)
     .on('/folders/:folderpage/imageviewer/edit/:imageId', loadImageEditor)
     .notFound(() => {

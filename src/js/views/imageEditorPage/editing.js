@@ -22,6 +22,11 @@ const edits = {
     const cropImg = this.cropImage ? `transform: thingFOOOO(${this.cropImage});` : ''
     const shrinkImage = this.shrinkImage ? `transform: thingFOOOO(${this.shrinkImage});` : ''
     return `${rotateAngle}${cropImg}${shrinkImage}`
+  },
+  clear(){
+    this.rotateAngle = 0
+    this.cropImage = false
+    this.shrinkImage = false
   }
 }
 /* eslint-enable */
@@ -58,13 +63,14 @@ function saveEdits({subreddit, timefilter, imageId, folderpage}){
     else{
       store.addEditsToStoredFetchedSubredditImage(imageId, edits.toString())
     }
+
+    edits.clear()
+
     router.navigate(navigationUrl)  
 }
 
 function cancelEditsOnNavAway(){
-  edits.updateRotate(0)
-  edits.updateCrop(false)
-  edits.updateShrink(false)
+  edits.clear()
 }
 
 export{

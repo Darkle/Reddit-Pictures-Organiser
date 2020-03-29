@@ -3,27 +3,31 @@ import {html} from '../../web_modules/lit-html.js'
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 import {$, isFavSub, isFavMixPage} from '../../utils.js'
-import { updatePage } from './subredditPage.js'
+import { updatePage } from './thumbnailsPage.js'
 
-function Nav(timefilter, subreddit){
+function Nav(state){ // eslint-disable-line max-lines-per-function
   const isCurrentFilter = (filter, routePath) => filter === routePath ? 'selectedSubTimeFilter' : ''
   // There will be different subreddits calling Nav if we're in favmix
-  const sub = isFavMixPage() ? 'favmix' : subreddit
+  const sub = isFavMixPage() ? 'favmix' : state.subreddit
   const subFilterNavigate = event => router.navigate(`/sub/${sub}/${event.target.textContent.trim()}`)
 
   return html`
     <nav class="navWrapper">
       <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
       ${!isFavMixPage() ?
-          html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(subreddit, timefilter)}>
-            ${FavStar(subreddit)}
+          html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(state)}>
+            ${FavStar(state.subreddit)}
           </div>` : ''
       }
-      <div class="latest ${isCurrentFilter(timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'month')}" @mouseup=${subFilterNavigate}>month</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'year')}" @mouseup=${subFilterNavigate}>year</div>
-      <div class="latest ${isCurrentFilter(timefilter, 'all')}" @mouseup=${subFilterNavigate}>all</div>
+      ${state.folderpage ? '' :
+          html`
+            <div class="latest ${isCurrentFilter(state.timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
+            <div class="latest ${isCurrentFilter(state.timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>
+            <div class="latest ${isCurrentFilter(state.timefilter, 'month')}" @mouseup=${subFilterNavigate}>month</div>
+            <div class="latest ${isCurrentFilter(state.timefilter, 'year')}" @mouseup=${subFilterNavigate}>year</div>
+            <div class="latest ${isCurrentFilter(state.timefilter, 'all')}" @mouseup=${subFilterNavigate}>all</div>        
+          `
+      }
     </nav>  
     `
 }
@@ -38,16 +42,16 @@ function FavStar(subreddit){
   `
 }
 
-function toggleSubAsFavourite(subreddit, timefilter){
-  if(isFavSub(subreddit)){
-    store.removeFavouriteSubreddit(subreddit)
+function toggleSubAsFavourite(state){
+  if(isFavSub(state.subreddit)){
+    store.removeFavouriteSubreddit(state.subreddit)
     toggleToast('subUnFavouritedToast')
   }
   else{
-    store.addFavouriteSubreddit(subreddit)
+    store.addFavouriteSubreddit(state.subreddit)
     toggleToast('subFavouritedToast')
   }
-  updatePage({timefilter, subreddit})
+  updatePage(state)
 }
 
 function toggleToast(toastSelector){

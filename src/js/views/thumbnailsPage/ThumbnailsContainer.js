@@ -3,13 +3,19 @@ import {html} from '../../web_modules/lit-html.js'
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 
-function SubredditImagesContainer(subreddit, timefilter){
+function ThumbnailsContainer(state){
+  const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
+  const navUrl = image => state.folderpage ? `/folders/${state.folderpage}/imageviewer/${image.id}` 
+            : `/sub/${state.subreddit}/${state.timefilter}/imageviewer/${image.id}`
+  const imgNavigate = image => router.navigate(navUrl(image))
+
   return html`
-    <div class="subredditImagesContainer">
-      ${store.fetchedSubredditImages.map(image =>
+    <div class="thumbnailsImagesContainer">
+      ${images.map(image =>
         html`
           <div class="thumbnail-container">
-            <img class="thumbnail" src=${getThumbnailSrc(image)} data-id=${image.id} data-permalink=${image.permalink} @mouseup=${ () => router.navigate(`/sub/${subreddit}/${timefilter}/imageviewer/${image.id}`)} />
+            <img class="thumbnail" src=${getThumbnailSrc(image)} data-id=${image.id} data-permalink=${image.permalink}
+               @mouseup=${ () => imgNavigate(image)} />
           </div>
         `
       )}
@@ -29,5 +35,5 @@ function getThumbnailSrc ({thumbnail, src, url}) {
 }
 
 export {
-  SubredditImagesContainer
+  ThumbnailsContainer
 }
