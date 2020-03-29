@@ -48,9 +48,9 @@ function Nav(state){ // eslint-disable-line max-lines-per-function
     `
 }
 
-function handleBackNavigation({subreddit, timefilter, imageId, folder}){
-  const navigationUrl = !folder ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
-    : `/folders/${folder}/imageviewer/${imageId}`
+function handleBackNavigation({subreddit, timefilter, imageId, folderpage}){
+  const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
+    : `/folders/${folderpage}/imageviewer/${imageId}`
   cancelEditsOnNavAway()
 
   router.navigate(navigationUrl)  

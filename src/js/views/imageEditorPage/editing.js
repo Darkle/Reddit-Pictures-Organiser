@@ -48,12 +48,12 @@ function shrink({subreddit, timefilter, imageId}){
   updateImageEditPage({subreddit, timefilter, imageId, imageEdits: edits.toString()})
 }
 
-function saveEdits({subreddit, timefilter, imageId, folder}){
-  const navigationUrl = !folder ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
-    : `/folders/${folder}/imageviewer/${imageId}`
+function saveEdits({subreddit, timefilter, imageId, folderpage}){
+  const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
+    : `/folders/${folderpage}/imageviewer/${imageId}`
 
-    if(folder){
-      store.addEditsToImageInFolder(folder, imageId, edits.toString())
+    if(folderpage){
+      store.addEditsToImageInFolder(folderpage, imageId, edits.toString())
     }
     else{
       store.addEditsToStoredFetchedSubredditImage(imageId, edits.toString())

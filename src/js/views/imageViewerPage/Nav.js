@@ -37,19 +37,19 @@ function Nav(state){ // eslint-disable-line max-lines-per-function
     `
 }
 
-function handleEditNavigation({subreddit, timefilter, folder}){
+function handleEditNavigation({subreddit, timefilter, folderpage}){
   const {id:currentImageId} = store.fetchedSubredditImages[swiper.activeIndex]
-  const navigationUrl = !folder ? `/sub/${subreddit}/${timefilter}/imageviewer/edit/${currentImageId}` 
-    : `/folders/${folder}/imageviewer/edit/${currentImageId}`
+  const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/imageviewer/edit/${currentImageId}` 
+    : `/folders/${folderpage}/imageviewer/edit/${currentImageId}`
   router.navigate(navigationUrl)
 }
 
-function handleBackNavigation({subreddit, timefilter, folder}){
+function handleBackNavigation({subreddit, timefilter, folderpage}){
   // They may click the back button to get out of the add to folders view
   if($('.foldersContainer').classList.contains('show')){
     return toggleFolders()
   }
-  const navigationUrl = !folder ? `/sub/${subreddit}/${timefilter}/` : `/folders/${folder}/`
+  const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/` : `/folders/${folderpage}/`
   return router.navigate(navigationUrl)  
 }
 

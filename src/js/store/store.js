@@ -1,43 +1,36 @@
 import localforage from '../web_modules/localforage.js'
 
 import {logger} from '../logger.js'
+import { getImageFromId } from '../utils.js'
+
 /* eslint-disable functional/immutable-data */
 const store = {
   folders : {},
   subreddits: [],
   favouriteSubreddits: [],
   fetchedSubredditImages: [],
-  createFolder(newFolder) {
-    const folder = newFolder.toLowerCase()
+  createFolder(folder) {
     if(store.folders[folder]) return
-    store.folders[folder] = {}
+    store.folders[folder] = []
     saveToLocalForage('folders', store.folders)
   },  
-  removeFolder(folderToRemove) {
-    const folder = folderToRemove.toLowerCase()
+  removeFolder(folder) {
     if(!store.folders[folder]) return
     delete store.folders[folder]
     saveToLocalForage('folders', store.folders)
   },  
   addImageToFolder(folder, image) {
-    const {permalink, thumbnail, src, url, id} = image
-
-    if(store.folders[folder][permalink]) return
-    
-    const edits = image.edits ? image.edits : ''
-    const newImageItem = {permalink, thumbnail, src, url, id, edits}
-
-    store.folders[folder][permalink] = newImageItem
+    if(getImageFromId(image.id, store.folders[folder])) return
+    store.folders[folder].unshift(image)
     saveToLocalForage('folders', store.folders)
   },  
-  removeImageFromFolder(folder, imageToRemove) {
-    const {permalink} = imageToRemove
-    if(!store.folders[folder][permalink]) return
-    delete store.folders[folder][permalink]
+  removeImageFromFolder(folder, image) {
+    if(!getImageFromId(image.id, store.folders[folder])) return
+    store.folders = store.folders[folder].filter(storedImg => storedImg.id !== image.id)
     saveToLocalForage('folders', store.folders)
   },  
   addEditsToImageInFolder(folder, imageId, edits) {
-    store.fetchedSubredditImages = store.fetchedSubredditImages.map(image =>{
+    store.folders[folder] = store.folders[folder].map(image =>{
       if(image.id === imageId){
         image.edits = edits
       } 
@@ -70,17 +63,21 @@ const store = {
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
   addEditsToImage(image, newEdits, folder = null){
-    const {permalink, id} = image
     if(folder){
-      const currentEdits = store.folders[folder][permalink].edits
-      store.folders[folder][permalink].edits = constructEdits(currentEdits, newEdits)
+      store.folders[folder] = store.folders[folder].map(storedImg => {
+        if(storedImg.id === image.id){
+          storedImg.edits = constructEdits(storedImg.edits, newEdits)
+        }
+        return storedImg
+      })
+      saveToLocalForage('folders', store.folders)
       return
     }
-    store.fetchedSubredditImages = store.fetchedSubredditImages.map(img => {
-      if(img.id === id){
-        img.edits = constructEdits(img.edits, newEdits)
+    store.fetchedSubredditImages = store.fetchedSubredditImages.map(storedImg => {
+      if(storedImg.id === image.id){
+        storedImg.edits = constructEdits(storedImg.edits, newEdits)
       }
-      return img
+      return storedImg
     })
   },
   // We dont need to store this in IndexedDB

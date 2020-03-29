@@ -12,7 +12,7 @@ import {Image} from './Image.js'
 const numImgsToCache = 10
 let swiper = null // eslint-disable-line functional/no-let
 
-function loadImageViewer({subreddit, timefilter, imageId, folder}) { // eslint-disable-line consistent-return
+function loadImageViewer({subreddit, timefilter, imageId, folderpage}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have any images stored if the user reloads the page to the image viewer,
@@ -20,14 +20,14 @@ function loadImageViewer({subreddit, timefilter, imageId, folder}) { // eslint-d
   *****/
   if(!store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
-  const images = folder ? store.folders[folder] : store.fetchedSubredditImages
+  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
   const startingImageIndex = getImageIndexFromId(imageId, images)
   // @ts-ignore
-  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex, folder}), $('#app'))
+  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex, folderpage}), $('#app'))
 }
 
 function ImageViewer(state) {
-  const images = state.folder ? store.folders[state.folder] : store.fetchedSubredditImages
+  const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
   const {permalink} = getImageFromId(state.imageId, images)
 
   return html`
@@ -42,7 +42,7 @@ function ImageViewer(state) {
 }
 
 function Images(state){
-  const images = state.folder ? store.folders[state.folder] : store.fetchedSubredditImages
+  const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
 
   return html`<div>
     <div class="swiper-container" @mouseup=${toggleNav}>

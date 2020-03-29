@@ -2,7 +2,7 @@ import {html, render} from '../web_modules/lit-html.js'
 
 import {$, setPageTitle} from '../utils.js'
 
-function loadFolderPage({folder}){
+function loadFolderPage({folderpage}){
   setPageTitle(`RPO - Folders`)
   const showDialog = false
   // @ts-ignore

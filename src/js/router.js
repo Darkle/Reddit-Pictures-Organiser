@@ -24,9 +24,9 @@ function initRouter(){
     .on('/sub/:subreddit/:timefilter/imageviewer/edit/:imageId', loadImageEditor)
     .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
-    .on('/folders/:folder', loadFolderPage)
-    .on('/folders/:folder/imageviewer/:imageId', loadImageViewer)
-    .on('/folders/:folder/imageviewer/edit/:imageId', loadImageEditor)
+    .on('/folders/:folderpage', loadFolderPage)
+    .on('/folders/:folderpage/imageviewer/:imageId', loadImageViewer)
+    .on('/folders/:folderpage/imageviewer/edit/:imageId', loadImageEditor)
     .notFound(() => {
       logger.error('Page not found. Redirecting to home page')
       router.navigate('/')

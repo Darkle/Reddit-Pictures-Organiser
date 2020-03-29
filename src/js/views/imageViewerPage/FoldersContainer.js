@@ -6,14 +6,14 @@ import { $, getFolders } from '../../utils.js'
 import { logger } from '../../logger.js'
 import { ImageViewer, swiper } from './imageViewerPage.js'
 
-function FoldersContainer(subreddit, timefilter){
+function FoldersContainer(state){
   logger.debug(store.folders)
 
   return html`
     <div class="foldersContainer">
       <div class="addToNewFolderContainer">
         <label for="addImageToNewFolder">Add To New Folder</label>
-        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" @keyup=${event => addImageToNewFolder(event, subreddit, timefilter)} autocomplete="off"/>
+        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" @keyup=${event => addImageToNewFolder(event, state)} autocomplete="off"/>
       </div>
       <label>Add To Existing Folder</label>
       <div class="existingFoldersContainer">
@@ -29,13 +29,13 @@ function FoldersContainer(subreddit, timefilter){
 }
 
 function addImageToFolder(folder){
-  store.addImageToFolder(folder, store.fetchedSubredditImages[swiper.activeIndex])
+  store.addImageToFolder(folder, store.fetchedSubredditImages[swiper.activeIndex].id)
   toggleFolders()
   showFolderToast()
   logger.debug(store.folders)
 }
 
-function addImageToNewFolder({target: input, key}, subreddit, timefilter){
+function addImageToNewFolder({target: input, key}, {subreddit, timefilter}){
   const newFolderName = input.value.trim()
   
   if(key !== 'Enter' || !newFolderName.length) return
@@ -45,7 +45,7 @@ function addImageToNewFolder({target: input, key}, subreddit, timefilter){
   store.createFolder(newFolderName)
   addImageToFolder(newFolderName)
   // @ts-ignore
-  render(ImageViewer(subreddit, timefilter, imageId, swiper.activeIndex), $('#app'))
+  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex: swiper.activeIndex}), $('#app'))
 }
 
 function showFolderToast(){

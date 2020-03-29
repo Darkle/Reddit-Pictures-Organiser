@@ -24,7 +24,7 @@ function updateImageEditPage({subreddit, timefilter, imageId, imageEdits = ''}){
 }
 
 function ImageEditor(state){
-  const images = state.folder ? store.folders[state.folder] : store.fetchedSubredditImages
+  const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
   const image = getImageFromId(state.imageId, images)
   const imageSrc = image.src || image.url
 
