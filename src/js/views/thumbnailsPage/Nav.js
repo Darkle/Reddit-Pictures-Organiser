@@ -11,23 +11,31 @@ function Nav(state){ // eslint-disable-line max-lines-per-function, complexity
   const sub = isFavMixPage() ? 'favmix' : state.subreddit
   const subFilterNavigate = event => router.navigate(`/sub/${sub}/${event.target.textContent.trim()}`)
 
+  if(state.folderpage) {
+    return html`
+      <nav class="navWrapper">
+        <div class="back" @mouseup=${() => router.navigate(`/folders/`)}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff4e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"></path>
+          </svg> 
+       </div>
+      </nav>  
+    `
+  }
+
   return html`
     <nav class="navWrapper">
-      <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
-      ${!isFavMixPage() && !state.folderpage ?
+      <div class="home" @mouseup=${() => router.navigate('/')}>Home</div>
+      ${!isFavMixPage() ?
           html`<div class="favStarContainer" @mouseup=${() => toggleSubAsFavourite(state)}>
             ${FavStar(state.subreddit)}
           </div>` : ''
       }
-      ${state.folderpage ? '' :
-          html`
-            <div class="latest ${isCurrentFilter(state.timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
-            <div class="latest ${isCurrentFilter(state.timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>
-            <div class="latest ${isCurrentFilter(state.timefilter, 'month')}" @mouseup=${subFilterNavigate}>month</div>
-            <div class="latest ${isCurrentFilter(state.timefilter, 'year')}" @mouseup=${subFilterNavigate}>year</div>
-            <div class="latest ${isCurrentFilter(state.timefilter, 'all')}" @mouseup=${subFilterNavigate}>all</div>        
-          `
-      }
+      <div class="latest ${isCurrentFilter(state.timefilter, 'latest')}" @mouseup=${subFilterNavigate}>latest</div>
+      <div class="latest ${isCurrentFilter(state.timefilter, 'week')}" @mouseup=${subFilterNavigate}>week</div>
+      <div class="latest ${isCurrentFilter(state.timefilter, 'month')}" @mouseup=${subFilterNavigate}>month</div>
+      <div class="latest ${isCurrentFilter(state.timefilter, 'year')}" @mouseup=${subFilterNavigate}>year</div>
+      <div class="latest ${isCurrentFilter(state.timefilter, 'all')}" @mouseup=${subFilterNavigate}>all</div>  
     </nav>  
     `
 }
