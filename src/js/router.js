@@ -21,11 +21,11 @@ function initRouter(){
     .on('/sub/:subreddit/:timefilter', loadThumbnailsPage)
     .on('/sub/:subreddit/:timefilter/imageviewer/:imageId', loadImageViewer)
     .on('/sub/:subreddit/:timefilter/imageviewer/edit/:imageId', loadImageEditor)
-    .on('/manage', loadManagePage)
     .on('/folders', loadFoldersPage)
     .on('/folders/:folderpage', loadThumbnailsPage)
     .on('/folders/:folderpage/imageviewer/:imageId', loadImageViewer)
     .on('/folders/:folderpage/imageviewer/edit/:imageId', loadImageEditor)
+    .on('/manage', loadManagePage)
     .notFound(() => {
       logger.error('Page not found. Redirecting to home page')
       router.navigate('/')

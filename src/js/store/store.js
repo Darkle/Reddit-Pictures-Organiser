@@ -36,6 +36,7 @@ const store = {
       } 
       return image
     })
+    saveToLocalForage('folders', store.folders)
   },  
   addSubreddit(newSub) {
     const sub = newSub.toLowerCase()
