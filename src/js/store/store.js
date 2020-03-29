@@ -30,7 +30,7 @@ const store = {
     saveToLocalForage('folders', store.folders)
   },  
   addSubreddit(newSub) {
-    const sub = newSub.toLowerCase()
+    const sub = newSub.toLowerCase().trim()
     if(store.subreddits.includes(sub)) return
     store.subreddits.push(sub)
     saveToLocalForage('subreddits', store.subreddits)
