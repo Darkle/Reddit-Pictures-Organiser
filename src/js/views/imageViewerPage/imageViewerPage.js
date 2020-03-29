@@ -105,19 +105,19 @@ function setUpSwiper(startingImageIndex, folderpage){
         slideNextTransitionEnd() {
           const swiperObj = this // eslint-disable-line functional/no-this-expression
           const forward = true
-          preloadImage(swiperObj, forward, folderpage)
+          preloadImageOnSwipe(swiperObj, forward, folderpage)
         },
         slidePrevTransitionEnd(){
           const swiperObj = this // eslint-disable-line functional/no-this-expression
           const forward = false
-          preloadImage(swiperObj, forward, folderpage)
+          preloadImageOnSwipe(swiperObj, forward, folderpage)
         },
       }
     }
   )
 }
 
-function preloadImage(swiperObj, forward, folderpage){ // eslint-disable-line complexity
+function preloadImageOnSwipe(swiperObj, forward, folderpage){ // eslint-disable-line complexity
   const currentImageIndex = swiperObj.activeIndex 
   const tenthIndex = forward ? (currentImageIndex + numImgsToCache) : (currentImageIndex - numImgsToCache)
   const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
