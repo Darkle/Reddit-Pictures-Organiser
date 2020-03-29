@@ -29,15 +29,6 @@ const store = {
     store.folders = store.folders[folder].filter(storedImg => storedImg.id !== image.id)
     saveToLocalForage('folders', store.folders)
   },  
-  addEditsToImageInFolder(folder, imageId, edits) {
-    store.folders[folder] = store.folders[folder].map(image =>{
-      if(image.id === imageId){
-        image.edits = edits
-      } 
-      return image
-    })
-    saveToLocalForage('folders', store.folders)
-  },  
   addSubreddit(newSub) {
     const sub = newSub.toLowerCase()
     if(store.subreddits.includes(sub)) return
@@ -63,23 +54,19 @@ const store = {
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
-  addEditsToImage(image, newEdits, folder = null){
-    if(folder){
-      store.folders[folder] = store.folders[folder].map(storedImg => {
-        if(storedImg.id === image.id){
-          storedImg.edits = constructEdits(storedImg.edits, newEdits)
-        }
-        return storedImg
-      })
-      saveToLocalForage('folders', store.folders)
-      return
-    }
-    store.fetchedSubredditImages = store.fetchedSubredditImages.map(storedImg => {
-      if(storedImg.id === image.id){
+  addEditsToImage(imageId, newEdits, folder = null){
+    const updateImageEditInImages = images => images.map(storedImg => {
+      if(storedImg.id === imageId){
         storedImg.edits = constructEdits(storedImg.edits, newEdits)
       }
       return storedImg
     })
+    if(folder){
+      store.folders[folder] = updateImageEditInImages(store.folders[folder])
+      saveToLocalForage('folders', store.folders)
+      return
+    }
+    store.fetchedSubredditImages = updateImageEditInImages(store.fetchedSubredditImages)
   },
   // We dont need to store this in IndexedDB
   storeFetchedSubredditImages(images) {
@@ -89,19 +76,11 @@ const store = {
   removeStoredFetchedSubredditImages() {
     store.fetchedSubredditImages = []
   },
-  addEditsToStoredFetchedSubredditImage(imageId, edits) {
-    store.fetchedSubredditImages = store.fetchedSubredditImages.map(image =>{
-      if(image.id === imageId){
-        image.edits = edits
-      } 
-      return image
-    })
-  },
 }
 
 function constructEdits(currentEdits, newEdits){
   if(!currentEdits) return newEdits
-  const edits = currentEdits + ';' + newEdits + ';' // eslint-disable-line operator-assignment
+  const edits = currentEdits + newEdits
   return edits
 }
 

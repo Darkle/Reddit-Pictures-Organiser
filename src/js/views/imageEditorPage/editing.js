@@ -57,15 +57,8 @@ function saveEdits({subreddit, timefilter, imageId, folderpage}){
   const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
     : `/folders/${folderpage}/imageviewer/${imageId}`
 
-    if(folderpage){
-      store.addEditsToImageInFolder(folderpage, imageId, edits.toString())
-    }
-    else{
-      store.addEditsToStoredFetchedSubredditImage(imageId, edits.toString())
-    }
-
+    store.addEditsToImage(imageId, edits.toString(), folderpage)
     edits.clear()
-
     router.navigate(navigationUrl)  
 }
 
