@@ -45,21 +45,22 @@ function ThumbnailPage(state) { // eslint-disable-line complexity
 
 function queueSubImageFetchingAndUpdating(subreddit, timefilter) {
   const subredditsToGetImagesFor = isFavMixPage() ? store.favouriteSubreddits : [subreddit] 
-  const queuedSubsImagesFetchAndUpdate = subredditsToGetImagesFor.map(sub => 
-    // @ts-ignore
-    queue(() =>
-      fetchAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
-        // .then(fetchAndUpdatePage)
-        // .then(fetchAndUpdatePage)
-        // .then(fetchAndUpdatePage)
-        /*****
-          We need to catch here too in case on favmix page and a sub has no more images - we dont
-          want the whole promise array to fail.
-        *****/
-        .catch(logger.error)  
-    )
-  )  
-  Promise.all(queuedSubsImagesFetchAndUpdate).catch(logger.error)  
+  Promise.all(
+    subredditsToGetImagesFor.map(sub => 
+      // @ts-ignore
+      queue(() =>
+        fetchAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
+          // .then(fetchAndUpdatePage)
+          // .then(fetchAndUpdatePage)
+          // .then(fetchAndUpdatePage)
+          /*****
+            We need to catch here too in case on favmix page and a sub has no more images - we dont
+            want the whole promise array to fail.
+          *****/
+          .catch(logger.error)  
+      )
+    )     
+  ).catch(logger.error)  
 }
 
 function fetchAndUpdatePage({subreddit, lastImgFetched, timefilter}){
