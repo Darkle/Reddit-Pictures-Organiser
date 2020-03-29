@@ -29,7 +29,7 @@ function HomePage(state) {
 }
 
 function Subreddits(subs) {
-  return !subs.length ? [null] : subs.map(subName =>
+  return subs.map(subName =>
     html`
       <div class="subreddit" @mouseup=${() => router.navigate(`/sub/${subName}/latest`)}>
         ${showStarIfFavouritedSub(subName)}
