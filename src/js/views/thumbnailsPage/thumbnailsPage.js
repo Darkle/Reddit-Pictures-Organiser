@@ -22,7 +22,7 @@ function loadThumbnailsPage({subreddit, timefilter, folderpage}) {
   
   updatePage({showLoadingPlaceholder, timefilter, subreddit, folderpage})
   
-  if(isSubredditPage) queueSubImagesFetchingAndUpdating(subreddit, timefilter)
+  if(isSubredditPage) queueSubImageFetchingAndUpdating(subreddit, timefilter)
 }
 
 function updatePage({showLoadingPlaceholder = false, timefilter, subreddit, folderpage}) {
@@ -43,7 +43,7 @@ function ThumbnailPage(state) { // eslint-disable-line complexity
     `
 }
 
-function queueSubImagesFetchingAndUpdating(subreddit, timefilter) {
+function queueSubImageFetchingAndUpdating(subreddit, timefilter) {
   const subredditsToGetImagesFor = isFavMixPage() ? store.favouriteSubreddits : [subreddit] 
   const queuedSubsImagesFetchAndUpdate = subredditsToGetImagesFor.map(sub => 
     // @ts-ignore
