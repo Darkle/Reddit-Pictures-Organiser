@@ -17,11 +17,11 @@ function loadManagePage() {
 function ManagePage(subreddits, showConfirmRemoveSubDialog = false){
   return html`
     <main id="app" class="managePage">
-        ${Nav()}
-        <div class="inputsContainer">
-          ${AddSub()}
-          ${RemoveSub(subreddits, showConfirmRemoveSubDialog)}
-        </div>  
+      ${Nav()}
+      <div class="inputsContainer">
+        ${AddSub()}
+        ${RemoveSub(subreddits, showConfirmRemoveSubDialog)}
+      </div>  
     </main>
     `
 }
@@ -40,7 +40,7 @@ function AddSub() {
     <div class="addSubInputContainer">
       <label for="addSubredditInput">Add Subreddit</label>
       <input type="text" id="addSubredditInput" class="addSubredditInput" 
-      @keyup=${addSubreddit} autocomplete="off"/>
+          @keyup=${addSubreddit} autocomplete="off"/>
     </div>  
   `
 }
@@ -50,7 +50,7 @@ function RemoveSub(subreddits, showConfirmRemoveSubDialog) {
     <div class="removeSubInputContainer">
       <label for="removeSubredditInput">Remove Subreddit</label>
       <input type="text" id="removeSubredditInput" class="removeSubredditInput" list="subredditList" autocomplete="off"
-      @change=${onChangeSelectSubredditToRemove} @mouseup=${onMouseUpSelectSubredditToRemove} />
+          @change=${onChangeSelectSubredditToRemove} @mouseup=${onMouseUpSelectSubredditToRemove} />
       <datalist id="subredditList">
         ${subreddits.map(subreddit => html`<option>${subreddit}</option>`)}
       </datalist>
