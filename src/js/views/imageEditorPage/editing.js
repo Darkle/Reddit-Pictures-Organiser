@@ -1,14 +1,19 @@
 import {updateImageEditPage} from './imageEditorPage.js'
 import { store } from '../../store/store.js'
 import { router } from '../../router.js'
+import { isEmptyObject, isNegativeNumber } from '../../utils.js'
 
 /* eslint-disable functional/immutable-data, functional/no-this-expression */
 const ninetyDegrees = 90
+// const minusNinetyDegrees = 90
+// const twoSeventyDegrees = 270
+
 const edits = {
   rotateVal: 0,
   cropImageVal: {},
   shrinkImageVal: {},
   updateRotateVal(angle){
+    console.log('updateRotateVal')
     this.rotateVal = angle
   },
   updateCropVal(width, height, positionX, positionY){
@@ -30,28 +35,34 @@ const edits = {
 }
 /* eslint-enable */
 
+// function rotateAngleShouldResetToZero(degree){ // eslint-disable-line complexity
+//   if(edits.rotateVal === twoSeventyDegrees && degree === ninetyDegrees) return true
+//   if(edits.rotateVal === ninetyDegrees && degree === minusNinetyDegrees) return true
+//   return false
+// }
+
 function cropImage(state){
   const cropValues = null
-  edits.updateCrop(cropValues)
+  edits.updateCropVal(cropValues)
   const {rotateVal, cropImageVal, shrinkImageVal} = edits
   updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, shrinkImageVal}})
 }
 
 function rotateLeft(state){
-  edits.updateRotate(edits.rotateVal - ninetyDegrees)
+  edits.updateRotateVal(edits.rotateVal - ninetyDegrees)
   const {rotateVal, cropImageVal, shrinkImageVal} = edits
   updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, shrinkImageVal}})
 }
 
 function rotateRight(state){
-  edits.updateRotate(edits.rotateVal + ninetyDegrees)
+  edits.updateRotateVal(edits.rotateVal + ninetyDegrees)
   const {rotateVal, cropImageVal, shrinkImageVal} = edits
   updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, shrinkImageVal}})
 }
 
 function shrink(state){
   const shrinkAmount = null
-  edits.updateShrink(shrinkAmount)
+  edits.updateShrinkVal(shrinkAmount)
   const {rotateVal, cropImageVal, shrinkImageVal} = edits
   updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, shrinkImageVal}})
 }
@@ -61,7 +72,7 @@ function saveEdits({subreddit, timefilter, imageId, folderpage}){
     : `/folders/${folderpage}/imageviewer/${imageId}`
   const {rotateVal, cropImageVal, shrinkImageVal} = edits
 
-  store.addEditsToImage(imageId, editsToString({rotateVal, cropImageVal, shrinkImageVal}), folderpage)
+  store.addEditsToImage(imageId, {rotateVal, cropImageVal, shrinkImageVal}, folderpage)
   edits.clear()
   router.navigate(navigationUrl)  
 }
@@ -70,17 +81,14 @@ function cancelEditsOnNavAway(){
   edits.clear()
 }
 
-function editsToString({rotateVal, cropImageVal, shrinkImageVal}){
-
-  console.log('called editsToString')
-  const rAngle = rotateVal ? `transform: rotate(${rotateVal}deg);` : ''
-  const cropImg = isEmptyObject(cropImageVal) ? `transform: thingFOOOO(${cropImageVal});` : ''
-  const sImage = isEmptyObject(shrinkImageVal) ? `transform: thingFOOOO(${shrinkImageVal});` : ''
-  return `${rAngle}${cropImg}${sImage}`
-}
-
-function isEmptyObject(obj){
-  return !Object.entries(obj).length
+function editsToString(storedEdits, laterEdits){ // eslint-disable-line complexity
+  const rotateVal = (storedEdits?.rotateVal ?? 0) + (laterEdits?.rotateVal ?? 0)
+  // We dont want to update the value here, we want to set it.
+  edits.rotateVal = rotateVal // eslint-disable-line functional/immutable-data
+  // TODO: crop and shrink - prolly check if empty obj for those??
+  const rotateAngle = rotateVal > 0 ? `transform: rotate(${rotateVal}deg);` : ''
+  // return `${rAngle}${cropImg}${sImage}`
+  return `${rotateAngle}`
 }
 
 export{

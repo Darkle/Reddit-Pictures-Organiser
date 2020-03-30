@@ -34,6 +34,8 @@ const getImageIndexFromId = (imageId, images) => images.findIndex(({id}) => imag
 //reversing so newly created folders are shown at the top of the page
 const getFolders = () => [...Object.keys(store.folders)].reverse()
 const noFolders = () => !getFolders().length
+const isEmptyObject = (obj) => !Object.entries(obj).length
+const isNegativeNumber = number => Math.sign(number) === -1
 
 const checkFetchResponseStatus = response => {
   if(response.ok) return response
@@ -72,4 +74,6 @@ export{
   getImageIndexFromId,
   getFolders,
   noFolders,
+  isEmptyObject,
+  isNegativeNumber,
 }

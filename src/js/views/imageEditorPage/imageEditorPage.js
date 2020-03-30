@@ -39,7 +39,7 @@ function ImageEditor(state){
 }
 
 function generateEdits(storedEdits, newEdits){
-  return (storedEdits ? storedEdits : '') + (newEdits ? editsToString(newEdits) : '')
+  return (!newEdits && !storedEdits) ? '' : editsToString(storedEdits, newEdits)
 }
 
 function addCropperStylesheet(){

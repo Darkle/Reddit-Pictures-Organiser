@@ -2,11 +2,12 @@ import {html} from '../../web_modules/lit-html.js'
 
 import {curryRight} from '../../utils.js'
 import { initialImagePreloads } from './imageViewerPage.js'
+import { editsToString } from '../imageEditorPage/editing.js'
 
 function Image(image, index, state){
   const isStartingImage = index === state.startingImageIndex
   const onImgLoad = curryRight(initialImagePreloads)(state)
-  const imageEdits = image.edits || ''
+  const imageEdits = generateEdits(image.edits)
   const imgSrc = image.src || image.url
   /*****
     For some reason the lit-html conditional bind to attributes doesnt work for `src` - maybe cause its not a boolean attribute?
@@ -16,6 +17,10 @@ function Image(image, index, state){
   return isStartingImage ?
   html`<img style=${imageEdits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} src=${imgSrc} />`
     : html`<img style=${imageEdits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} />`
+}
+
+function generateEdits(storedEdits){
+  return !storedEdits ? '' : editsToString(storedEdits)
 }
 
 export {

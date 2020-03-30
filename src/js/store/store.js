@@ -56,10 +56,10 @@ const store = {
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
-  addEditsToImage(imageId, newEdits, folder = null){
+  addEditsToImage(imageId, {rotateVal, cropImageVal, shrinkImageVal}, folder = null){
     const updateImageEditInImages = images => images.map(storedImg => {
       if(storedImg.id === imageId){
-        storedImg.edits = constructEdits(storedImg.edits, newEdits)
+        storedImg.edits = {rotateVal, cropImageVal, shrinkImageVal}
       }
       return storedImg
     })
@@ -78,12 +78,6 @@ const store = {
   removeStoredFetchedSubredditImages() {
     store.fetchedSubredditImages = []
   },
-}
-
-function constructEdits(currentEdits, newEdits){
-  if(!currentEdits) return newEdits
-  const edits = currentEdits + newEdits
-  return edits
 }
 
 function saveToLocalForage(key, value) {
