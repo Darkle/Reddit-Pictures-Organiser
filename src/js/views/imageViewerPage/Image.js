@@ -2,7 +2,6 @@ import {html} from '../../web_modules/lit-html.js'
 
 import {curryRight} from '../../utils.js'
 import { initialImagePreloads } from './imageViewerPage.js'
-import { editsToString } from '../imageEditorPage/editing.js'
 
 function Image(image, index, state){
   const isStartingImage = index === state.startingImageIndex
@@ -21,6 +20,14 @@ function Image(image, index, state){
 
 function generateEdits(storedEdits){
   return !storedEdits ? '' : editsToString(storedEdits)
+}
+
+function editsToString(storedEdits){ // eslint-disable-line complexity
+  const rotateVal = storedEdits.rotateVal ?? 0
+  // TODO: crop and shrink - prolly check if empty obj for those??
+  const rotateAngle = rotateVal > 0 ? `transform: rotate(${storedEdits.rotateVal ?? 0}deg);` : ''
+  // return `${rAngle}${cropImg}${sImage}`
+  return `${rotateAngle}`
 }
 
 export {
