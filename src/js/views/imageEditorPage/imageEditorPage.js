@@ -5,6 +5,7 @@ import { router } from '../../router.js'
 
 import { $, setPageTitle, getImageFromId } from '../../utils.js'
 import {Nav} from './Nav.js'
+import { editsToString } from './editing.js'
 
 function loadImageEditor({subreddit, timefilter, imageId, folderpage}){ // eslint-disable-line consistent-return
   /*****
@@ -18,22 +19,27 @@ function loadImageEditor({subreddit, timefilter, imageId, folderpage}){ // eslin
   updateImageEditPage({subreddit, timefilter, imageId, folderpage})
 }
 
-function updateImageEditPage({subreddit, timefilter, imageId, imageEdits = '', folderpage}){
+function updateImageEditPage({subreddit, timefilter, imageId, newEdits = null, folderpage}){
   // @ts-ignore
-  render(ImageEditor({subreddit, timefilter, imageId, imageEdits, folderpage}), document.body)
+  render(ImageEditor({subreddit, timefilter, imageId, newEdits, folderpage}), document.body)
 }
 
 function ImageEditor(state){
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
   const image = getImageFromId(state.imageId, images)
   const imageSrc = image.src || image.url
+  const edits = generateEdits(image.edits, state.newEdits)
 
   return html`
     <main id="app" class="imageEditorPage">
         ${Nav(state)}
-        <img src=${imageSrc} style=${state.imageEdits} class="imageToBeEdited" />
+        <img src=${imageSrc} style=${edits} class="imageToBeEdited" />
     </main>   
   `
+}
+
+function generateEdits(storedEdits, newEdits){
+  return (storedEdits ? storedEdits : '') + (newEdits ? editsToString(newEdits) : '')
 }
 
 function addCropperStylesheet(){
