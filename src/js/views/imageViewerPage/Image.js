@@ -2,11 +2,12 @@ import {html} from '../../web_modules/lit-html.js'
 
 import {curryRight} from '../../utils.js'
 import { initialImagePreloads } from './imageViewerPage.js'
+import { convertImageEditsToCssString } from '../imageEditorPage/editing.js'
 
 function Image(image, index, state){
   const isStartingImage = index === state.startingImageIndex
   const onImgLoad = curryRight(initialImagePreloads)(state)
-  const imageEdits = generateEdits(image.edits)
+  const imageEdits = convertImageEditsToCssString(image.edits)
   const imgSrc = image.src || image.url
   /*****
     For some reason the lit-html conditional bind to attributes doesnt work for `src` - maybe cause its not a boolean attribute?
@@ -16,18 +17,6 @@ function Image(image, index, state){
   return isStartingImage ?
   html`<img style=${imageEdits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} src=${imgSrc} />`
     : html`<img style=${imageEdits} data-index=${index} @load=${onImgLoad} @error=${onImgLoad} />`
-}
-
-function generateEdits(storedEdits){
-  return !storedEdits ? '' : editsToString(storedEdits)
-}
-
-function editsToString(storedEdits){ // eslint-disable-line complexity
-  const rotateVal = storedEdits.rotateVal ?? 0
-  // TODO: crop and shrink - prolly check if empty obj for those??
-  const rotateAngle = rotateVal > 0 ? `transform: rotate(${storedEdits.rotateVal ?? 0}deg);` : ''
-  // return `${rAngle}${cropImg}${sImage}`
-  return `${rotateAngle}`
 }
 
 export {
