@@ -33,8 +33,10 @@ function ImageEditor(state){
   return html`
     <main id="app" class="imageEditorPage">
         ${Nav(state)}
-        <img src=${imageSrc} style=${imageEditsAsCssString} class="imageToBeEdited" />
-    </main>   
+        <div class="imageContainer">
+          <img src=${imageSrc} style=${imageEditsAsCssString} class="imageToBeEdited" />
+        </div>
+      </main>   
   `
 }
 
