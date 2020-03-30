@@ -37,11 +37,11 @@ function noMoreImagesFoundInFavMixSub(images, processedImages){
 
 /*****
   Examples:
-  https://www.reddit.com/r/aww/.json?limit=100&count=100
-  https://www.reddit.com/r/aww/top/.json?limit=100&t=week&count=100
-  https://www.reddit.com/r/aww/top/.json?limit=100&t=month&count=100
-  https://www.reddit.com/r/aww/top/.json?limit=100&t=year&count=100
-  https://www.reddit.com/r/aww/top/.json?limit=100&t=all&count=100
+  https://www.reddit.com/r/cats/.json?limit=100&count=100
+  https://www.reddit.com/r/cats/top/.json?limit=100&t=week&count=100
+  https://www.reddit.com/r/cats/top/.json?limit=100&t=month&count=100
+  https://www.reddit.com/r/cats/top/.json?limit=100&t=year&count=100
+  https://www.reddit.com/r/cats/top/.json?limit=100&t=all&count=100
 *****/
 function generateFetchUrl(subreddit, lastImgFetched, timefilter) {
   const pagination = lastImgFetched ? `&after=t3_${lastImgFetched.data.id}` : ''
@@ -72,7 +72,7 @@ function transformImageLinks(images) {
   return images.map(({data: image}) => {
     const imageUrl = new URL(image.url)
     
-    // If it isnt a https://imgur.com/foo url and it's not an imgur gallery, convert it to https://i.imgur.com/foo.jpg
+    // If it's a https://imgur.com/foo url and it's not an imgur gallery, convert it to https://i.imgur.com/foo.jpg
     if(imageUrl.hostname.startsWith('imgur.com') && notImgurGallery(imageUrl.pathname)){
       imageUrl.pathname = imageUrl.pathname + '.jpg' // eslint-disable-line functional/immutable-data
       imageUrl.hostname = 'i.' + imageUrl.hostname // eslint-disable-line functional/immutable-data
@@ -95,7 +95,7 @@ function notImgurGallery(pathname){
   return pathname.match(/\//gu).length === 1
 }
 function isVideo(pathname){
-  return pathname.endsWith('.mp4') || pathname.endsWith('.gifv')
+  return pathname.endsWith('.mp4') || pathname.endsWith('.webm') || pathname.endsWith('.gifv')
 }
 
 export {
