@@ -1,7 +1,7 @@
 import {html, render} from '../../web_modules/lit-html.js'
 
 import {store} from '../../store/store.js'
-import { $, setPageTitle, getImageFromId, getImageIndexFromId } from '../../utils.js'
+import { $, setPageTitle, getImageFromId, getImageIndexFromId, safeGetImageSrc } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
@@ -68,11 +68,11 @@ function initialImagePreloads(event, {startingImageIndex, folderpage}){ // eslin
   const nextImage = images[thisImageElementsIndex + 1]
 
   if(shouldPreloadPrevImage(isStartingImage, previousImage, thisImageElementsIndex, startingImageIndex)){
-    const imgSrc = previousImage.src || previousImage.url
+    const imgSrc = safeGetImageSrc(previousImage)
     thisImageElement.parentNode.previousElementSibling.firstElementChild.setAttribute('src', imgSrc)
   }
   if(shouldPreloadNextImage(isStartingImage, nextImage, thisImageElementsIndex, startingImageIndex)){
-    const imgSrc = nextImage.src || nextImage.url
+    const imgSrc = safeGetImageSrc(nextImage)
     thisImageElement.parentNode.nextElementSibling.firstElementChild.setAttribute('src', imgSrc)    
   }
 }
@@ -130,7 +130,7 @@ function preloadImageOnSwipe(swiperObj, forward, folderpage){ // eslint-disable-
 
   if(!tenthImage) return
   
-  const tenthImageSrc = tenthImage.src || tenthImage.url
+  const tenthImageSrc = safeGetImageSrc(tenthImage)
   $(`.swiper-slide img[data-index="${tenthIndex}"]`).setAttribute('src', tenthImageSrc)
 }
 

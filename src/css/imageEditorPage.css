@@ -44,3 +44,12 @@
   max-height: calc(100vh - 42px);
   max-width: 100vw;
 }
+.imageEditorPage .imageToBeEdited.hide{
+  display:none;
+}
+.imageEditorPage .imageContainer .cropper-tools{
+  position: absolute;
+  bottom: 20px;
+  /* The slider is 287px in lenght so half that is about 143 */
+  left: calc(50vw - 143px);
+}

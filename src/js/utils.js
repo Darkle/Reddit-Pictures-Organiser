@@ -36,6 +36,7 @@ const getFolders = () => [...Object.keys(store.folders)].reverse()
 const noFolders = () => !getFolders().length
 const isEmptyObject = (obj) => !Object.entries(obj).length
 const isNegativeNumber = number => Math.sign(number) === -1
+const safeGetImageSrc = image => image.src || image.url
 
 const checkFetchResponseStatus = response => {
   if(response.ok) return response
@@ -76,4 +77,5 @@ export{
   noFolders,
   isEmptyObject,
   isNegativeNumber,
+  safeGetImageSrc,
 }

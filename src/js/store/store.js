@@ -23,7 +23,8 @@ const store = {
   },  
   addImageToFolder(folder, image) {
     if(getImageFromId(image.id, store.folders[folder])) return
-    store.folders[folder].unshift(image)
+    const {src, url, id, permalink, thumbnail, edits} = image
+    store.folders[folder].unshift({src, url, id, permalink, thumbnail, edits})
     saveToLocalForage('folders', store.folders)
   },  
   removeImageFromFolder(folder, image) {
@@ -56,10 +57,10 @@ const store = {
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },  
-  addEditsToImage(imageId, {rotateVal, cropImageVal, shrinkImageVal}, folder = null){
+  addEditsToImage(imageId, {rotateVal, cropImageVal, resizeImageVal}, folder = null){
     const updateImageEditInImages = images => images.map(storedImg => {
       if(storedImg.id === imageId){
-        storedImg.edits = {rotateVal, cropImageVal, shrinkImageVal}
+        storedImg.edits = {rotateVal, cropImageVal, resizeImageVal}
       }
       return storedImg
     })

@@ -1,5 +1,6 @@
 {
   "imports": {
+    "js-cropper": "./js-cropper.js",
     "lit-html": "./lit-html.js",
     "localforage": "./localforage.js",
     "navigo": "./navigo.js",

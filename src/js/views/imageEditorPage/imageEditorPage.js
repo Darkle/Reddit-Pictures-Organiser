@@ -3,7 +3,7 @@ import {html, render} from '../../web_modules/lit-html.js'
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
 
-import { $, setPageTitle, getImageFromId } from '../../utils.js'
+import { $, setPageTitle, getImageFromId, safeGetImageSrc } from '../../utils.js'
 import {Nav} from './Nav.js'
 import { convertImageEditsToCssString } from './editing.js'
 
@@ -27,12 +27,12 @@ function updateImageEditPage({subreddit, timefilter, imageId, newEdits = null, f
 function ImageEditor(state){
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
   const image = getImageFromId(state.imageId, images)
-  const imageSrc = image.src || image.url
+  const imageSrc = safeGetImageSrc(image)
   const imageEditsAsCssString = convertImageEditsToCssString(image.edits, state.newEdits)
 
   return html`
     <main id="app" class="imageEditorPage">
-        ${Nav(state)}
+        ${Nav({...state, image})}
         <div class="imageContainer">
           <img src=${imageSrc} style=${imageEditsAsCssString} class="imageToBeEdited" />
         </div>
@@ -45,7 +45,7 @@ function addCropperStylesheet(){
   const link = document.createElement('link')
   link.setAttribute('rel', 'stylesheet')
   link.setAttribute('id', 'cropperStylesheet')
-  link.setAttribute('href', 'https://unpkg.com/croppr@2.3.1/dist/croppr.min.css')
+  link.setAttribute('href', 'https://unpkg.com/js-cropper@1.0.1/dist/Cropper.css')
   document.head.appendChild(link)
 }
 
