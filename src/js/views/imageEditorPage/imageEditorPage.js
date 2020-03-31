@@ -34,6 +34,7 @@ function ImageEditor(state){
     <main id="app" class="imageEditorPage">
         ${Nav({...state, image})}
         <div class="imageContainer">
+          <div class="cropperOverlay"></div>
           <img src=${imageSrc} style=${imageEditsAsCssString} class="imageToBeEdited" />
         </div>
       </main>   

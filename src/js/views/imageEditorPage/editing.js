@@ -36,28 +36,34 @@ const edits = {
 }
 /* eslint-enable */
 
-function cropImage(state){
-  const imageElem = $('.imageToBeEdited')
-  const renderedImageHeight = imageElem.offsetHeight
-  const renderedImageWidth = imageElem.offsetWidth
+function cropImage(state){ // eslint-disable-line max-lines-per-function
+  const imageElemBoundedRect = $('.imageToBeEdited').getBoundingClientRect()
+  console.log(imageElemBoundedRect)
+  // console.log('onResizeEnd', target.getBoundingClientRect())
+  // const renderedImageHeight = imageElem.offsetHeight
+  // const renderedImageWidth = imageElem.offsetWidth
 
-  import('../../web_modules/js-cropper.js')
-    .then(({default: Cropper}) => {
-      imageElem.classList.toggle('hide')
 
-      const cropper = new Cropper({
-        height: renderedImageHeight,
-        width: renderedImageWidth,
-        onChange(crop) {
-          console.log('crop changed')
-          console.log(crop.getData())
-          // edits.updateCropVal(cropValues)
-        }
-      })
-      cropper.render('.imageContainer')
-      cropper.loadImage(safeGetImageSrc(state.image)).catch(logger.error)
-    })
-    .catch(logger.error)
+  $('.cropperOverlay').classList.toggle('show')
+  // @ts-ignore
+  const moveable = new Moveable(document.body, {
+    target: $('.cropperOverlay'),
+    container: $('.imageContainer'),
+    draggable: true,
+    // innerBounds: { left: imageElemBoundedRect.left, top: imageElemBoundedRect.top, width: imageElemBoundedRect.width, height: imageElemBoundedRect.height},
+    origin: false,
+    resizable: true,
+  })
+  moveable.on('resize', ({ target, width, height, delta }) => {
+      if(delta[0]) target.style.width = `${width}px` // eslint-disable-line functional/immutable-data
+      if(delta[1]) target.style.height = `${height}px` // eslint-disable-line functional/immutable-data
+  }).on('drag', ({target, left, top }) => {
+    target.style.left = `${left}px` // eslint-disable-line functional/immutable-data
+    target.style.top = `${top}px` // eslint-disable-line functional/immutable-data
+  }).on('scale', ({target, transform}) => {
+    target.style.transform = transform // eslint-disable-line functional/immutable-data
+  })
+
 }
 
 function rotateLeft(state){
@@ -117,6 +123,16 @@ function convertImageEditsToCssString(storedEdits, newEdits){ // eslint-disable-
   const resizeCss = resizeVal === oneHundredPercent ? '' : `height: ${resizeVal}%;` 
   
   return `${rotateCss}${resizeCss}`
+}
+
+function calculateCropCssClipPath(){
+  //store the image container offsetHeight offsetWidth only once per image viewer and image editor render - maybe add 
+  // it to the state when call each render so can pass it on - i dont think i need to account for rotating screen do i - cause that wouldnt happen much when editing - oh but I guess it would for if they open viewer then rotate, then click on edit
+  //save in onrething handler evewnt https://davidwalsh.name/orientation-change so onchange, check if image viewer or image editor
+  // elements in page and if so, update the image container offsetHeight & offsetWidth variables
+  // I think I will have to do this in the nav for the editor - pass it in as state, and
+  // for the editor it doesnt really matter
+  // No i think we just need to take the dumb approach otherwise it gets too complex - if its slow, we could perhaps use requestanimationframe or the like
 }
 
 function imageRightSideUp(rotateVal){
