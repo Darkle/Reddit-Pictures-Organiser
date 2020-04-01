@@ -10,6 +10,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
   const handleLineRight = $('.handleLine[data-handle-line="right"]')
   const handleLineBottom = $('.handleLine[data-handle-line="bottom"]')
   const handleLineLeft = $('.handleLine[data-handle-line="left"]')
+  const handleLines = {handleLineTop, handleLineRight, handleLineBottom, handleLineLeft}
   // make image slightly smaller to make it easier to grab the crop handles on the edge
   image.style.height = `80%` // eslint-disable-line functional/immutable-data
   const imageElemBoundedRect = image.getBoundingClientRect()
@@ -29,42 +30,19 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
       const draggieTopRight = new Draggabilly($('.handle[data-handle="topRight"]'))
       const draggieBottomRight = new Draggabilly($('.handle[data-handle="bottomRight"]'))
       const draggieBottomLeft = new Draggabilly($('.handle[data-handle="bottomLeft"]'))
+      const draggies = {draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}
 
-      handleLineLeft.style.left = `${imageElemBoundedRect.left}px` // eslint-disable-line functional/immutable-data
-      handleLineLeft.style.top = `${imageElemBoundedRect.top}px` // eslint-disable-line functional/immutable-data
-      handleLineLeft.style.height = `${imageElemBoundedRect.height}px` // eslint-disable-line functional/immutable-data
+      updateHandleLinesPosition(draggies, handleLines, imageElemBoundedRect)
 
-      handleLineTop.style.left = `${imageElemBoundedRect.left}px` // eslint-disable-line functional/immutable-data
-      handleLineTop.style.top = `${imageElemBoundedRect.top}px` // eslint-disable-line functional/immutable-data
-      handleLineTop.style.width = `${imageElemBoundedRect.width}px` // eslint-disable-line functional/immutable-data
-
-      handleLineRight.style.left = `${imageElemBoundedRect.right}px` // eslint-disable-line functional/immutable-data
-      handleLineRight.style.top = `${imageElemBoundedRect.top}px` // eslint-disable-line functional/immutable-data
-      handleLineRight.style.height = `${imageElemBoundedRect.height}px` // eslint-disable-line functional/immutable-data     
-
-      handleLineBottom.style.left = `${imageElemBoundedRect.left}px` // eslint-disable-line functional/immutable-data
-      handleLineBottom.style.top = `${imageElemBoundedRect.bottom}px` // eslint-disable-line functional/immutable-data
-      handleLineBottom.style.width = `${imageElemBoundedRect.width}px` // eslint-disable-line functional/immutable-data
-
-      draggieTopLeft.on('dragMove', function(event) { // eslint-disable-line max-statements
+      draggieTopLeft.on('dragMove', function() {
         // Move topRight on the y-axis too
         draggieTopRight.setPosition(draggieTopRight.position.x, draggieTopLeft.position.y)
         // Move bottomLeft on the x-axis too
         draggieBottomLeft.setPosition(draggieTopLeft.position.x, draggieBottomLeft.position.y)
 
-        handleLineTop.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineTop.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineTop.style.width = `${((draggieTopRight.position.x + halfSizeOfHandles) - (draggieTopLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-        handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-        handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+        updateHandleLinesPosition(draggies, handleLines)
       })
-      draggieTopLeft.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements, max-lines-per-function
+      draggieTopLeft.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -86,40 +64,21 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
         draggieTopRight.setPosition(draggieTopRight.position.x, y)
         // Move bottomLeft on the x-axis too
         draggieBottomLeft.setPosition(x, draggieBottomLeft.position.y)
-
-        handleLineTop.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineTop.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineTop.style.width = `${((draggieTopRight.position.x + halfSizeOfHandles) - (draggieTopLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-        handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-        handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+       
+       // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
+       updateHandleLinesPosition(draggies, handleLines)
       })
       draggieTopLeft.setPosition(handleLeftBoundary, handleTopBoundary)
 
-      draggieTopRight.on('dragMove', function() { // eslint-disable-line max-statements
+      draggieTopRight.on('dragMove', function() {
         // Move topLeft on the y-axis too
         draggieTopLeft.setPosition(draggieTopLeft.position.x, draggieTopRight.position.y)
         // Move bottomRight on the x-axis too
         draggieBottomRight.setPosition(draggieTopRight.position.x, draggieBottomRight.position.y)
 
-        handleLineTop.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineTop.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineTop.style.width = `${((draggieTopRight.position.x + halfSizeOfHandles) - (draggieTopLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-        handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-        handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+        updateHandleLinesPosition(draggies, handleLines)
       })
-      draggieTopRight.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements, max-lines-per-function
+      draggieTopRight.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -143,38 +102,19 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
        draggieBottomRight.setPosition(x, draggieBottomRight.position.y)
        
        // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
-       handleLineTop.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineTop.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineTop.style.width = `${((draggieTopRight.position.x + halfSizeOfHandles) - (draggieTopLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-       handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-       handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+       updateHandleLinesPosition(draggies, handleLines)
       })      
       draggieTopRight.setPosition(handleRightBoundary, handleTopBoundary)
 
-      draggieBottomRight.on('dragMove', function() { // eslint-disable-line max-statements
+      draggieBottomRight.on('dragMove', function() {
         // Move bottomLeft on the y-axis too
         draggieBottomLeft.setPosition(draggieBottomLeft.position.x, draggieBottomRight.position.y)
         // Move topRight on the x-axis too
         draggieTopRight.setPosition(draggieBottomRight.position.x, draggieTopRight.position.y)
 
-        handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data     
-        handleLineBottom.style.left = `${draggieBottomLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineBottom.style.top = `${draggieBottomRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineBottom.style.width = `${((draggieBottomRight.position.x + halfSizeOfHandles) - (draggieBottomLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-       handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+        updateHandleLinesPosition(draggies, handleLines)
       })      
-      draggieBottomRight.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements, max-lines-per-function
+      draggieBottomRight.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -197,38 +137,19 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
        // Move topRight on the x-axis too
        draggieTopRight.setPosition(x, draggieTopRight.position.y)
 
-       handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data     
-       handleLineBottom.style.left = `${draggieBottomLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineBottom.style.top = `${draggieBottomRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineBottom.style.width = `${((draggieBottomRight.position.x + halfSizeOfHandles) - (draggieBottomLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-      handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-      handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-      handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+       updateHandleLinesPosition(draggies, handleLines)
       })
       draggieBottomRight.setPosition(handleRightBoundary, handleBottomBoundary)
 
-      draggieBottomLeft.on('dragMove', function() { // eslint-disable-line max-statements
+      draggieBottomLeft.on('dragMove', function() {
         // Move bottomRight on the y-axis too
         draggieBottomRight.setPosition(draggieBottomRight.position.x, draggieBottomLeft.position.y)
         // Move topLeft on the x-axis too
         draggieTopLeft.setPosition(draggieBottomLeft.position.x, draggieTopLeft.position.y)
 
-        handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data     
- 
-        handleLineBottom.style.left = `${draggieBottomLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineBottom.style.top = `${draggieBottomRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-        handleLineBottom.style.width = `${((draggieBottomRight.position.x + halfSizeOfHandles) - (draggieBottomLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
- 
-       handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+        updateHandleLinesPosition(draggies, handleLines)
       })      
-      draggieBottomLeft.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements, max-lines-per-function
+      draggieBottomLeft.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -251,22 +172,51 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
        // Move topLeft on the x-axis too
        draggieTopLeft.setPosition(x, draggieTopLeft.position.y)
 
-       handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data     
-
-       handleLineBottom.style.left = `${draggieBottomLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineBottom.style.top = `${draggieBottomRight.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-       handleLineBottom.style.width = `${((draggieBottomRight.position.x + halfSizeOfHandles) - (draggieBottomLeft.position.x + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
-
-      handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-      handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
-      handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` // eslint-disable-line functional/immutable-data
+       updateHandleLinesPosition(draggies, handleLines)
       })
       draggieBottomLeft.setPosition(handleLeftBoundary, handleBottomBoundary)
 
     }).catch(logger.error)
 }
+
+function updateHandleLinesPosition({draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}, handleLines, imageElemBoundedRect){ // eslint-disable-line max-statements, max-lines-per-function
+  /* eslint-disable functional/immutable-data*/
+  // Initial setup
+  if(imageElemBoundedRect){
+    handleLines.handleLineLeft.style.left = `${imageElemBoundedRect.left}px` 
+    handleLines.handleLineLeft.style.top = `${imageElemBoundedRect.top}px` 
+    handleLines.handleLineLeft.style.height = `${imageElemBoundedRect.height}px` 
+
+    handleLines.handleLineTop.style.left = `${imageElemBoundedRect.left}px` 
+    handleLines.handleLineTop.style.top = `${imageElemBoundedRect.top}px` 
+    handleLines.handleLineTop.style.width = `${imageElemBoundedRect.width}px` 
+
+    handleLines.handleLineRight.style.left = `${imageElemBoundedRect.right}px` 
+    handleLines.handleLineRight.style.top = `${imageElemBoundedRect.top}px` 
+    handleLines.handleLineRight.style.height = `${imageElemBoundedRect.height}px`      
+
+    handleLines.handleLineBottom.style.left = `${imageElemBoundedRect.left}px` 
+    handleLines.handleLineBottom.style.top = `${imageElemBoundedRect.bottom}px` 
+    handleLines.handleLineBottom.style.width = `${imageElemBoundedRect.width}px` 
+    return
+  }
+  handleLines.handleLineTop.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` 
+  handleLines.handleLineTop.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` 
+  handleLines.handleLineTop.style.width = `${((draggieTopRight.position.x + halfSizeOfHandles) - (draggieTopLeft.position.x + halfSizeOfHandles))}px` 
+
+  handleLines.handleLineRight.style.left = `${draggieTopRight.position.x + halfSizeOfHandles}px` 
+  handleLines.handleLineRight.style.top = `${draggieTopRight.position.y + halfSizeOfHandles}px` 
+  handleLines.handleLineRight.style.height = `${((draggieBottomRight.position.y + halfSizeOfHandles) - (draggieTopRight.position.y + halfSizeOfHandles))}px`      
+
+  handleLines.handleLineBottom.style.left = `${draggieBottomLeft.position.x + halfSizeOfHandles}px` 
+  handleLines.handleLineBottom.style.top = `${draggieBottomRight.position.y + halfSizeOfHandles}px` 
+  handleLines.handleLineBottom.style.width = `${((draggieBottomRight.position.x + halfSizeOfHandles) - (draggieBottomLeft.position.x + halfSizeOfHandles))}px` 
+
+  handleLines.handleLineLeft.style.left = `${draggieTopLeft.position.x + halfSizeOfHandles}px` 
+  handleLines.handleLineLeft.style.top = `${draggieTopLeft.position.y + halfSizeOfHandles}px` 
+  handleLines.handleLineLeft.style.height = `${((draggieBottomLeft.position.y + halfSizeOfHandles) - (draggieTopLeft.position.y + halfSizeOfHandles))}px` 
+}
+/* eslint-enable functional/immutable-data*/
 
 export {
   initCropper
