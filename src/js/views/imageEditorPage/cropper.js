@@ -11,8 +11,10 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
   const handleLineBottom = $('.handleLine[data-handle-line="bottom"]')
   const handleLineLeft = $('.handleLine[data-handle-line="left"]')
   const handleLines = {handleLineTop, handleLineRight, handleLineBottom, handleLineLeft}
+
   // make image slightly smaller to make it easier to grab the crop handles on the edge
   image.style.height = `80%` // eslint-disable-line functional/immutable-data
+  
   const imageElemBoundedRect = image.getBoundingClientRect()
   const handleLeftBoundary = imageElemBoundedRect.left - halfSizeOfHandles
   const handleTopBoundary = imageElemBoundedRect.top - halfSizeOfHandles
@@ -24,8 +26,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
 
   $$('.handle, .handleLine').forEach(handle => handle.classList.toggle('show'))
 
-  import('../../web_modules/draggabilly.js')
-    .then(({default: Draggabilly}) => {
+  import('../../web_modules/draggabilly.js').then(({default: Draggabilly}) => {
       setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect, boundaries)
     }).catch(logger.error)
 }
