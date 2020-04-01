@@ -55,7 +55,7 @@ function handleBackNavigation({subreddit, timefilter, folderpage}){
   return router.navigate(navigationUrl)  
 }
 
-function shareImageRedditPermalink(permalink){
+function shareImageRedditPermalink({permalink}){
   const fullPermalink = `https://reddit.com${permalink}`
   // @ts-ignore
   if (navigator.share) return navigator.share({url: fullPermalink}).catch(logger.error)
