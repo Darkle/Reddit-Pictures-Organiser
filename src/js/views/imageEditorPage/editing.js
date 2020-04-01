@@ -1,7 +1,7 @@
 import {updateImageEditPage} from './imageEditorPage.js'
 import { store } from '../../store/store.js'
 import { router } from '../../router.js'
-import { safeGetImageSrc, $ } from '../../utils.js'
+import { safeGetImageSrc, $, $$ } from '../../utils.js'
 import { logger } from '../../logger.js'
 
 /* eslint-disable functional/immutable-data, functional/no-this-expression */
@@ -9,6 +9,7 @@ const ninetyDegrees = 90
 const three60Degrees = 360
 const tenPercent = 10
 const oneHundredPercent = 100
+const halfSizeOfHandles = 10
 
 const edits = {
   rotateVal: 0,
@@ -38,33 +39,83 @@ const edits = {
 
 function cropImage(state){ // eslint-disable-line max-lines-per-function
   const imageElemBoundedRect = $('.imageToBeEdited').getBoundingClientRect()
-  console.log(imageElemBoundedRect)
+  const hadleLeftBoundary = imageElemBoundedRect.left - halfSizeOfHandles
+  const handleTopBoundary = imageElemBoundedRect.top - halfSizeOfHandles
+  const handleRightBoundary = imageElemBoundedRect.right - halfSizeOfHandles
+  const handleBottomBoundary = imageElemBoundedRect.bottom - halfSizeOfHandles
+  logger.debug(imageElemBoundedRect)
+
+  import('../../web_modules/draggabilly.js')
+    .then(({default: Draggabilly}) => { // eslint-disable-line max-lines-per-function, max-statements
+      $$('.handle').forEach(handle => handle.classList.toggle('show'))
+
+      // updateHandleElemPosition(handleTopLeft, imageElemBoundedRect.left, imageElemBoundedRect.top)
+//TODO: what if they overlap the handles? - make it so that the top ones cant go as low as the bottom ones and left cant go as far as right
+      const draggieTopLeft = new Draggabilly($('.handle[data-handle="topLeft"]'))
+      draggieTopLeft.on('dragMove', function() {
+        draggieTopRight.setPosition(draggieTopRight.position.x, draggieTopLeft.position.y) // eslint-disable-line no-use-before-define
+      })
+      draggieTopLeft.on('dragEnd', function(event) {
+        if(event.x < hadleLeftBoundary){
+          draggieTopLeft.setPosition(hadleLeftBoundary, draggieTopLeft.position.y) // eslint-disable-line no-use-before-define
+        }
+        if(event.y > handleBottomBoundary){
+          draggieTopLeft.setPosition(draggieTopLeft.position.x, handleBottomBoundary) // eslint-disable-line no-use-before-define
+        }
+        draggieTopRight.setPosition(draggieTopRight.position.x, draggieTopLeft.position.y) // eslint-disable-line no-use-before-define
+      })
+      draggieTopLeft.setPosition(hadleLeftBoundary, handleTopBoundary)
+
+      const draggieTopRight = new Draggabilly($('.handle[data-handle="topRight"]'))
+      draggieTopRight.on('dragMove', function(event) {
+        console.log(event)
+      })
+      draggieTopRight.setPosition(handleRightBoundary, handleTopBoundary)
+
+      const draggieBottomRight = new Draggabilly($('.handle[data-handle="bottomRight"]'))
+      draggieBottomRight.on('dragMove', function(event) {
+        console.log(event)
+      })
+      draggieBottomRight.setPosition(handleRightBoundary, handleBottomBoundary)
+
+      const draggieBL = new Draggabilly($('.handle[data-handle="bottomLeft"]'))
+      draggieBL.on('dragMove', function(event) {
+        console.log(event)
+      })
+      draggieBL.setPosition(hadleLeftBoundary, handleBottomBoundary)
+
+    }).catch(logger.error)
+
   // console.log('onResizeEnd', target.getBoundingClientRect())
   // const renderedImageHeight = imageElem.offsetHeight
   // const renderedImageWidth = imageElem.offsetWidth
 
-
-  $('.cropperOverlay').classList.toggle('show')
-  // @ts-ignore
-  const moveable = new Moveable(document.body, {
-    target: $('.cropperOverlay'),
-    container: $('.imageContainer'),
-    draggable: true,
-    // innerBounds: { left: imageElemBoundedRect.left, top: imageElemBoundedRect.top, width: imageElemBoundedRect.width, height: imageElemBoundedRect.height},
-    origin: false,
-    resizable: true,
-  })
-  moveable.on('resize', ({ target, width, height, delta }) => {
-      if(delta[0]) target.style.width = `${width}px` // eslint-disable-line functional/immutable-data
-      if(delta[1]) target.style.height = `${height}px` // eslint-disable-line functional/immutable-data
-  }).on('drag', ({target, left, top }) => {
-    target.style.left = `${left}px` // eslint-disable-line functional/immutable-data
-    target.style.top = `${top}px` // eslint-disable-line functional/immutable-data
-  }).on('scale', ({target, transform}) => {
-    target.style.transform = transform // eslint-disable-line functional/immutable-data
-  })
+  // $('.cropperOverlay').classList.toggle('show')
+  // // @ts-ignore
+  // const moveable = new Moveable(document.body, {
+  //   target: $('.cropperOverlay'),
+  //   container: $('.imageContainer'),
+  //   draggable: true,
+  //   // innerBounds: { left: imageElemBoundedRect.left, top: imageElemBoundedRect.top, width: imageElemBoundedRect.width, height: imageElemBoundedRect.height},
+  //   origin: false,
+  //   resizable: true,
+  // })
+  // moveable.on('resize', ({ target, width, height, delta }) => {
+  //     if(delta[0]) target.style.width = `${width}px` // eslint-disable-line functional/immutable-data
+  //     if(delta[1]) target.style.height = `${height}px` // eslint-disable-line functional/immutable-data
+  // }).on('drag', ({target, left, top }) => {
+  //   target.style.left = `${left}px` // eslint-disable-line functional/immutable-data
+  //   target.style.top = `${top}px` // eslint-disable-line functional/immutable-data
+  // }).on('scale', ({target, transform}) => {
+  //   target.style.transform = transform // eslint-disable-line functional/immutable-data
+  // })
 
 }
+
+// function updateHandleElemPosition(handle, leftPos, rightPos){
+//   handle.style.left = `${leftPos - halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data
+//   handle.style.top = `${rightPos - halfSizeOfHandles}px` // eslint-disable-line functional/immutable-data  
+// }
 
 function rotateLeft(state){
   edits.updateRotateVal(edits.rotateVal - ninetyDegrees)
@@ -121,8 +172,11 @@ function convertImageEditsToCssString(storedEdits, newEdits){ // eslint-disable-
   
   const rotateCss = imageRightSideUp(rotateVal) ? '' : `transform: rotate(${rotateVal}deg);` 
   const resizeCss = resizeVal === oneHundredPercent ? '' : `height: ${resizeVal}%;` 
-  
-  return `${rotateCss}${resizeCss}`
+  const clipCss = ';'
+  /*****
+    Clip should be after rotate. Then resize.
+  *****/
+  return `${rotateCss}${clipCss}${resizeCss}`
 }
 
 function calculateCropCssClipPath(){

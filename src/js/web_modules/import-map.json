@@ -1,5 +1,6 @@
 {
   "imports": {
+    "draggabilly": "./draggabilly.js",
     "lit-html": "./lit-html.js",
     "localforage": "./localforage.js",
     "navigo": "./navigo.js",

@@ -2,6 +2,7 @@ import {html, render} from '../../web_modules/lit-html.js'
 
 import {store} from '../../store/store.js'
 import { router } from '../../router.js'
+import {Handles} from './Handles.js'
 
 import { $, setPageTitle, getImageFromId, safeGetImageSrc } from '../../utils.js'
 import {Nav} from './Nav.js'
@@ -34,7 +35,7 @@ function ImageEditor(state){
     <main id="app" class="imageEditorPage">
         ${Nav({...state, image})}
         <div class="imageContainer">
-          <div class="cropperOverlay"></div>
+          ${Handles()}
           <img src=${imageSrc} style=${imageEditsAsCssString} class="imageToBeEdited" />
         </div>
       </main>   
