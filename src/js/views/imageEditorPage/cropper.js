@@ -33,7 +33,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
       const draggies = {draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}
 
       updateHandleLinesPosition(draggies, handleLines, imageElemBoundedRect)
-
+      /* eslint-disable complexity, max-statements*/
       draggieTopLeft.on('dragMove', function() {
         // Move topRight on the y-axis too
         draggieTopRight.setPosition(draggieTopRight.position.x, draggieTopLeft.position.y)
@@ -42,7 +42,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
 
         updateHandleLinesPosition(draggies, handleLines)
       })
-      draggieTopLeft.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
+      draggieTopLeft.on('dragEnd', function(event) {
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -78,7 +78,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
 
         updateHandleLinesPosition(draggies, handleLines)
       })
-      draggieTopRight.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
+      draggieTopRight.on('dragEnd', function(event) {
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -114,7 +114,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
 
         updateHandleLinesPosition(draggies, handleLines)
       })      
-      draggieBottomRight.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
+      draggieBottomRight.on('dragEnd', function(event) {
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -149,7 +149,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
 
         updateHandleLinesPosition(draggies, handleLines)
       })      
-      draggieBottomLeft.on('dragEnd', function(event) { // eslint-disable-line complexity, max-statements
+      draggieBottomLeft.on('dragEnd', function(event) {
         /*****
           event.y and event.x dont take into account the size of the dragging element and we want the middle, 
           so referencing the element position instead.
@@ -175,7 +175,7 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
        updateHandleLinesPosition(draggies, handleLines)
       })
       draggieBottomLeft.setPosition(handleLeftBoundary, handleBottomBoundary)
-
+      /* eslint-enable complexity, max-statements*/
     }).catch(logger.error)
 }
 
