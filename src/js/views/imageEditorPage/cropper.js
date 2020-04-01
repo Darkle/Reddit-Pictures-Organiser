@@ -18,165 +18,169 @@ function initCropper(){ // eslint-disable-line max-lines-per-function, max-state
   const handleTopBoundary = imageElemBoundedRect.top - halfSizeOfHandles
   const handleRightBoundary = imageElemBoundedRect.right - halfSizeOfHandles
   const handleBottomBoundary = imageElemBoundedRect.bottom - halfSizeOfHandles
+  const boundaries = {handleLeftBoundary, handleTopBoundary, handleRightBoundary, handleBottomBoundary}
 
   logger.debug(imageElemBoundedRect)
 
   $$('.handle, .handleLine').forEach(handle => handle.classList.toggle('show'))
 
   import('../../web_modules/draggabilly.js')
-    .then(({default: Draggabilly}) => { // eslint-disable-line max-lines-per-function, max-statements
-
-      const draggieTopLeft = new Draggabilly($('.handle[data-handle="topLeft"]'))
-      const draggieTopRight = new Draggabilly($('.handle[data-handle="topRight"]'))
-      const draggieBottomRight = new Draggabilly($('.handle[data-handle="bottomRight"]'))
-      const draggieBottomLeft = new Draggabilly($('.handle[data-handle="bottomLeft"]'))
-      const draggies = {draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}
-
-      updateHandleLinesPosition(draggies, handleLines, imageElemBoundedRect)
-      /* eslint-disable complexity, max-statements*/
-      draggieTopLeft.on('dragMove', function() {
-        // Move topRight on the y-axis too
-        draggieTopRight.setPosition(draggieTopRight.position.x, draggieTopLeft.position.y)
-        // Move bottomLeft on the x-axis too
-        draggieBottomLeft.setPosition(draggieTopLeft.position.x, draggieBottomLeft.position.y)
-
-        updateHandleLinesPosition(draggies, handleLines)
-      })
-      draggieTopLeft.on('dragEnd', function(event) {
-        /*****
-          event.y and event.x dont take into account the size of the dragging element and we want the middle, 
-          so referencing the element position instead.
-        *****/
-        let {x} = draggieTopLeft.position // eslint-disable-line functional/no-let
-        // Dont go past the leftmost part of the image when going left
-        if(event.x < handleLeftBoundary) x = handleLeftBoundary
-        // Dont go past the topRight handle when going right
-        if(event.x >= draggieTopRight.position.x) x = draggieTopRight.position.x - dragPixelBuffer
-
-        let {y} = draggieTopLeft.position // eslint-disable-line functional/no-let
-        // Dont go past the topmost part of the image when going up
-        if(event.y < handleTopBoundary) y = handleTopBoundary
-        // Dont go past the bottommost handle when going down
-        if(event.y >= draggieBottomRight.position.y) y = draggieBottomRight.position.y - dragPixelBuffer
-
-        draggieTopLeft.setPosition(x, y)
-        // Move topRight on the y-axis too
-        draggieTopRight.setPosition(draggieTopRight.position.x, y)
-        // Move bottomLeft on the x-axis too
-        draggieBottomLeft.setPosition(x, draggieBottomLeft.position.y)
-       
-       // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
-       updateHandleLinesPosition(draggies, handleLines)
-      })
-      draggieTopLeft.setPosition(handleLeftBoundary, handleTopBoundary)
-
-      draggieTopRight.on('dragMove', function() {
-        // Move topLeft on the y-axis too
-        draggieTopLeft.setPosition(draggieTopLeft.position.x, draggieTopRight.position.y)
-        // Move bottomRight on the x-axis too
-        draggieBottomRight.setPosition(draggieTopRight.position.x, draggieBottomRight.position.y)
-
-        updateHandleLinesPosition(draggies, handleLines)
-      })
-      draggieTopRight.on('dragEnd', function(event) {
-        /*****
-          event.y and event.x dont take into account the size of the dragging element and we want the middle, 
-          so referencing the element position instead.
-        *****/
-       let {x} = draggieTopRight.position // eslint-disable-line functional/no-let
-       // Dont go past the rightmost part of the image when going right
-       if(event.x > handleRightBoundary) x = handleRightBoundary
-       // Dont go past the topLeft handle when going left
-       if(event.x <= draggieTopRight.position.x) x = draggieTopLeft.position.x + dragPixelBuffer
-
-       let {y} = draggieTopRight.position // eslint-disable-line functional/no-let
-       // Dont go past the topmost part of the image when going up
-       if(event.y < handleTopBoundary) y = handleTopBoundary
-       // Dont go past the bottommost handle when going down
-       if(event.y >= draggieBottomRight.position.y) y = draggieBottomRight.position.y - dragPixelBuffer
-
-       draggieTopRight.setPosition(x, y)
-       // Move topLeft on the y-axis too
-       draggieTopLeft.setPosition(draggieTopLeft.position.x, y)
-       // Move bottomRight on the x-axis too
-       draggieBottomRight.setPosition(x, draggieBottomRight.position.y)
-       
-       // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
-       updateHandleLinesPosition(draggies, handleLines)
-      })      
-      draggieTopRight.setPosition(handleRightBoundary, handleTopBoundary)
-
-      draggieBottomRight.on('dragMove', function() {
-        // Move bottomLeft on the y-axis too
-        draggieBottomLeft.setPosition(draggieBottomLeft.position.x, draggieBottomRight.position.y)
-        // Move topRight on the x-axis too
-        draggieTopRight.setPosition(draggieBottomRight.position.x, draggieTopRight.position.y)
-
-        updateHandleLinesPosition(draggies, handleLines)
-      })      
-      draggieBottomRight.on('dragEnd', function(event) {
-        /*****
-          event.y and event.x dont take into account the size of the dragging element and we want the middle, 
-          so referencing the element position instead.
-        *****/
-       let {x} = draggieBottomRight.position // eslint-disable-line functional/no-let
-       // Dont go past the rightmost part of the image when going right
-       if(event.x > handleRightBoundary) x = handleRightBoundary
-       // Dont go past the bottomLeft handle when going left
-       if(event.x <= draggieBottomLeft.position.x) x = draggieBottomLeft.position.x + dragPixelBuffer
-
-       let {y} = draggieBottomRight.position // eslint-disable-line functional/no-let
-       // Dont go past the bottommost part of the image when going down
-       if(event.y > handleBottomBoundary) y = handleBottomBoundary
-       // Dont go past the topRight handle when going up
-       if(event.y <= draggieTopRight.position.y) y = draggieTopRight.position.y + dragPixelBuffer
-
-       draggieBottomRight.setPosition(x, y)
-       // Move bottomLeft on the y-axis too
-       draggieBottomLeft.setPosition(draggieBottomLeft.position.x, y)
-       // Move topRight on the x-axis too
-       draggieTopRight.setPosition(x, draggieTopRight.position.y)
-
-       updateHandleLinesPosition(draggies, handleLines)
-      })
-      draggieBottomRight.setPosition(handleRightBoundary, handleBottomBoundary)
-
-      draggieBottomLeft.on('dragMove', function() {
-        // Move bottomRight on the y-axis too
-        draggieBottomRight.setPosition(draggieBottomRight.position.x, draggieBottomLeft.position.y)
-        // Move topLeft on the x-axis too
-        draggieTopLeft.setPosition(draggieBottomLeft.position.x, draggieTopLeft.position.y)
-
-        updateHandleLinesPosition(draggies, handleLines)
-      })      
-      draggieBottomLeft.on('dragEnd', function(event) {
-        /*****
-          event.y and event.x dont take into account the size of the dragging element and we want the middle, 
-          so referencing the element position instead.
-        *****/
-       let {x} = draggieBottomLeft.position // eslint-disable-line functional/no-let
-       // Dont go past the leftmost part of the image when going left
-       if(event.x < handleLeftBoundary) x = handleLeftBoundary
-       // Dont go past the bottomRight handle when going right
-       if(event.x >= draggieBottomRight.position.x) x = draggieBottomRight.position.x - dragPixelBuffer
-
-       let {y} = draggieBottomLeft.position // eslint-disable-line functional/no-let
-       // Dont go past the bottommost part of the image when going down
-       if(event.y > handleBottomBoundary) y = handleBottomBoundary
-       // Dont go past the topLeft handle when going up
-       if(event.y <= draggieTopLeft.position.y) y = draggieTopLeft.position.y + dragPixelBuffer
-
-       draggieBottomLeft.setPosition(x, y)
-       // Move bottomRight on the y-axis too
-       draggieBottomRight.setPosition(draggieBottomRight.position.x, y)
-       // Move topLeft on the x-axis too
-       draggieTopLeft.setPosition(x, draggieTopLeft.position.y)
-
-       updateHandleLinesPosition(draggies, handleLines)
-      })
-      draggieBottomLeft.setPosition(handleLeftBoundary, handleBottomBoundary)
-      /* eslint-enable complexity, max-statements*/
+    .then(({default: Draggabilly}) => {
+      setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect, boundaries)
     }).catch(logger.error)
+}
+/* eslint-disable complexity, max-statements, max-lines-per-function*/
+function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect, boundaries){
+  const draggieTopLeft = new Draggabilly($('.handle[data-handle="topLeft"]'))
+  const draggieTopRight = new Draggabilly($('.handle[data-handle="topRight"]'))
+  const draggieBottomRight = new Draggabilly($('.handle[data-handle="bottomRight"]'))
+  const draggieBottomLeft = new Draggabilly($('.handle[data-handle="bottomLeft"]'))
+  const draggies = {draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}
+
+  updateHandleLinesPosition(draggies, handleLines, imageElemBoundedRect)
+
+  draggieTopLeft.on('dragMove', function() {
+    // Move topRight on the y-axis too
+    draggieTopRight.setPosition(draggieTopRight.position.x, draggieTopLeft.position.y)
+    // Move bottomLeft on the x-axis too
+    draggieBottomLeft.setPosition(draggieTopLeft.position.x, draggieBottomLeft.position.y)
+
+    updateHandleLinesPosition(draggies, handleLines)
+  })
+  draggieTopLeft.on('dragEnd', function(event) {
+    /*****
+      event.y and event.x dont take into account the size of the dragging element and we want the middle, 
+      so referencing the element position instead.
+    *****/
+    let {x} = draggieTopLeft.position // eslint-disable-line functional/no-let
+    // Dont go past the leftmost part of the image when going left
+    if(event.x < boundaries.handleLeftBoundary) x = boundaries.handleLeftBoundary
+    // Dont go past the topRight handle when going right
+    if(event.x >= draggieTopRight.position.x) x = draggieTopRight.position.x - dragPixelBuffer
+
+    let {y} = draggieTopLeft.position // eslint-disable-line functional/no-let
+    // Dont go past the topmost part of the image when going up
+    if(event.y < boundaries.handleTopBoundary) y = boundaries.handleTopBoundary
+    // Dont go past the bottommost handle when going down
+    if(event.y >= draggieBottomRight.position.y) y = draggieBottomRight.position.y - dragPixelBuffer
+
+    draggieTopLeft.setPosition(x, y)
+    // Move topRight on the y-axis too
+    draggieTopRight.setPosition(draggieTopRight.position.x, y)
+    // Move bottomLeft on the x-axis too
+    draggieBottomLeft.setPosition(x, draggieBottomLeft.position.y)
+   
+   // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
+   updateHandleLinesPosition(draggies, handleLines)
+  })
+  draggieTopLeft.setPosition(boundaries.handleLeftBoundary, boundaries.handleTopBoundary)
+
+  draggieTopRight.on('dragMove', function() {
+    // Move topLeft on the y-axis too
+    draggieTopLeft.setPosition(draggieTopLeft.position.x, draggieTopRight.position.y)
+    // Move bottomRight on the x-axis too
+    draggieBottomRight.setPosition(draggieTopRight.position.x, draggieBottomRight.position.y)
+
+    updateHandleLinesPosition(draggies, handleLines)
+  })
+  draggieTopRight.on('dragEnd', function(event) {
+    /*****
+      event.y and event.x dont take into account the size of the dragging element and we want the middle, 
+      so referencing the element position instead.
+    *****/
+   let {x} = draggieTopRight.position // eslint-disable-line functional/no-let
+   // Dont go past the rightmost part of the image when going right
+   if(event.x > boundaries.handleRightBoundary) x = boundaries.handleRightBoundary
+   // Dont go past the topLeft handle when going left
+   if(event.x <= draggieTopRight.position.x) x = draggieTopLeft.position.x + dragPixelBuffer
+
+   let {y} = draggieTopRight.position // eslint-disable-line functional/no-let
+   // Dont go past the topmost part of the image when going up
+   if(event.y < boundaries.handleTopBoundary) y = boundaries.handleTopBoundary
+   // Dont go past the bottommost handle when going down
+   if(event.y >= draggieBottomRight.position.y) y = draggieBottomRight.position.y - dragPixelBuffer
+
+   draggieTopRight.setPosition(x, y)
+   // Move topLeft on the y-axis too
+   draggieTopLeft.setPosition(draggieTopLeft.position.x, y)
+   // Move bottomRight on the x-axis too
+   draggieBottomRight.setPosition(x, draggieBottomRight.position.y)
+   
+   // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
+   updateHandleLinesPosition(draggies, handleLines)
+  })      
+  draggieTopRight.setPosition(boundaries.handleRightBoundary, boundaries.handleTopBoundary)
+
+  draggieBottomRight.on('dragMove', function() {
+    // Move bottomLeft on the y-axis too
+    draggieBottomLeft.setPosition(draggieBottomLeft.position.x, draggieBottomRight.position.y)
+    // Move topRight on the x-axis too
+    draggieTopRight.setPosition(draggieBottomRight.position.x, draggieTopRight.position.y)
+
+    updateHandleLinesPosition(draggies, handleLines)
+  })      
+  draggieBottomRight.on('dragEnd', function(event) {
+    /*****
+      event.y and event.x dont take into account the size of the dragging element and we want the middle, 
+      so referencing the element position instead.
+    *****/
+   let {x} = draggieBottomRight.position // eslint-disable-line functional/no-let
+   // Dont go past the rightmost part of the image when going right
+   if(event.x > boundaries.handleRightBoundary) x = boundaries.handleRightBoundary
+   // Dont go past the bottomLeft handle when going left
+   if(event.x <= draggieBottomLeft.position.x) x = draggieBottomLeft.position.x + dragPixelBuffer
+
+   let {y} = draggieBottomRight.position // eslint-disable-line functional/no-let
+   // Dont go past the bottommost part of the image when going down
+   if(event.y > boundaries.handleBottomBoundary) y = boundaries.handleBottomBoundary
+   // Dont go past the topRight handle when going up
+   if(event.y <= draggieTopRight.position.y) y = draggieTopRight.position.y + dragPixelBuffer
+
+   draggieBottomRight.setPosition(x, y)
+   // Move bottomLeft on the y-axis too
+   draggieBottomLeft.setPosition(draggieBottomLeft.position.x, y)
+   // Move topRight on the x-axis too
+   draggieTopRight.setPosition(x, draggieTopRight.position.y)
+
+   updateHandleLinesPosition(draggies, handleLines)
+  })
+  draggieBottomRight.setPosition(boundaries.handleRightBoundary, boundaries.handleBottomBoundary)
+
+  draggieBottomLeft.on('dragMove', function() {
+    // Move bottomRight on the y-axis too
+    draggieBottomRight.setPosition(draggieBottomRight.position.x, draggieBottomLeft.position.y)
+    // Move topLeft on the x-axis too
+    draggieTopLeft.setPosition(draggieBottomLeft.position.x, draggieTopLeft.position.y)
+
+    updateHandleLinesPosition(draggies, handleLines)
+  })      
+  draggieBottomLeft.on('dragEnd', function(event) {
+    /*****
+      event.y and event.x dont take into account the size of the dragging element and we want the middle, 
+      so referencing the element position instead.
+    *****/
+   let {x} = draggieBottomLeft.position // eslint-disable-line functional/no-let
+   // Dont go past the leftmost part of the image when going left
+   if(event.x < boundaries.handleLeftBoundary) x = boundaries.handleLeftBoundary
+   // Dont go past the bottomRight handle when going right
+   if(event.x >= draggieBottomRight.position.x) x = draggieBottomRight.position.x - dragPixelBuffer
+
+   let {y} = draggieBottomLeft.position // eslint-disable-line functional/no-let
+   // Dont go past the bottommost part of the image when going down
+   if(event.y > boundaries.handleBottomBoundary) y = boundaries.handleBottomBoundary
+   // Dont go past the topLeft handle when going up
+   if(event.y <= draggieTopLeft.position.y) y = draggieTopLeft.position.y + dragPixelBuffer
+
+   draggieBottomLeft.setPosition(x, y)
+   // Move bottomRight on the y-axis too
+   draggieBottomRight.setPosition(draggieBottomRight.position.x, y)
+   // Move topLeft on the x-axis too
+   draggieTopLeft.setPosition(x, draggieTopLeft.position.y)
+
+   updateHandleLinesPosition(draggies, handleLines)
+  })
+  draggieBottomLeft.setPosition(boundaries.handleLeftBoundary, boundaries.handleBottomBoundary)
+  /* eslint-enable complexity, max-statements*/
 }
 
 function updateHandleLinesPosition({draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}, handleLines, imageElemBoundedRect){ // eslint-disable-line max-statements, max-lines-per-function
