@@ -58,6 +58,22 @@
 .imageEditorPage .handle.show {
   display: block;
 }
+.imageEditorPage .handleLine {
+  display: none;
+  opacity: 0.6;
+  background-color: tomato;
+  position: absolute;
+  border: 1px dotted;
+}
+.imageEditorPage .handleLine[data-handle-line="top"], .imageEditorPage .handleLine[data-handle-line="bottom"] {
+  /* height: 2px; */
+}
+.imageEditorPage .handleLine[data-handle-line="right"], .imageEditorPage .handleLine[data-handle-line="left"] {
+  /* width: 2px; */
+}
+.imageEditorPage .handleLine.show {
+  display: block;
+}
 
 /* .imageEditorPage .imageContainer .cropperOverlay{
   display: none;
