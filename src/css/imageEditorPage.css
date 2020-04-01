@@ -61,9 +61,8 @@
 .imageEditorPage .handleLine {
   display: none;
   opacity: 0.6;
-  background-color: tomato;
   position: absolute;
-  border: 1px dotted;
+  border: 1px dashed tomato;
 }
 .imageEditorPage .handleLine[data-handle-line="top"], .imageEditorPage .handleLine[data-handle-line="bottom"] {
   /* height: 2px; */
