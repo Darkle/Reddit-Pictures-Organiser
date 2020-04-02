@@ -1,6 +1,8 @@
 import {updateImageEditPage} from './imageEditorPage.js'
 import { store } from '../../store/store.js'
 import { router } from '../../router.js'
+import { isEmptyObject } from '../../utils.js'
+import { logger } from '../../logger.js'
 
 /* eslint-disable functional/immutable-data, functional/no-this-expression */
 const ninetyDegrees = 90
@@ -15,12 +17,29 @@ const edits = {
   updateRotateVal(angle){
     this.rotateVal = angle
   },
-  updateCropVal(width, height, positionX, positionY){
+  updateCropVal(cropHandlLines, imgBoundingRect){ // eslint-disable-line max-statements, max-lines-per-function
+    const leftPixelDiff = cropHandlLines.handleLineLeft.getBoundingClientRect().left - imgBoundingRect.left  
+    const topPixelDiff = cropHandlLines.handleLineTop.getBoundingClientRect().top - imgBoundingRect.top 
+    const rightPixelDiff = imgBoundingRect.right - cropHandlLines.handleLineRight.getBoundingClientRect().right
+    const bottomPixelDiff = imgBoundingRect.bottom - cropHandlLines.handleLineBottom.getBoundingClientRect().bottom
+    
+    logger.debug(imgBoundingRect)
+    logger.debug(leftPixelDiff, topPixelDiff, rightPixelDiff, bottomPixelDiff)
+    
+    const round = num => num < 0 ? 0 : Math.round(num)
+
+    const percentageCropLeft = round((leftPixelDiff / imgBoundingRect.width) * oneHundredPercent)
+    const percentageCropTop = round((topPixelDiff / imgBoundingRect.height) * oneHundredPercent)
+    const percentageCropRight = round((rightPixelDiff / imgBoundingRect.width) * oneHundredPercent)
+    const percentageCropBottom = round((bottomPixelDiff / imgBoundingRect.height) * oneHundredPercent)
+
+    logger.debug(percentageCropLeft, percentageCropTop, percentageCropRight, percentageCropBottom)
+    
     this.cropImageVal = {
-      width,
-      height,
-      positionX,
-      positionY,
+      percentageCropLeft,
+      percentageCropTop,
+      percentageCropRight,
+      percentageCropBottom,
     }
   },
   updateResizeImageVal(percentage){
@@ -29,7 +48,7 @@ const edits = {
   clear(){
     this.rotateVal = 0
     this.cropImageVal = {}
-    this.resizeImageVal = 0
+    this.resizeImageVal = oneHundredPercent
   }
 }
 /* eslint-enable */
@@ -83,27 +102,16 @@ function convertImageEditsToCssString(storedEdits, newEdits){ // eslint-disable-
   if(!newEdits && !storedEdits) return ''
   const rotateVal = newEdits?.rotateVal ? newEdits.rotateVal : (storedEdits?.rotateVal ?? 0)
   const resizeVal = newEdits?.resizeImageVal ? newEdits.resizeImageVal : (storedEdits?.resizeImageVal ?? oneHundredPercent)
+  const cropVals = !isEmptyObject(newEdits?.cropImageVal ?? {}) ? newEdits.cropImageVal : (storedEdits?.cropImageVal ?? {})
 
   edits.updateRotateVal(rotateVal)
   edits.updateResizeImageVal(resizeVal)
   
+  const clipCss = isEmptyObject(cropVals) ? '' : `clip-path: inset(${cropVals.percentageCropTop}% ${cropVals.percentageCropRight}% ${cropVals.percentageCropBottom}% ${cropVals.percentageCropLeft}%) ;`
   const rotateCss = imageRightSideUp(rotateVal) ? '' : `transform: rotate(${rotateVal}deg);` 
   const resizeCss = resizeVal === oneHundredPercent ? '' : `height: ${resizeVal}%;` 
-  const clipCss = ';'
-  /*****
-    Clip should be after rotate. Then resize.
-  *****/
-  return `${rotateCss}${clipCss}${resizeCss}`
-}
 
-function calculateCropCssClipPath(){
-  //store the image container offsetHeight offsetWidth only once per image viewer and image editor render - maybe add 
-  // it to the state when call each render so can pass it on - i dont think i need to account for rotating screen do i - cause that wouldnt happen much when editing - oh but I guess it would for if they open viewer then rotate, then click on edit
-  //save in onrething handler evewnt https://davidwalsh.name/orientation-change so onchange, check if image viewer or image editor
-  // elements in page and if so, update the image container offsetHeight & offsetWidth variables
-  // I think I will have to do this in the nav for the editor - pass it in as state, and
-  // for the editor it doesnt really matter
-  // No i think we just need to take the dumb approach otherwise it gets too complex - if its slow, we could perhaps use requestanimationframe or the like
+  return `${clipCss}${rotateCss}${resizeCss}`
 }
 
 function imageRightSideUp(rotateVal){
@@ -118,4 +126,5 @@ export{
   shrink,
   enlarge,
   convertImageEditsToCssString,
+  edits,
 }
