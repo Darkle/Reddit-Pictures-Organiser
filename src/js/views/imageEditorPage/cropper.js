@@ -181,7 +181,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
    updateHandleLinesPosition(draggies, handleLines)
   })
   draggieBottomLeft.setPosition(boundaries.handleLeftBoundary, boundaries.handleBottomBoundary)
-  /* eslint-enable complexity, max-statements*/
+  /* eslint-enable complexity, max-statements, max-lines-per-function*/
 }
 
 function updateHandleLinesPosition({draggieTopLeft, draggieTopRight, draggieBottomRight, draggieBottomLeft}, handleLines, imageElemBoundedRect){ // eslint-disable-line max-statements, max-lines-per-function

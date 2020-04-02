@@ -1,7 +1,6 @@
 import {updateImageEditPage} from './imageEditorPage.js'
 import { store } from '../../store/store.js'
 import { router } from '../../router.js'
-import { initCropper } from './cropper.js'
 
 /* eslint-disable functional/immutable-data, functional/no-this-expression */
 const ninetyDegrees = 90
@@ -34,10 +33,6 @@ const edits = {
   }
 }
 /* eslint-enable */
-
-function cropImage(state){
-  initCropper()
-}
 
 function rotateLeft(state){
   edits.updateRotateVal(edits.rotateVal - ninetyDegrees)
@@ -116,7 +111,6 @@ function imageRightSideUp(rotateVal){
 }
 
 export{
-  cropImage,
   rotateLeft,
   rotateRight,
   saveEdits,
