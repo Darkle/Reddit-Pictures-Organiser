@@ -6,15 +6,17 @@
   "scripts": {
     "prepare": "snowpack --include \"src/js/**/*.js\" --dest src/js/web_modules",
     "dev": "cd src && browser-sync --server --port 8888 --watch --no-open --no-notify --https",
-    "build": "run-s build-**",
+    "build": "run-s build:**",
     "build-eslint": "eslint src/js/**/*.js",
     "build-test": "jest",
-    "build-copy-to-dist": "ncp src dist",
-    "build-snowpack": "snowpack --include \"src/js/**/*.js\" --optimize --no-source-map --clean --stat --dest dist/js/web_modules",
-    "build-minify": "minify --recursive --output dist dist",
-    "build-vendor-size-check": "chalk blue bold 'Vendor Libs Size Check:\n\n' && bundlesize -f \"dist/js/web_modules/**/*.js\" -s 35kB",
-    "build-total-size-check": "ncat 'dist/**/*.js' -o ./total-bundle.js > /dev/null && chalk blue bold 'Total JS Size Check:\n\n' && bundlesize -f ./total-bundle.js -s 70kB && trash ./total-bundle.js",
-    "build-lighthouse": "lighthouse https://192.168.1.2:8888 --chrome-flags='--ignore-certificate-errors' --view --output-path ./lighthouse-report.html && trash ./lighthouse-report.html"
+    "build:copy-to-dist": "ncp src dist",
+    "build:serve": "cd dist && browser-sync --server --port 8888 --no-notify --no-open --https &",
+    "build:snowpack": "snowpack --include \"src/js/**/*.js\" --optimize --no-source-map --clean --stat --dest dist/js/web_modules",
+    "build:minify": "minify --recursive --output dist dist",
+    "build:vendor-size-check": "chalk blue bold 'Vendor Libs Size Check:\n\n' && bundlesize -f \"dist/js/web_modules/**/*.js\" -s 35kB",
+    "build:total-size-check": "ncat 'dist/**/*.js' -o ./total-bundle.js > /dev/null && chalk blue bold 'Total JS Size Check:\n\n' && bundlesize -f ./total-bundle.js -s 70kB && trash ./total-bundle.js",
+    "build:lighthouse": "lighthouse https://localhost:8888 --chrome-flags='--ignore-certificate-errors' --view --only-categories=accessibility,best-practices,performance,seo --quiet --output-path ./lighthouse-report.html && trash ./lighthouse-report.html",
+    "build:kill-serve": "fkill :8888"
   },
   "dependencies": {
     "draggabilly": "^2.2.0",
@@ -25,6 +27,9 @@
     "swiper": "^5.3.6"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "babel-eslint": "^10.0.3",
     "browser-sync": "^2.26.7",
     "bundlesize": "^0.18.0",
@@ -33,6 +38,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-functional": "^3.0.1",
     "eslint-plugin-lit": "^1.2.0",
+    "fkill-cli": "^6.0.1",
     "jest": "^25.1.0",
     "lighthouse": "^5.6.0",
     "ncat": "^4.0.2",
