@@ -66,23 +66,6 @@
   border: 1px dashed tomato;
   z-index: 2;
 }
-.imageEditorPage .handleLine[data-handle-line="top"], .imageEditorPage .handleLine[data-handle-line="bottom"] {
-  /* height: 2px; */
-}
-.imageEditorPage .handleLine[data-handle-line="right"], .imageEditorPage .handleLine[data-handle-line="left"] {
-  /* width: 2px; */
-}
 .imageEditorPage .handleLine.show {
   display: block;
 }
-
-/* .imageEditorPage .imageContainer .cropperOverlay{
-  display: none;
-  position: absolute;
-  z-index: 2;
-  height: 180px;
-  width: 180px;
-}
-.imageEditorPage .imageContainer .cropperOverlay.show{
-  display: flex;
-} */
