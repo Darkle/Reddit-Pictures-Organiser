@@ -4,20 +4,19 @@ import { router } from '../../router.js'
 import { isEmptyObject } from '../../utils.js'
 import { logger } from '../../logger.js'
 
-/* eslint-disable functional/immutable-data, functional/no-this-expression */
 const ninetyDegrees = 90
 const three60Degrees = 360
 const tenPercent = 10
 const oneHundredPercent = 100
-
+/* eslint-disable functional/immutable-data, functional/no-this-expression */
 const edits = {
   rotateVal: 0,
-  cropImageVal: {},
+  cropImageVals: {},
   resizeImageVal: oneHundredPercent,
   updateRotateVal(angle){
     this.rotateVal = angle
   },
-  updateCropVal(cropHandlLines, imgBoundingRect){ // eslint-disable-line max-statements, max-lines-per-function
+  updateCropVals(cropHandlLines, imgBoundingRect){ // eslint-disable-line max-statements, max-lines-per-function
     const leftPixelDiff = cropHandlLines.handleLineLeft.getBoundingClientRect().left - imgBoundingRect.left  
     const topPixelDiff = cropHandlLines.handleLineTop.getBoundingClientRect().top - imgBoundingRect.top 
     const rightPixelDiff = imgBoundingRect.right - cropHandlLines.handleLineRight.getBoundingClientRect().right
@@ -35,7 +34,7 @@ const edits = {
 
     logger.debug(percentageCropLeft, percentageCropTop, percentageCropRight, percentageCropBottom)
     
-    this.cropImageVal = {
+    this.cropImageVals = {
       percentageCropLeft,
       percentageCropTop,
       percentageCropRight,
@@ -47,7 +46,7 @@ const edits = {
   },
   clear(){
     this.rotateVal = 0
-    this.cropImageVal = {}
+    this.cropImageVals = {}
     this.resizeImageVal = oneHundredPercent
   }
 }
@@ -55,34 +54,34 @@ const edits = {
 
 function rotateLeft(state){
   edits.updateRotateVal(edits.rotateVal - ninetyDegrees)
-  const {rotateVal, cropImageVal, resizeImageVal} = edits
-  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, resizeImageVal}})
+  const {rotateVal, cropImageVals, resizeImageVal} = edits
+  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVals, resizeImageVal}})
 }
 
 function rotateRight(state){
   edits.updateRotateVal(edits.rotateVal + ninetyDegrees)
-  const {rotateVal, cropImageVal, resizeImageVal} = edits
-  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, resizeImageVal}})
+  const {rotateVal, cropImageVals, resizeImageVal} = edits
+  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVals, resizeImageVal}})
 }
 
 function shrink(state){
   edits.updateResizeImageVal(edits.resizeImageVal - tenPercent)
-  const {rotateVal, cropImageVal, resizeImageVal} = edits
-  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, resizeImageVal}})
+  const {rotateVal, cropImageVals, resizeImageVal} = edits
+  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVals, resizeImageVal}})
 }
 
 function enlarge(state){
   edits.updateResizeImageVal(edits.resizeImageVal + tenPercent)
-  const {rotateVal, cropImageVal, resizeImageVal} = edits
-  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVal, resizeImageVal}})
+  const {rotateVal, cropImageVals, resizeImageVal} = edits
+  updateImageEditPage({...state, newEdits: {rotateVal, cropImageVals, resizeImageVal}})
 }
 
 function saveEdits({subreddit, timefilter, imageId, folderpage}){
   const navigationUrl = !folderpage ? `/sub/${subreddit}/${timefilter}/imageviewer/${imageId}` 
     : `/folders/${folderpage}/imageviewer/${imageId}`
-  const {rotateVal, cropImageVal, resizeImageVal} = edits
+  const {rotateVal, cropImageVals, resizeImageVal} = edits
 
-  store.addEditsToImage(imageId, {rotateVal, cropImageVal, resizeImageVal}, folderpage)
+  store.addEditsToImage(imageId, {rotateVal, cropImageVals, resizeImageVal}, folderpage)
   edits.clear()
   router.navigate(navigationUrl)  
 }
@@ -106,6 +105,7 @@ function convertImageEditsToCssString(storedEdits, newEdits){ // eslint-disable-
 
   edits.updateRotateVal(rotateVal)
   edits.updateResizeImageVal(resizeVal)
+  edits.cropImageVals = cropVals // eslint-disable-line functional/immutable-data
   
   const clipCss = isEmptyObject(cropVals) ? '' : `clip-path: inset(${cropVals.percentageCropTop}% ${cropVals.percentageCropRight}% ${cropVals.percentageCropBottom}% ${cropVals.percentageCropLeft}%) ;`
   const rotateCss = imageRightSideUp(rotateVal) ? '' : `transform: rotate(${rotateVal}deg);` 

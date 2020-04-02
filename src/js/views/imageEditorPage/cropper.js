@@ -48,7 +48,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
     draggieBottomLeft.setPosition(draggieTopLeft.position.x, draggieBottomLeft.position.y)
 
     updateHandleLinesPosition(draggies, handleLines)
-    edits.updateCropVal(handleLines, imageElemBoundedRect)
+    edits.updateCropVals(handleLines, imageElemBoundedRect)
   })
   draggieTopLeft.on('dragEnd', function(event) {
     /*****
@@ -75,7 +75,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
    
    // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
    updateHandleLinesPosition(draggies, handleLines)
-   edits.updateCropVal(handleLines, imageElemBoundedRect)
+   edits.updateCropVals(handleLines, imageElemBoundedRect)
   })
   draggieTopLeft.setPosition(boundaries.handleLeftBoundary, boundaries.handleTopBoundary)
 
@@ -86,7 +86,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
     draggieBottomRight.setPosition(draggieTopRight.position.x, draggieBottomRight.position.y)
 
     updateHandleLinesPosition(draggies, handleLines)
-    edits.updateCropVal(handleLines, imageElemBoundedRect)
+    edits.updateCropVals(handleLines, imageElemBoundedRect)
   })
   draggieTopRight.on('dragEnd', function(event) {
     /*****
@@ -113,7 +113,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
    
    // We need these at the end too in case they dragged out of bounds the line will be out of bounds and need to reset.
    updateHandleLinesPosition(draggies, handleLines)
-   edits.updateCropVal(handleLines, imageElemBoundedRect)
+   edits.updateCropVals(handleLines, imageElemBoundedRect)
   })      
   draggieTopRight.setPosition(boundaries.handleRightBoundary, boundaries.handleTopBoundary)
 
@@ -124,7 +124,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
     draggieTopRight.setPosition(draggieBottomRight.position.x, draggieTopRight.position.y)
 
     updateHandleLinesPosition(draggies, handleLines)
-    edits.updateCropVal(handleLines, imageElemBoundedRect)
+    edits.updateCropVals(handleLines, imageElemBoundedRect)
   })      
   draggieBottomRight.on('dragEnd', function(event) {
     /*****
@@ -150,7 +150,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
    draggieTopRight.setPosition(x, draggieTopRight.position.y)
 
    updateHandleLinesPosition(draggies, handleLines)
-   edits.updateCropVal(handleLines, imageElemBoundedRect)
+   edits.updateCropVals(handleLines, imageElemBoundedRect)
   })
   draggieBottomRight.setPosition(boundaries.handleRightBoundary, boundaries.handleBottomBoundary)
 
@@ -161,7 +161,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
     draggieTopLeft.setPosition(draggieBottomLeft.position.x, draggieTopLeft.position.y)
 
     updateHandleLinesPosition(draggies, handleLines)
-    edits.updateCropVal(handleLines, imageElemBoundedRect)
+    edits.updateCropVals(handleLines, imageElemBoundedRect)
   })      
   draggieBottomLeft.on('dragEnd', function(event) {
     /*****
@@ -187,7 +187,7 @@ function setUpDragEventListeners(Draggabilly, handleLines, imageElemBoundedRect,
    draggieTopLeft.setPosition(x, draggieTopLeft.position.y)
 
    updateHandleLinesPosition(draggies, handleLines)
-   edits.updateCropVal(handleLines, imageElemBoundedRect)
+   edits.updateCropVals(handleLines, imageElemBoundedRect)
   })
   draggieBottomLeft.setPosition(boundaries.handleLeftBoundary, boundaries.handleBottomBoundary)
   /* eslint-enable complexity, max-statements, max-lines-per-function*/

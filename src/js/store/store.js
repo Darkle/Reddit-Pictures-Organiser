@@ -56,11 +56,11 @@ const store = {
     if(!store.favouriteSubreddits.includes(sub)) return 
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
-  },  
-  addEditsToImage(imageId, {rotateVal, cropImageVal, resizeImageVal}, folder = null){
+  },
+  addEditsToImage(imageId, {rotateVal, cropImageVals, resizeImageVal}, folder = null){
     const updateImageEditInImages = images => images.map(storedImg => {
       if(storedImg.id === imageId){
-        storedImg.edits = {rotateVal, cropImageVal, resizeImageVal}
+        storedImg.edits = {rotateVal, cropImageVals, resizeImageVal}
       }
       return storedImg
     })
