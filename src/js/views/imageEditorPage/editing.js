@@ -101,7 +101,7 @@ function convertImageEditsToCssString(storedEdits, newEdits){ // eslint-disable-
   if(!newEdits && !storedEdits) return ''
   const rotateVal = newEdits?.rotateVal ? newEdits.rotateVal : (storedEdits?.rotateVal ?? 0)
   const resizeVal = newEdits?.resizeImageVal ? newEdits.resizeImageVal : (storedEdits?.resizeImageVal ?? oneHundredPercent)
-  const cropVals = !isEmptyObject(newEdits?.cropImageVal ?? {}) ? newEdits.cropImageVal : (storedEdits?.cropImageVal ?? {})
+  const cropVals = !isEmptyObject(newEdits?.cropImageVals ?? {}) ? newEdits.cropImageVals : (storedEdits?.cropImageVals ?? {})
 
   edits.updateRotateVal(rotateVal)
   edits.updateResizeImageVal(resizeVal)
