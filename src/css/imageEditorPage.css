@@ -54,6 +54,7 @@
   position: absolute;
   width: 20px;
   height: 20px;
+  z-index: 2;
 }
 .imageEditorPage .handle.show {
   display: block;
@@ -63,6 +64,7 @@
   opacity: 0.6;
   position: absolute;
   border: 1px dashed tomato;
+  z-index: 2;
 }
 .imageEditorPage .handleLine[data-handle-line="top"], .imageEditorPage .handleLine[data-handle-line="bottom"] {
   /* height: 2px; */
