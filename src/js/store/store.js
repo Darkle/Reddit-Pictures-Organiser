@@ -57,20 +57,6 @@ const store = {
     store.favouriteSubreddits = store.favouriteSubreddits.filter(subreddit => subreddit !== subToRemove)
     saveToLocalForage('favouriteSubreddits', store.favouriteSubreddits)
   },
-  addEditsToImage(imageId, {rotateVal, cropImageVals, resizeImageVal}, folder = null){
-    const updateImageEditInImages = images => images.map(storedImg => {
-      if(storedImg.id === imageId){
-        storedImg.edits = {rotateVal, cropImageVals, resizeImageVal}
-      }
-      return storedImg
-    })
-    if(folder){
-      store.folders[folder] = updateImageEditInImages(store.folders[folder])
-      saveToLocalForage('folders', store.folders)
-      return
-    }
-    store.fetchedSubredditImages = updateImageEditInImages(store.fetchedSubredditImages)
-  },
   // We dont need to store this in IndexedDB
   storeFetchedSubredditImages(images) {
     if(!images.length) return

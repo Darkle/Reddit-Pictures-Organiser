@@ -19,7 +19,6 @@
     "build:kill-serve": "fkill :8888"
   },
   "dependencies": {
-    "draggabilly": "^2.2.0",
     "lit-html": "^1.2.1",
     "localforage": "^1.7.3",
     "navigo": "^7.1.2",
