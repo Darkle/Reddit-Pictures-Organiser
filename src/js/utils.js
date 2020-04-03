@@ -56,8 +56,6 @@ export{
   compose,
   curry,
   curryRight,
-  range,
-  rangeIncEnd,
   $$,
   $,
   subPageNavigatedAway,
