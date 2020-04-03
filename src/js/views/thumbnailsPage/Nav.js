@@ -20,8 +20,7 @@ function Nav(state){ // eslint-disable-line max-lines-per-function, complexity
           </svg> 
        </div>
        <div class="folderName">${state.folderpage}</div>
-       <div class="removeImageFromFolder" 
-          @mouseup=${() => deleteFolder(state)}>
+       <div class="removeImageFromFolder" @mouseup=${() => deleteFolder(state)}>
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" 
             stroke="#fff4e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="3 6 5 6 21 6"></polyline>
