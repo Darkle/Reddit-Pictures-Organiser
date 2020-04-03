@@ -18,8 +18,8 @@ function updatePage(showDialog = false){
 }
 
 function FoldersPage(showDialog){
-  if(noFolders()) return PlaceHolder()
-
+  if(noFolders()) return PlaceHolder(showDialog)
+  
   return html`
     <main id="app" class="foldersPage">
       ${Nav()}
@@ -27,16 +27,16 @@ function FoldersPage(showDialog){
         ${getFolders().map(folder => html`
           <div class="folder" @mouseup=${ () => router.navigate(`/folders/${folder}`)}>
             <div class="folderName">${folder}</div>
-            <div class="folderImageCount">${Object.keys(folder).length}</div>
+            <div class="folderImageCount">${store.folders[folder].length}</div>
           </div>
       `)}
       </div>
-      ${Dialog(showDialog)}
+      ${showDialog ? Dialog() : ''}
     </main>    
     `  
 }
 
-function PlaceHolder() {
+function PlaceHolder(showDialog) {
   return html`
     <main id="app" class="foldersPage">
       ${Nav()}
@@ -48,6 +48,7 @@ function PlaceHolder() {
           You can also create folders from the image viewer page. Just tap on an image and options will show up for you to add an image to a folder or create a new folder to add the image to.
         </p>
       </div>
+      ${showDialog ? Dialog() : ''}
     </main>    
     `    
 }
@@ -57,7 +58,7 @@ function Nav(){
     <nav class="navWrapper">
       <div class="home" @mouseup=${ () => router.navigate('/')}>Home</div>
       <div class="folders">Folders</div>
-      <div class="createFolderIcon" @mousedown=${showCreateFolderDialog} >
+      <div class="createFolderIcon" @mouseup=${showCreateFolderDialog} >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
           <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -68,11 +69,11 @@ function Nav(){
   `
 }
 
-function Dialog(showDialog){
+function Dialog(){
   // There is a bug atm with chrome and html prop autofocus when using url hash/fragment https://crbug.com/1046357
   setTimeout(() => $('dialog input').focus(), halfSecondInMs)
   return html `
-    <dialog ?open=${showDialog} on>
+    <dialog open="true" on>
       <input @keyup=${createNewFolder}></input>
       <menu>
         <button @mouseup=${() => updatePage()}>Cancel</button>
@@ -82,15 +83,14 @@ function Dialog(showDialog){
   `
 }
 
-function createNewFolder(event){
+function createNewFolder(event){ // eslint-disable-line complexity
   const newFolderName = $('dialog input').value.trim()
   
-  if(event.key !== 'Enter' || !newFolderName.length) return
+  if((event.key && event.key !== 'Enter') || (event.key === 'Enter' && !newFolderName.length)) return
   
   store.createFolder(newFolderName)
   logger.debug(`${newFolderName} folder created`)
   updatePage()
-  $('dialog input').value = '' // eslint-disable-line functional/immutable-data
 }
 
 function showCreateFolderDialog(){

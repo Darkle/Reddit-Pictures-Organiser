@@ -11,6 +11,7 @@
 /*
 TODO: Change color of stuff to #F49A87 when click/tap
 TODO: Change mouse icon for hover over things
+TODO: make sure cant select text of things that are not inputs - this happens if you tap on text
 */
 .homePage .navWrapper .folders{
   flex-grow: 1;

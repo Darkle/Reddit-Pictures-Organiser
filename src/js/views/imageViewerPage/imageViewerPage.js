@@ -34,6 +34,7 @@ function ImageViewer(state) {
       ${FoldersContainer(state)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
       <div class="toast notifyAddedImageToFolder">Image Added To Folder</div>
+      <div class="toast notifyRemovedImageFromFolder">Image Removed From Folder</div>
     </main>    
     `  
 }

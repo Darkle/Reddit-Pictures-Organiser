@@ -29,7 +29,7 @@ const store = {
   },  
   removeImageFromFolder(folder, image) {
     if(!getImageFromId(image.id, store.folders[folder])) return
-    store.folders = store.folders[folder].filter(storedImg => storedImg.id !== image.id)
+    store.folders[folder] = store.folders[folder].filter(storedImg => storedImg.id !== image.id)
     saveToLocalForage('folders', store.folders)
   },  
   addSubreddit(newSub) {

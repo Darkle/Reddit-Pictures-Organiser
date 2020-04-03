@@ -1,10 +1,10 @@
-import {html, render} from '../../web_modules/lit-html.js'
+import {html} from '../../web_modules/lit-html.js'
 
 import { toggleFolders } from './Nav.js'
 import { store } from '../../store/store.js'
 import { $, getFolders } from '../../utils.js'
 import { logger } from '../../logger.js'
-import { ImageViewer, swiper } from './imageViewerPage.js'
+import { swiper } from './imageViewerPage.js'
 
 function FoldersContainer(state){
   logger.debug(store.folders)
@@ -21,7 +21,7 @@ function FoldersContainer(state){
         ${getFolders().map(folder => html`
             <div class="folder" @mouseup=${() => addImageToFolder(folder, state.folderpage)}>
               <div class="folderName">${folder}</div>
-              <div class="folderImageCount">${Object.keys(folder).length}</div>
+              <div class="folderImageCount">${store.folders[folder].length}</div>
             </div>
         `)}
       </div>
