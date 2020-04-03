@@ -32,6 +32,7 @@ function updatePage({showLoadingPlaceholder = false, timefilter, subreddit, fold
 
 function ThumbnailPage(state) { // eslint-disable-line complexity
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
+  if(isFavMixPage() && !store.favouriteSubreddits.length) return PlaceHolder({...state, showLoadingPlaceholder: false})
   if(state.showLoadingPlaceholder || !images.length) return PlaceHolder(state)
   
   return html`
