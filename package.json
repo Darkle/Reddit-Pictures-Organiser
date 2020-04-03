@@ -6,6 +6,7 @@
   "scripts": {
     "prepare": "snowpack --include \"src/js/**/*.js\" --dest src/js/web_modules",
     "dev": "cd src && browser-sync --server --port 8888 --watch --no-open --no-ghost-mode --no-notify --no-ui --https",
+    "build-only": "run-s build:copy-to-dist build:snowpack build:minify",
     "build": "run-s build:**",
     "build:eslint": "eslint src/js/**/*.js --ignore-pattern src/js/web_modules/**/*.js --quiet",
     "build:copy-to-dist": "ncp src dist",
@@ -38,6 +39,7 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "snowpack": "^1.6.0",
+    "surge": "^0.21.3",
     "trash-cli": "^3.0.0"
   },
   "browserslist": "last 3 Chrome version, Firefox ESR",
