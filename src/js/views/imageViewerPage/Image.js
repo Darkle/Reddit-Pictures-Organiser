@@ -1,7 +1,7 @@
 import {html} from '../../web_modules/lit-html.js'
 
 import {curryRight, safeGetImageSrc} from '../../utils.js'
-import { initialImagePreloads } from './imageViewerPage.js'
+import { initialImagePreloads } from './preload.js'
 
 function Image(image, index, state){
   const isStartingImage = index === state.startingImageIndex
