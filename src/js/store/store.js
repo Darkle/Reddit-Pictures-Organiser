@@ -23,8 +23,8 @@ const store = {
   },  
   addImageToFolder(folder, image) {
     if(getImageFromId(image.id, store.folders[folder])) return
-    const {src, url, id, permalink, thumbnail, edits} = image
-    store.folders[folder].unshift({src, url, id, permalink, thumbnail, edits})
+    const {src, url, id, permalink, thumbnail} = image
+    store.folders[folder].unshift({src, url, id, permalink, thumbnail})
     saveToLocalForage('folders', store.folders)
   },  
   removeImageFromFolder(folder, image) {
