@@ -30,24 +30,24 @@ function FoldersContainer(state){
 }
 
 function addImageToFolder(folder, isFolderPage){
-  const images = isFolderPage ? store.folders[folder] : store.fetchedSubredditImages
+  const images = isFolderPage ? store.folders[isFolderPage] : store.fetchedSubredditImages
   store.addImageToFolder(folder, images[swiper.activeIndex])
   toggleFolders()
   showFolderToast()
   logger.debug(store.folders)
 }
 
-function addImageToNewFolder({target: input, key}, {subreddit, timefilter, folderpage}){
+function addImageToNewFolder({target: input, key}, {folderpage}){ // eslint-disable-line max-statements
   const newFolderName = input.value.trim()
-  
   if(key !== 'Enter' || !newFolderName.length) return
-
-  const {id:imageId} = store.fetchedSubredditImages[swiper.activeIndex]
+  
+  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
   
   store.createFolder(newFolderName)
-  addImageToFolder(newFolderName, folderpage)
-  // @ts-ignore
-  render(ImageViewer({subreddit, timefilter, imageId, startingImageIndex: swiper.activeIndex}), document.body)
+  store.addImageToFolder(newFolderName, images[swiper.activeIndex])
+  toggleFolders()
+  showFolderToast()
+  logger.debug(store.folders)
 }
 
 function showFolderToast(){

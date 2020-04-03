@@ -3,6 +3,8 @@ import {html} from '../../web_modules/lit-html.js'
 import { router } from '../../router.js'
 import { logger } from '../../logger.js'
 import { $ } from '../../utils.js'
+import { store } from '../../store/store.js'
+import { swiper } from './imageViewerPage.js'
 
 function Nav(state){ // eslint-disable-line max-lines-per-function
   return html`
@@ -39,8 +41,9 @@ function handleBackNavigation({subreddit, timefilter, folderpage}){
   return router.navigate(navigationUrl)  
 }
 
-function shareImageRedditPermalink({permalink}){
-  const fullPermalink = `https://reddit.com${permalink}`
+function shareImageRedditPermalink(state){
+  const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
+  const fullPermalink = `https://reddit.com${images[swiper.activeIndex].permalink}`
   // @ts-ignore
   if (navigator.share) return navigator.share({url: fullPermalink}).catch(logger.error)
   

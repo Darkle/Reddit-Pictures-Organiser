@@ -13,8 +13,8 @@ function Image(image, index, state){
     https://lit-html.polymer-project.org/guide/writing-templates#bind-to-attributes
   *****/  
   return isStartingImage ?
-  html`<img data-index=${index} @load=${onImgLoad} @error=${onImgLoad} src=${imgSrc} />`
-    : html`<img data-index=${index} @load=${onImgLoad} @error=${onImgLoad} />`
+    html`<img data-index=${index} @load=${onImgLoad} @error=${onImgLoad} src=${imgSrc} />`
+      : html`<img data-index=${index} @load=${onImgLoad} @error=${onImgLoad} />`
 }
 
 export {

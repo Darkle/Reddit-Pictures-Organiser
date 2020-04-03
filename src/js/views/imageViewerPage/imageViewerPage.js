@@ -1,7 +1,7 @@
 import {html, render} from '../../web_modules/lit-html.js'
 
 import {store} from '../../store/store.js'
-import { $, setPageTitle, getImageFromId, getImageIndexFromId, safeGetImageSrc } from '../../utils.js'
+import { $, setPageTitle, getImageIndexFromId, safeGetImageSrc } from '../../utils.js'
 import { router } from '../../router.js'
 import { Nav, toggleNav } from './Nav.js'
 import { FoldersContainer } from './FoldersContainer.js'
@@ -27,12 +27,9 @@ function loadImageViewer({subreddit, timefilter, imageId, folderpage}) { // esli
 }
 
 function ImageViewer(state) {
-  const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
-  const {permalink} = getImageFromId(state.imageId, images)
-
   return html`
     <main id="app" class="imageViewerPage">
-      ${Nav({...state, permalink})}
+      ${Nav(state)}
       ${Images(state)}
       ${FoldersContainer(state)}
       <div class="toast notifyClipboardCopy">Reddit Post Link Copied To Clipboard</div>
@@ -51,6 +48,7 @@ function Images(state){
     </div>
   `
 }
+
 /*****
 So on page load we walk left and right of the current image that is being displayed 
 and load the next and previous images till we've loaded 10 next and 10 previous.
