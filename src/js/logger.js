@@ -1,6 +1,4 @@
 import { PromiseCanceller, FetchError } from './Errors.js'
-// TODO: also log to rollbar, and also show a brief toast/notification of the error
-  /* background-color:#fabd2f; --for errors */
 
 const logger = {
   log(...args){
