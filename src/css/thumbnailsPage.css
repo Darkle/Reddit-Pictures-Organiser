@@ -26,6 +26,13 @@
 .thumbnailPage .navWrapper > *.selectedSubTimeFilter{
   outline: 1px solid #fff4e8;
 }
+.thumbnailPage .navWrapper > .folderName{
+  outline: 1px solid #fff4e8;
+}
+.thumbnailPage .navWrapper > .removeImageFromFolder{
+  display: flex;
+  justify-content: center;
+}
 .thumbnailPage .thumbnailsImagesContainer{
   display: flex;
   flex-wrap: wrap;
