@@ -1,4 +1,4 @@
-
- self.addEventListener('fetch', function(event) {
-  event.respondWith(event.request)
-})
+self.addEventListener('fetch', event=> {
+    let response=fetch(event.request);
+    event.respondWith(response);
+});
