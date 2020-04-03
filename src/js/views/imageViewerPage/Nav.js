@@ -2,7 +2,7 @@ import {html} from '../../web_modules/lit-html.js'
 
 import { router } from '../../router.js'
 import { logger } from '../../logger.js'
-import { $ } from '../../utils.js'
+import { $, $$ } from '../../utils.js'
 import { store } from '../../store/store.js'
 import { swiper } from './imageViewerPage.js'
 
@@ -45,6 +45,10 @@ function Nav(state){ // eslint-disable-line max-lines-per-function
     `
 }
 
+function getSwiperActiveIndex(){
+  return Number($('.swiper-slide-active img').dataset.index)
+}
+
 function handleBackNavigation({subreddit, timefilter, folderpage}){
   // They may click the back button to get out of the add to folders view
   if($('.foldersContainer').classList.contains('show')){
@@ -55,14 +59,18 @@ function handleBackNavigation({subreddit, timefilter, folderpage}){
 }
 
 function removeImageFromFolder(state){
-  store.removeImageFromFolder(state.folderpage, store.folders[state.folderpage][swiper.activeIndex])
-  swiper.removeSlide(swiper.activeIndex)
+  store.removeImageFromFolder(state.folderpage, store.folders[state.folderpage][getSwiperActiveIndex()])
+  swiper.removeSlide(getSwiperActiveIndex())
+  $$('.swiper-container img').forEach((image, index) => {
+    image.dataset.index = index // eslint-disable-line functional/immutable-data
+    image.setAttribute('data-index', index)
+  })
   toggleToast('notifyRemovedImageFromFolder')
 }
 
 function shareImageRedditPermalink(state){
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
-  const fullPermalink = `https://reddit.com${images[swiper.activeIndex].permalink}`
+  const fullPermalink = `https://reddit.com${images[getSwiperActiveIndex()].permalink}`
   // @ts-ignore
   if (navigator.share) return navigator.share({url: fullPermalink}).catch(logger.error)
   

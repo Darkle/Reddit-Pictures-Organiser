@@ -1,10 +1,10 @@
-import {html} from '../../web_modules/lit-html.js'
+import {html, render} from '../../web_modules/lit-html.js'
 
 import { toggleFolders } from './Nav.js'
 import { store } from '../../store/store.js'
 import { $, getFolders } from '../../utils.js'
 import { logger } from '../../logger.js'
-import { swiper } from './imageViewerPage.js'
+import { ImageViewer } from './imageViewerPage.js'
 
 function FoldersContainer(state){
   logger.debug(store.folders)
@@ -19,7 +19,7 @@ function FoldersContainer(state){
       <label>Add To Existing Folder</label>
       <div class="existingFoldersContainer">
         ${getFolders().map(folder => html`
-            <div class="folder" @mouseup=${() => addImageToFolder(folder, state.folderpage)}>
+            <div class="folder" @mouseup=${() => addImageToFolder(folder, state)}>
               <div class="folderName">${folder}</div>
               <div class="folderImageCount">${store.folders[folder].length}</div>
             </div>
@@ -29,25 +29,26 @@ function FoldersContainer(state){
   `
 }
 
-function addImageToFolder(folder, isFolderPage){
-  const images = isFolderPage ? store.folders[isFolderPage] : store.fetchedSubredditImages
-  store.addImageToFolder(folder, images[swiper.activeIndex])
+function getSwiperActiveIndex(){
+  return Number($('.swiper-slide-active img').dataset.index)
+}
+
+function addImageToFolder(folder, {subreddit, timefilter, imageId, folderpage}){
+  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
+  store.addImageToFolder(folder, images[getSwiperActiveIndex()])
   toggleFolders()
   showFolderToast()
   logger.debug(store.folders)
+  // @ts-ignore
+  render(ImageViewer({subreddit, timefilter, imageId, folderpage, startingImageIndex: getSwiperActiveIndex()}), document.body)
 }
 
-function addImageToNewFolder({target: input, key}, {folderpage}){ // eslint-disable-line max-statements
+function addImageToNewFolder({target: input, key}, state){ // eslint-disable-line max-statements
   const newFolderName = input.value.trim()
   if(key !== 'Enter' || !newFolderName.length) return
   
-  const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
-  
   store.createFolder(newFolderName)
-  store.addImageToFolder(newFolderName, images[swiper.activeIndex])
-  toggleFolders()
-  showFolderToast()
-  logger.debug(store.folders)
+  addImageToFolder(newFolderName, state)
 }
 
 function showFolderToast(){
