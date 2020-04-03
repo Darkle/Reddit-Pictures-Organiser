@@ -11,13 +11,15 @@ import { preloadImageOnSwipe } from './preload.js'
 
 let swiper = null // eslint-disable-line functional/no-let
 
+const noImagesInSubView = (folderpage) => !folderpage && !store.fetchedSubredditImages.length
+
 function loadImageViewer({subreddit, timefilter, imageId, folderpage}) { // eslint-disable-line consistent-return
   setPageTitle(`RPO - Image Viewer`)
   /*****
   We dont have any images stored if viewing sub (not folder) images and the user reloads 
   the page to the image viewer, so redirect to the subreddit page.
   *****/
-  if(!folderpage && !store.fetchedSubredditImages.length) return router.navigate(`/sub/${subreddit}/${timefilter}`)
+  if(noImagesInSubView(folderpage)) return router.navigate(`/sub/${subreddit}/${timefilter}`)
  
   const images = folderpage ? store.folders[folderpage] : store.fetchedSubredditImages
   const startingImageIndex = getImageIndexFromId(imageId, images)

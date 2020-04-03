@@ -86,11 +86,15 @@ function Dialog(){
 function createNewFolder(event){ // eslint-disable-line complexity
   const newFolderName = $('dialog input').value.trim()
   
-  if((event.key && event.key !== 'Enter') || (event.key === 'Enter' && !newFolderName.length)) return
+  if(isInvalidKeyInput(event, newFolderName)) return
   
   store.createFolder(newFolderName)
   logger.debug(`${newFolderName} folder created`)
   updatePage()
+}
+
+function isInvalidKeyInput(event, newFolderName){
+  return (event.key && event.key !== 'Enter') || (event.key === 'Enter' && !newFolderName.length)
 }
 
 function showCreateFolderDialog(){
