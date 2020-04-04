@@ -29,7 +29,8 @@ return html`
     `}
 function queueSubImageFetchingAndUpdating(subreddit,timefilter){const subredditsToGetImagesFor=isFavMixPage()?store.favouriteSubreddits:[subreddit]
 Promise.all(subredditsToGetImagesFor.map(sub=>queue(()=>fetchAndUpdatePage({subreddit:sub,lastImgFetched:null,timefilter}).then(fetchAndUpdatePage).then(fetchAndUpdatePage).then(fetchAndUpdatePage).catch(logger.error)))).catch(logger.error)}
+const subViewNoImagesFound=()=>!isFavMixPage()&&!store.fetchedSubredditImages.length
 function fetchAndUpdatePage({subreddit,lastImgFetched,timefilter}){return fetchSubImages({subreddit,lastImgFetched,timefilter}).then(latestLastImgFetched=>{updatePage({timefilter,subreddit,folderpage:false})
-if(!isFavMixPage()&&!store.fetchedSubredditImages.length)return Promise.reject(new NoMoreImagesToFetch())
+if(subViewNoImagesFound())return Promise.reject(new NoMoreImagesToFetch())
 return({subreddit,lastImgFetched:latestLastImgFetched,timefilter})})}
 export{loadThumbnailsPage,updatePage,}

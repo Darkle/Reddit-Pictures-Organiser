@@ -24,8 +24,9 @@ const noFolders=()=>!getFolders().length
 const isEmptyObject=(obj)=>!Object.entries(obj).length
 const isNegativeNumber=number=>Math.sign(number)===-1
 const safeGetImageSrc=image=>image.src||image.url
+const isDev=()=>window.location.port!==''
 const checkFetchResponseStatus=response=>{if(response.ok)return response
 return Promise.reject(new FetchError(response.statusText?.length?response.statusText:response.status,response))}
 const parseJSON=res=>res.json()
 const Fetcher={getJSON:(path,params)=>fetch(path,params).then(checkFetchResponseStatus).then(parseJSON)}
-export{noop,identity,pipe,compose,curry,curryRight,$$,$,subPageNavigatedAway,setPageTitle,noSubsStored,Fetcher,isFavSub,isFavMixPage,getImageFromId,getImageIndexFromId,getFolders,noFolders,isEmptyObject,isNegativeNumber,safeGetImageSrc,}
+export{noop,identity,pipe,compose,curry,curryRight,$$,$,subPageNavigatedAway,setPageTitle,noSubsStored,Fetcher,isFavSub,isFavMixPage,getImageFromId,getImageIndexFromId,getFolders,noFolders,isEmptyObject,isNegativeNumber,safeGetImageSrc,isDev,}

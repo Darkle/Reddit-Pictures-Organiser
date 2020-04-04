@@ -8,8 +8,9 @@ import{Image}from './Image.js'
 import{logger}from '../../logger.js'
 import{preloadImageOnSwipe}from './preload.js'
 let swiper=null
+const noImagesInSubView=(folderpage)=>!folderpage&&!store.fetchedSubredditImages.length
 function loadImageViewer({subreddit,timefilter,imageId,folderpage}){setPageTitle(`RPO - Image Viewer`)
-if(!folderpage&&!store.fetchedSubredditImages.length)return router.navigate(`/sub/${subreddit}/${timefilter}`)
+if(noImagesInSubView(folderpage))return router.navigate(`/sub/${subreddit}/${timefilter}`)
 const images=folderpage?store.folders[folderpage]:store.fetchedSubredditImages
 const startingImageIndex=getImageIndexFromId(imageId,images)
 render(ImageViewer({subreddit,timefilter,imageId,startingImageIndex,folderpage}),document.body)
