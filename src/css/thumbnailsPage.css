@@ -27,9 +27,7 @@
   stroke: #F49A87;
   fill: #F49A87;
 }
-.thumbnailPage .navWrapper .favStarContainer svg{
-  fill: #fff4e8;
-}
+
 .thumbnailPage .navWrapper .back{
   display: flex;
   justify-content: center;
