@@ -89,6 +89,11 @@ function Toast(){
 
 function addSubreddit(event){
   if(event.key !== 'Enter' || inputIsEmpty(event.target)) return
+  /*****
+  This is for if they are on the first run screen and the welcome message is showing and 
+    they enter a sub before welcome message goes away.
+  *****/
+  $('.welcomeToast').classList.remove('showWelcomeToast')
   store.addSubreddit(event.target.value)
   resetInputs()
   updatePage(store.subreddits)

@@ -60,6 +60,7 @@ function Toast(){return html`
     </div>  
   `}
 function addSubreddit(event){if(event.key!=='Enter'||inputIsEmpty(event.target))return
+$('.welcomeToast').classList.remove('showWelcomeToast')
 store.addSubreddit(event.target.value)
 resetInputs()
 updatePage(store.subreddits)

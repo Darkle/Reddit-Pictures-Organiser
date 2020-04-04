@@ -16,8 +16,7 @@
     "lighthouse": "npm run build && npm-s lighthouse:**",
     "lighthouse:serve": "cd dist && browser-sync --server --port 8888 --no-notify --no-ghost-mode --no-open --no-ui --https &",
     "lighthouse:lighthouse": "lighthouse https://localhost:8888 --chrome-flags='--ignore-certificate-errors' --view --only-categories=accessibility,best-practices,performance,seo --quiet --output-path ./lighthouse-report.html && trash ./lighthouse-report.html",
-    "lighthouse:kill-serve": "fkill :8888",
-    "deploy": "surge dist reddit-pictures-organiser.surge.sh"
+    "lighthouse:kill-serve": "fkill :8888"
   },
   "dependencies": {
     "@airbrake/browser": "^1.0.6",
@@ -41,7 +40,6 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "snowpack": "^1.6.0",
-    "surge": "^0.21.3",
     "trash-cli": "^3.0.0"
   },
   "browserslist": "last 3 Chrome version, Firefox ESR",

@@ -10,6 +10,7 @@ Example of the data you get back for an image from the reddit json api: https://
 * Deploying to [Surge](https://surge.sh/)
 * The `build:serve` npm task is for Lighthouse as it needs the page to be served. The `build:kill-serve` kills this sever after the lighthouse task is completed.
 * Note the [Lighthouse](https://github.com/GoogleChrome/lighthouse) test is missing the pwa test as it kept erroring out.
+* Using https://go.fast.io/ for hosting. When deploy new build (dist) to github, it will import those changes automatically.
 
 
 
