@@ -1,5 +1,6 @@
 {
   "imports": {
+    "@airbrake/browser": "./@airbrake/browser.js",
     "lit-html": "./lit-html.js",
     "localforage": "./localforage.js",
     "navigo": "./navigo.js",

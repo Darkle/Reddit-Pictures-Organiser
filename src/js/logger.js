@@ -1,4 +1,10 @@
 import { PromiseCanceller, FetchError } from './Errors.js'
+import { isDev } from './utils.js'
+
+let airbrake = null // eslint-disable-line functional/no-let
+const airbrakeProjectKey = '62c354b1d6ebda85f9cf23ea60adf1c8'
+const airbrakeProjectId = 266488
+const environment = isDev() ? 'development' : 'production'
 
 const logger = {
   log(...args){
@@ -12,9 +18,10 @@ const logger = {
       return
     }
     console.error(...args)
+    sendErrorToAirBrake(args)
   },
   debug(...args){
-    if(window.location.port === '') return
+    if(!isDev()) return
     
     console.info(
       `%c${getOriginalCallingFunctionDetails()} :`, 
@@ -22,6 +29,20 @@ const logger = {
       ...args
     ) 
   },
+}
+
+function sendErrorToAirBrake(errors){
+  import('./web_modules/@airbrake/browser.js')
+  .then(({Notifier}) => {
+    if(!airbrake){
+      airbrake = new Notifier({
+        projectId: airbrakeProjectId,
+        projectKey: airbrakeProjectKey,
+        environment,
+      })
+    }
+    airbrake.notify(...errors)
+  }).catch(err => console.error(err))
 }
 
 //https://stackoverflow.com/a/57023880/2785644

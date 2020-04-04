@@ -32,6 +32,7 @@ const noFolders = () => !getFolders().length
 const isEmptyObject = (obj) => !Object.entries(obj).length
 const isNegativeNumber = number => Math.sign(number) === -1
 const safeGetImageSrc = image => image.src || image.url
+const isDev = () => window.location.port !== ''
 
 const checkFetchResponseStatus = response => {
   if(response.ok) return response
@@ -71,4 +72,5 @@ export{
   isEmptyObject,
   isNegativeNumber,
   safeGetImageSrc,
+  isDev,
 }

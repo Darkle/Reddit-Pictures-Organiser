@@ -9,3 +9,4 @@ initDb().then(initRouter).catch(logger.error)
 // if('serviceWorker' in navigator){
 //   navigator.serviceWorker.register('/js/sw.js').catch(logger.error)
 // }
+// foo()
