@@ -1,3 +1,19 @@
-##### Reddit Pictures Organiser
+#### Reddit Pictures Organiser
 
-Mobile-first Reddit image organiser.
+Reddit Pictures Organiser is a mobile-first Reddit image organiser. 
+
+##### How To Use:
+
+1. Add a subreddit name to the manage page
+2. Go back to the home page and click on the subreddit
+3. To add an image to a folder, tap the image and click on the folder icon
+4. Your image is now saved to a folder. You can access your folders from the home page
+
+##### Screenshots:
+
+![Home Page](readme-images/Screenshot-HomePage.png)
+![Subreddit Thumbnail Page](readme-images/Screenshot-SubredditThumbnails.jpg)
+![Image View](readme-images/Screenshot-ImageView.jpg)
+![Folders Page](readme-images/Screenshot-FoldersPage.png)
+![Folder Page](readme-images/Screenshot-FolderImages.jpg)
+![Manage Page](readme-images/Screenshot-ManagePage.png)
