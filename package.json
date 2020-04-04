@@ -6,17 +6,17 @@
   "scripts": {
     "prepare": "snowpack --include \"src/js/**/*.js\" --dest src/js/web_modules",
     "dev": "cd src && browser-sync --server --port 8888 --watch --no-open --no-ghost-mode --no-notify --no-ui --https",
-    "build-only": "run-s build:copy-to-dist build:snowpack build:minify",
     "build": "run-s build:**",
     "build:eslint": "eslint \"src/js/**/*.js\" --ignore-pattern \"src/js/web_modules/**/*.js\" --quiet",
     "build:copy-to-dist": "ncp src dist",
-    "build:serve": "cd dist && browser-sync --server --port 8888 --no-notify --no-ghost-mode --no-open --no-ui --https &",
     "build:snowpack": "snowpack --include \"src/js/**/*.js\" --optimize --no-source-map --clean --stat --dest dist/js/web_modules",
     "build:minify": "minify --recursive --output dist dist",
     "build:vendor-size-check": "chalk blue bold 'Vendor Libs Size Check:\n\n' && bundlesize -f \"dist/js/web_modules/**/*.js\" -s 35kB",
     "build:total-size-check": "ncat 'dist/**/*.js' -o ./total-bundle.js > /dev/null && chalk blue bold 'Total JS Size Check:\n\n' && bundlesize -f ./total-bundle.js -s 70kB && trash ./total-bundle.js",
-    "build:lighthouse": "lighthouse https://localhost:8888 --chrome-flags='--ignore-certificate-errors' --view --only-categories=accessibility,best-practices,performance,seo --quiet --output-path ./lighthouse-report.html && trash ./lighthouse-report.html",
-    "build:kill-serve": "fkill :8888",
+    "lighthouse": "npm run build && npm-s lighthouse:**",
+    "lighthouse:serve": "cd dist && browser-sync --server --port 8888 --no-notify --no-ghost-mode --no-open --no-ui --https &",
+    "lighthouse:lighthouse": "lighthouse https://localhost:8888 --chrome-flags='--ignore-certificate-errors' --view --only-categories=accessibility,best-practices,performance,seo --quiet --output-path ./lighthouse-report.html && trash ./lighthouse-report.html",
+    "lighthouse:kill-serve": "fkill :8888",
     "deploy": "surge dist reddit-pictures-organiser.surge.sh"
   },
   "dependencies": {

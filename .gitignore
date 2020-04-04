@@ -2,3 +2,4 @@ reports
 lighthouse-report.html
 total-bundle.js
 dist
+public
