@@ -13,6 +13,15 @@
   transform: translate3d(0, -100%, 0);
   opacity: 0.8;
 }
+.imageViewerPage .navWrapper > *{
+  cursor: pointer;
+}
+.imageViewerPage .navWrapper > *:hover{
+  outline: 1px solid #F49A87;
+}
+.imageViewerPage .navWrapper > *:hover *{
+  stroke: #F49A87;
+}
 .imageViewerPage .navWrapper.show{
   transform: translate3d(0, 0, 0);
 }
@@ -110,6 +119,7 @@
   padding-bottom: 10px;
   padding-left: 25px;
   padding-right: 25px;
+  cursor: pointer;
 }
 .imageViewerPage .folder .folderImageCount{
   opacity: 0.5;

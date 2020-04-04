@@ -7,7 +7,13 @@
   display: flex;
   border-bottom: 2px solid #737373;
   width: 100%;
-  /* margin-bottom: 10px; */
+}
+.managePage .navWrapper > *{
+  cursor: pointer;
+}
+.managePage .navWrapper > .home:hover{
+  outline: 1px solid #F49A87;
+  color: #F49A87 !important;
 }
 .managePage .navWrapper .home{
   flex-grow: 1;

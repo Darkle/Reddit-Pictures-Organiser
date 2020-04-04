@@ -17,6 +17,18 @@
   color: #fff4e8;
   text-align: center;
   border-right: 2px solid #737373;
+  cursor: pointer;
+}
+.thumbnailPage .navWrapper > *:not(.selectedSubTimeFilter):hover{
+  outline: 1px solid #F49A87;
+  color: #F49A87 !important;
+}
+.thumbnailPage .navWrapper > .favStarContainer:hover svg{
+  stroke: #F49A87;
+  fill: #F49A87;
+}
+.thumbnailPage .navWrapper .favStarContainer svg{
+  fill: #fff4e8;
 }
 .thumbnailPage .navWrapper .back{
   display: flex;
@@ -49,6 +61,7 @@
 .thumbnailPage .thumbnailsImagesContainer .thumbnail{
   object-fit: cover;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .thumbnailPage .thumbnailsImagesContainer .subLoadingNotifier{

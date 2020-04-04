@@ -8,6 +8,13 @@
   width: 100%;
   margin-bottom: 5px;
 }
+.homePage .navWrapper > *{
+  cursor: pointer;
+}
+.homePage .navWrapper > *:hover:hover{
+  outline: 1px solid #F49A87;
+  color: #F49A87 !important;
+}
 .homePage .navWrapper .folders{
   flex-grow: 1;
   padding: 10px;
@@ -29,6 +36,11 @@
   align-items: center;
   text-transform: capitalize;
   margin: 5px;
+  cursor: pointer;
+}
+.homePage .subreddit:hover{
+  outline: 1px solid #F49A87;
+  color: #F49A87 !important;
 }
 
 .homePage .subreddit .favouriteStar{

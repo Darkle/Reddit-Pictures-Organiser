@@ -9,6 +9,16 @@
   width: 100%;
   margin-bottom: 5px;
 }
+.foldersPage .navWrapper > *{
+  cursor: pointer;
+}
+.foldersPage .navWrapper > *:hover:not(.folders){
+  outline: 1px solid #F49A87;
+  color: #F49A87 !important;
+}
+.foldersPage .navWrapper > *:hover *{
+  stroke: #F49A87;
+}
 .foldersPage .navWrapper .home{
   flex-grow: 1;
   padding: 10px;
@@ -58,6 +68,11 @@
   padding-bottom: 10px;
   padding-left: 25px;
   padding-right: 25px;
+  cursor: pointer;
+}
+.foldersPage .folder:hover{
+  outline: 1px solid #F49A87;
+  color: #F49A87 !important;
 }
 .foldersPage .folder .folderImageCount{
   opacity: 0.5;
