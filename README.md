@@ -11,9 +11,26 @@ Reddit Pictures Organiser is a mobile-first Reddit image organiser.
 
 ##### Screenshots:
 
+Home Page:
+
 ![Home Page](readme-images/Screenshot-HomePage.png)
+
+Subreddit Thumbnail Page:
+
 ![Subreddit Thumbnail Page](readme-images/Screenshot-SubredditThumbnails.jpg)
+
+Image View:
+
 ![Image View](readme-images/Screenshot-ImageView.jpg)
+
+Folders Page:
+
 ![Folders Page](readme-images/Screenshot-FoldersPage.png)
+
+Folder Page:
+
 ![Folder Page](readme-images/Screenshot-FolderImages.jpg)
+
+Manage Page:
+
 ![Manage Page](readme-images/Screenshot-ManagePage.png)
