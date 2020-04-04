@@ -10,6 +10,10 @@
 4. Your image is now saved to a folder. You can access your folders from the home page
 5. To remove the url bar, install/save Reddit Pictures Organiser it to your homescreen
 
+##### Other Details:
+* All folder and image metadata is stored locally in IndexedDB.
+* If you're on desktop, you can use the arrow keys to move back and forth in the image swiper. Or else you can drag with the mouse.
+
 ##### Screenshots:
 
 Home Page:
