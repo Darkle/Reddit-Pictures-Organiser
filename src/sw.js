@@ -16,9 +16,6 @@ self.addEventListener('fetch', function(event) {
   // @ts-ignore
   event.respondWith(
     // @ts-ignore
-    fetch(event.request).catch(function() {
-      // @ts-ignore
-      return caches.match(event.request)
-    })
+    fetch(event.request).catch(() => {})
   )
 })
