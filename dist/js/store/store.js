@@ -14,7 +14,9 @@ saveToLocalForage('folders',store.folders)},removeImageFromFolder(folder,image){
 store.folders[folder]=store.folders[folder].filter(storedImg=>storedImg.id!==image.id)
 saveToLocalForage('folders',store.folders)},addSubreddit(newSub){const sub=newSub.toLowerCase().trim()
 if(store.subreddits.includes(sub))return
-store.subreddits.push(sub)
+const bulkAdd=sub.split(' ')
+if(bulkAdd.length>1){bulkAdd.forEach(s=>{store.subreddits.push(s)})}
+else{store.subreddits.push(sub)}
 saveToLocalForage('subreddits',store.subreddits)},removeSubreddit(subToRemove){const sub=subToRemove.toLowerCase().trim()
 store.removeFavouriteSubreddit(sub)
 if(!store.subreddits.includes(sub))return

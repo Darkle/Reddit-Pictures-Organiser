@@ -35,7 +35,16 @@ const store = {
   addSubreddit(newSub) {
     const sub = newSub.toLowerCase().trim()
     if(store.subreddits.includes(sub)) return
-    store.subreddits.push(sub)
+    const bulkAdd = sub.split(' ')
+    // bulk add
+    if(bulkAdd.length > 1){
+      bulkAdd.forEach(s => {
+        store.subreddits.push(s)
+      })
+    }
+    else{
+      store.subreddits.push(sub)
+    }
     saveToLocalForage('subreddits', store.subreddits)
   },
   removeSubreddit(subToRemove) {
