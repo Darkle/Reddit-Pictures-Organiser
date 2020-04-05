@@ -36,7 +36,6 @@ const store = {
     const sub = newSub.toLowerCase().trim()
     if(store.subreddits.includes(sub)) return
     const bulkAdd = sub.split(' ')
-    // bulk add
     if(bulkAdd.length > 1){
       bulkAdd.forEach(s => {
         store.subreddits.push(s)
