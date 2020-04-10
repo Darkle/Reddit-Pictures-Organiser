@@ -32,8 +32,8 @@ Promise.all(subredditsToGetImagesFor.map(sub=>queue(()=>fetchAndUpdatePage({subr
 const subViewNoImagesFound=()=>!isFavMixPage()&&!store.fetchedSubredditImages.length
 const imagesAmountLimit=1000
 const favMixTooManyImages=()=>isFavMixPage()&&store.fetchedSubredditImages.length>imagesAmountLimit
-function fetchAndUpdatePage({subreddit,lastImgFetched,timefilter}){return fetchSubImages({subreddit,lastImgFetched,timefilter}).then(latestLastImgFetched=>{updatePage({timefilter,subreddit,folderpage:false})
+function fetchAndUpdatePage({subreddit,lastImgFetched,timefilter}){return fetchSubImages({subreddit,lastImgFetched,timefilter}).then(latestLastImgFetched=>{if(favMixTooManyImages())return Promise.reject(new NoMoreImagesToFetch())
+updatePage({timefilter,subreddit,folderpage:false})
 if(subViewNoImagesFound())return Promise.reject(new NoMoreImagesToFetch())
-if(favMixTooManyImages())return Promise.reject(new NoMoreImagesToFetch())
 return({subreddit,lastImgFetched:latestLastImgFetched,timefilter})})}
 export{loadThumbnailsPage,updatePage,}

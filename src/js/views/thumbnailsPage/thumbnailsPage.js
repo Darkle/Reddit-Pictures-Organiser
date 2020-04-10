@@ -71,12 +71,12 @@ const favMixTooManyImages = () => isFavMixPage() && store.fetchedSubredditImages
 function fetchAndUpdatePage({subreddit, lastImgFetched, timefilter}){
   return fetchSubImages({subreddit, lastImgFetched, timefilter})
     .then(latestLastImgFetched => {
+      if(favMixTooManyImages()) return Promise.reject(new NoMoreImagesToFetch())
 
       updatePage({timefilter, subreddit, folderpage: false})
       
       // We want to show the 'No Images Found...' placeholder if we are on a subreddit thats not the favmix.
       if(subViewNoImagesFound()) return Promise.reject(new NoMoreImagesToFetch())
-      if(favMixTooManyImages()) return Promise.reject(new NoMoreImagesToFetch())
 
       return ({subreddit, lastImgFetched: latestLastImgFetched, timefilter})
     })
