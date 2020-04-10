@@ -28,7 +28,7 @@ return html`
     </main>    
     `}
 function queueSubImageFetchingAndUpdating(subreddit,timefilter){const subredditsToGetImagesFor=isFavMixPage()?store.favouriteSubreddits:[subreddit]
-Promise.all(subredditsToGetImagesFor.map(sub=>queue(()=>fetchAndUpdatePage({subreddit:sub,lastImgFetched:null,timefilter}).then(fetchAndUpdatePage).then(fetchAndUpdatePage).then(fetchAndUpdatePage).catch(logger.error)))).catch(logger.error)}
+Promise.all(subredditsToGetImagesFor.map(sub=>queue(()=>fetchAndUpdatePage({subreddit:sub,lastImgFetched:null,timefilter}).then(data=>isFavMixPage()?data:fetchAndUpdatePage(data)).then(data=>isFavMixPage()?data:fetchAndUpdatePage(data)).then(data=>isFavMixPage()?data:fetchAndUpdatePage(data)).catch(logger.error)))).catch(logger.error)}
 const subViewNoImagesFound=()=>!isFavMixPage()&&!store.fetchedSubredditImages.length
 function fetchAndUpdatePage({subreddit,lastImgFetched,timefilter}){return fetchSubImages({subreddit,lastImgFetched,timefilter}).then(latestLastImgFetched=>{updatePage({timefilter,subreddit,folderpage:false})
 if(subViewNoImagesFound())return Promise.reject(new NoMoreImagesToFetch())
