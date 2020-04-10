@@ -65,6 +65,8 @@ function queueSubImageFetchingAndUpdating(subreddit, timefilter) {
 }
 
 const subViewNoImagesFound = () => !isFavMixPage() && !store.fetchedSubredditImages.length
+const imagesAmountLimit = 1000
+const favMixTooManyImages = () => isFavMixPage() && store.fetchedSubredditImages.length > imagesAmountLimit
 
 function fetchAndUpdatePage({subreddit, lastImgFetched, timefilter}){
   return fetchSubImages({subreddit, lastImgFetched, timefilter})
@@ -74,6 +76,7 @@ function fetchAndUpdatePage({subreddit, lastImgFetched, timefilter}){
       
       // We want to show the 'No Images Found...' placeholder if we are on a subreddit thats not the favmix.
       if(subViewNoImagesFound()) return Promise.reject(new NoMoreImagesToFetch())
+      if(favMixTooManyImages()) return Promise.reject(new NoMoreImagesToFetch())
 
       return ({subreddit, lastImgFetched: latestLastImgFetched, timefilter})
     })
