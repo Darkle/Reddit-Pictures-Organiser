@@ -42,7 +42,7 @@
     "snowpack": "^1.6.0",
     "trash-cli": "^3.0.0"
   },
-  "browserslist": "last 3 Chrome version, Firefox ESR, last 1 safari version",
+  "browserslist": "last 3 Chrome version, Firefox ESR, last 1 safari version, last 3 ios version",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Darkle/simple-no-bundling-js-backend-frontend-boilerplate.git"
