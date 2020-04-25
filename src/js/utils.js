@@ -1,4 +1,4 @@
-import {router} from './router.js'
+import { router } from './router.js'
 import { store } from './store/store.js'
 import { FetchError } from './Errors.js'
 
