@@ -54,12 +54,6 @@ function queueSubImageFetchingAndUpdating(subreddit, timefilter) {
           .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
           .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
           .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
-          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
-          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
-          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
-          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
-          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
-          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
           /*****
             We need to catch here too in case on favmix page and a sub has no more images - we dont
             want the whole promise array to fail.
