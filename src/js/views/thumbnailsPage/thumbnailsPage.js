@@ -17,11 +17,11 @@ function loadThumbnailsPage({subreddit, timefilter, folderpage}) {
   const isSubredditPage = !folderpage
   const showLoadingPlaceholder = isSubredditPage
   setPageTitle(`RPO - ${folderpage ? folderpage : subreddit}`)
-  
+
   if(isSubredditPage) store.removeStoredFetchedSubredditImages()
-  
+
   updatePage({showLoadingPlaceholder, timefilter, subreddit, folderpage})
-  
+
   if(isSubredditPage) queueSubImageFetchingAndUpdating(subreddit, timefilter)
 }
 
@@ -34,23 +34,29 @@ function ThumbnailPage(state) { // eslint-disable-line complexity
   const images = state.folderpage ? store.folders[state.folderpage] : store.fetchedSubredditImages
   if(isFavMixPage() && !store.favouriteSubreddits.length) return PlaceHolder({...state, showLoadingPlaceholder: false})
   if(state.showLoadingPlaceholder || !images.length) return PlaceHolder(state)
-  
+
   return html`
     <main id="app" class="thumbnailPage">
       ${Nav(state)}
       ${ThumbnailsContainer(state)}
       ${!isFavMixPage() && !state.folderpage ? Toast(state) : ''}
-    </main>    
+    </main>
     `
 }
 
 function queueSubImageFetchingAndUpdating(subreddit, timefilter) {
-  const subredditsToGetImagesFor = isFavMixPage() ? store.favouriteSubreddits : [subreddit] 
+  const subredditsToGetImagesFor = isFavMixPage() ? store.favouriteSubreddits : [subreddit]
   Promise.all(
-    subredditsToGetImagesFor.map(sub => 
+    subredditsToGetImagesFor.map(sub =>
       // @ts-ignore
       queue(() =>
         fetchAndUpdatePage({subreddit: sub, lastImgFetched: null, timefilter})
+          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
+          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
+          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
+          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
+          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
+          .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
           .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
           .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
           .then(data => isFavMixPage() ? data : fetchAndUpdatePage(data))
@@ -58,10 +64,10 @@ function queueSubImageFetchingAndUpdating(subreddit, timefilter) {
             We need to catch here too in case on favmix page and a sub has no more images - we dont
             want the whole promise array to fail.
           *****/
-          .catch(logger.error)  
+          .catch(logger.error)
       )
-    )     
-  ).catch(logger.error)  
+    )
+  ).catch(logger.error)
 }
 
 const subViewNoImagesFound = () => !isFavMixPage() && !store.fetchedSubredditImages.length
@@ -74,7 +80,7 @@ function fetchAndUpdatePage({subreddit, lastImgFetched, timefilter}){
       if(favMixTooManyImages()) return Promise.reject(new NoMoreImagesToFetch())
 
       updatePage({timefilter, subreddit, folderpage: false})
-      
+
       // We want to show the 'No Images Found...' placeholder if we are on a subreddit thats not the favmix.
       if(subViewNoImagesFound()) return Promise.reject(new NoMoreImagesToFetch())
 

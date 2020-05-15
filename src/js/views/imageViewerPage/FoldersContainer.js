@@ -13,7 +13,7 @@ function FoldersContainer(state){
     <div class="foldersContainer">
       <div class="addToNewFolderContainer">
         <label for="addImageToNewFolder">Add To New Folder</label>
-        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" 
+        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder"
             @keyup=${event => addImageToNewFolder(event, state)} autocomplete="off"/>
       </div>
       <label>Add To Existing Folder</label>
@@ -25,7 +25,7 @@ function FoldersContainer(state){
             </div>
         `)}
       </div>
-    </div>  
+    </div>
   `
 }
 
@@ -46,7 +46,7 @@ function addImageToFolder(folder, {subreddit, timefilter, imageId, folderpage}){
 function addImageToNewFolder({target: input, key}, state){ // eslint-disable-line max-statements
   const newFolderName = input.value.trim()
   if(key !== 'Enter' || !newFolderName.length) return
-  
+
   store.createFolder(newFolderName)
   addImageToFolder(newFolderName, state)
 }
