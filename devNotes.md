@@ -7,7 +7,6 @@ Example of the data you get back for an image from the reddit json api: https://
 * [Minify](https://github.com/tdewolff/minify/blob/master/cmd/minify/README.md) - is a go app. Using this for minifying as terser does not yet support optional chaining syntax
 * [Ncp](https://github.com/AvianFlu/ncp) - copies files over to dist
 * [Ncat](https://github.com/pvdlg/ncat) - lets us concatinate all js files together, which allows us to check the total app js size with [bundlesize](https://github.com/siddharthkp/bundlesize) (although note that some of the `web_modules` are loaded using dynamic imports)
-* Deploying to [Surge](https://surge.sh/)
 * The `lighthouse:serve` npm task is for Lighthouse as it needs the page to be served. The `lighthouse:kill-serve` kills this sever after the lighthouse task is completed.
 * Note the [Lighthouse](https://github.com/GoogleChrome/lighthouse) test is missing the pwa test as it kept erroring out.
 * Using https://go.fast.io/ for hosting. When deploy new build (dist) to github, it will import those changes automatically.
