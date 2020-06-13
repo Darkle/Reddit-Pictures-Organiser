@@ -25,7 +25,7 @@ return html`
       ${Nav(state)}
       ${ThumbnailsContainer(state)}
       ${!isFavMixPage()&&!state.folderpage?Toast(state):''}
-    </main>    
+    </main>
     `}
 function queueSubImageFetchingAndUpdating(subreddit,timefilter){const subredditsToGetImagesFor=isFavMixPage()?store.favouriteSubreddits:[subreddit]
 Promise.all(subredditsToGetImagesFor.map(sub=>queue(()=>fetchAndUpdatePage({subreddit:sub,lastImgFetched:null,timefilter}).then(data=>isFavMixPage()?data:fetchAndUpdatePage(data)).then(data=>isFavMixPage()?data:fetchAndUpdatePage(data)).then(data=>isFavMixPage()?data:fetchAndUpdatePage(data)).catch(logger.error)))).catch(logger.error)}

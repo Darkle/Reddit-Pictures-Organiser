@@ -10,7 +10,7 @@
     "build:eslint": "eslint \"src/js/**/*.js\" --ignore-pattern \"src/js/web_modules/**/*.js\" --quiet",
     "build:copy-to-dist": "ncp src dist",
     "build:snowpack": "snowpack --include \"src/js/**/*.js\" --optimize --no-source-map --clean --stat --dest dist/js/web_modules",
-    "build:minify": "minify --recursive --output dist dist",
+    "build:minify": "minify --recursive --html-keep-quotes --output dist dist",
     "build:vendor-size-check": "chalk blue bold 'Vendor Libs Size Check:\n\n' && bundlesize -f \"dist/js/web_modules/**/*.js\" -s 35kB",
     "build:total-size-check": "ncat 'dist/**/*.js' -o ./total-bundle.js > /dev/null && chalk blue bold 'Total JS Size Check:\n\n' && bundlesize -f ./total-bundle.js -s 70kB && trash ./total-bundle.js",
     "lighthouse": "npm run build && npm-s lighthouse:**",

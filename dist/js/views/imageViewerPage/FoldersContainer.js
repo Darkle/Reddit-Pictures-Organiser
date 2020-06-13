@@ -9,7 +9,7 @@ return html`
     <div class="foldersContainer">
       <div class="addToNewFolderContainer">
         <label for="addImageToNewFolder">Add To New Folder</label>
-        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder" 
+        <input type="text" id="addImageToNewFolder" class="addImageToNewFolder"
             @keyup=${event=>addImageToNewFolder(event,state)} autocomplete="off"/>
       </div>
       <label>Add To Existing Folder</label>
@@ -21,7 +21,7 @@ return html`
             </div>
         `)}
       </div>
-    </div>  
+    </div>
   `}
 function getSwiperActiveIndex(){return Number($('.swiper-slide-active img').dataset.index)}
 function addImageToFolder(folder,{subreddit,timefilter,imageId,folderpage}){const images=folderpage?store.folders[folderpage]:store.fetchedSubredditImages
