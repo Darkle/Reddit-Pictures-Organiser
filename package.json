@@ -24,6 +24,7 @@
     "localforage": "^1.7.3",
     "navigo": "^7.1.2",
     "p-limit": "^2.2.2",
+    "surge": "^0.21.7",
     "swiper": "^5.3.6"
   },
   "devDependencies": {
