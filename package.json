@@ -25,7 +25,7 @@
     "navigo": "^7.1.2",
     "p-limit": "^2.2.2",
     "surge": "^0.21.7",
-    "swiper": "^5.3.6"
+    "swiper": "^6.5.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
