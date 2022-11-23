@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.27.10",
     "bundlesize": "^0.18.0",
     "chalk-cli": "^4.1.0",
     "eslint": "^6.8.0",
